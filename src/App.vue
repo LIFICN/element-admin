@@ -3,6 +3,8 @@
 </template>
 
 <style>
+@import url('@/styles/transition.scss');
+
 #app {
   text-align: left;
 }
