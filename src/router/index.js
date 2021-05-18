@@ -1,10 +1,12 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 const routerHistory = createWebHashHistory()
 
-import helloWorld from '@/pages/HelloWorld.vue'
+const indexPage = () => import('@/views/index.vue')
 
+//https://next.router.vuejs.org/zh/index.html
 const routes = [
-    { path: '/', component: helloWorld },
+    { path: '/', redirect: '/index' },
+    { path: '/index', component: indexPage },
 ]
 
 const router = createRouter({
