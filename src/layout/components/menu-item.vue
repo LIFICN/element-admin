@@ -1,10 +1,10 @@
 <template v-if="!item.hidden">
-  <el-menu-item :index="fullPath" v-if="!item.children || item.children.length <= 1">
+  <el-menu-item :index="fullPath" v-if="!item.children || (item.children.length <= 1 && item.path.startsWith('/'))">
     <i :class="options.icon"></i>
     <template #title>{{ options.title }}</template>
   </el-menu-item>
 
-  <el-submenu index="" v-else>
+  <el-submenu :index="fullPath" v-else>
     <template #title>
       <i :class="options.icon"></i>
       <span>{{ options.title }}</span>

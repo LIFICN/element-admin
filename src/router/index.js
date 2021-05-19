@@ -26,6 +26,18 @@ const routes = [
             path: 'menu1',
             component: parentView,
             meta: { title: 'menu1', icon: '' },
+            children: [
+                {
+                    path: 'menu1-1',
+                    component: parentView,
+                    meta: { title: 'menu1-1', icon: '' },
+                },
+                {
+                    path: 'menu1-2',
+                    component: parentView,
+                    meta: { title: 'menu1-2', icon: '' },
+                },
+            ]
         },
         {
             path: 'test',
