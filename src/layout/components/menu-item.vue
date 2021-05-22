@@ -1,10 +1,10 @@
-<template v-if="!item.hidden">
-  <el-menu-item :index="fullPath" v-if="!item.children || (item.children.length <= 1 && item.path.startsWith('/'))">
+<template>
+  <el-menu-item :index="fullPath" v-if="!item.hidden && isMenuItem">
     <i :class="options.icon"></i>
     <template #title>{{ options.title }}</template>
   </el-menu-item>
 
-  <el-submenu :index="fullPath" v-else>
+  <el-submenu :index="fullPath" v-else-if="!item.hidden && !isMenuItem">
     <template #title>
       <i :class="options.icon"></i>
       <span>{{ options.title }}</span>
@@ -39,6 +39,10 @@ export default {
       //递归拼接路径
       if (this.basePath) return this.basePath + '/' + this.item.path
       return this.item.path
+    },
+    isMenuItem() {
+      const children = this.item.children
+      return !children || (children.length <= 1 && this.item.path.startsWith('/'))
     },
   },
 }

@@ -46,8 +46,8 @@ export default {
 .app-container {
   display: flex;
   overflow: hidden;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 
   .sidebar-container {
     //重置element菜单动画

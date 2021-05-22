@@ -5,6 +5,7 @@ import ElementPlus from 'element-plus'
 import 'element-plus/lib/theme-chalk/index.css'
 //vue router
 import router from './router'
+import './router/permission'
 //vue store
 import store from './store'
 

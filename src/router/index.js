@@ -5,10 +5,12 @@ const layout = () => import('@/layout/index.vue')
 const parentView = () => import('@/layout/parent-view.vue')
 const dashboard = () => import('@/views/dashboard/index.vue')
 const test = () => import('@/views/test/index.vue')
+const login = () => import('@/views/login/index.vue')
 
 //https://next.router.vuejs.org/zh/index.html
 const routes = [
     { path: '/', redirect: '/dashboard' },
+    { path: '/login', component: login, hidden: true },
     {
         path: '/dashboard',
         component: layout,
