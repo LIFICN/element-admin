@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import { setToken } from '@/utils/auth.js'
+
 export default {
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -92,7 +94,7 @@ export default {
           setTimeout(() => {
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
-            localStorage.setItem('token', 'element-admin')
+            setToken('element-admin')
           }, 600)
         } else {
           console.log('error submit!!')
