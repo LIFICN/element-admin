@@ -1,5 +1,12 @@
 <template>
-  <el-menu :default-active="currentPath" class="sidebar-menu" :collapse="isCollapse" router>
+  <el-menu
+    :default-active="currentPath"
+    class="sidebar-menu"
+    :collapse="isCollapse"
+    :router="true"
+    :collapse-transition="false"
+    :unique-opened="true"
+  >
     <menu-item v-for="(item, index) in routes" :key="'menuItem' + index" :item="item"></menu-item>
   </el-menu>
 </template>
@@ -11,10 +18,11 @@ export default {
   components: {
     menuItem,
   },
-  data() {
-    return {
-      isCollapse: false,
-    }
+  props: {
+    isCollapse: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     currentPath() {
@@ -29,7 +37,6 @@ export default {
 </script>
 
 <style lang="scss">
-$sidebarWidth: 200px;
 $sidebarBg: #304156;
 $slidebarText: #bfcbd9;
 $slidebarTextActive: #409eff;
@@ -37,10 +44,11 @@ $slidebarMenuHover: #263445;
 
 .sidebar-menu {
   height: 100%;
+  width: 100%;
   background-color: $sidebarBg;
 
   &:not(.el-menu--collapse) {
-    width: $sidebarWidth;
+    width: 100%;
   }
 
   .el-menu {

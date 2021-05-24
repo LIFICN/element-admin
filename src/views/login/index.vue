@@ -43,15 +43,13 @@
 
       <div class="tips">
         <span style="margin-right: 20px">username: admin</span>
-        <span> password: any</span>
+        <span> password: 123</span>
       </div>
     </el-form>
   </div>
 </template>
 
 <script>
-import { setToken } from '@/utils/auth.js'
-
 export default {
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -67,7 +65,7 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '111111',
+        password: '123',
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -91,11 +89,16 @@ export default {
         if (valid) {
           this.loading = true
 
-          setTimeout(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-            setToken('element-admin')
-          }, 600)
+          this.$store
+            .dispatch('login', this.loginForm)
+            .then((res) => {
+              this.$router.push({ path: this.redirect || '/' })
+              this.loading = false
+            })
+            .catch((err) => {
+              this.loading = false
+              alert(err)
+            })
         } else {
           console.log('error submit!!')
           return false

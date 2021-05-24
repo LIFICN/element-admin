@@ -49,9 +49,15 @@ const routes = [
     }
 ]
 
-const router = createRouter({
+const newRouter = () => createRouter({
     history: routerHistory,
     routes,
 })
+
+let router = newRouter()
+
+export function resetRouter() {
+    router = newRouter() // reset router
+}
 
 export default router

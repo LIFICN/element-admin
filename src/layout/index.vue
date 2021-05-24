@@ -1,8 +1,8 @@
 
 <template>
   <div class="app-container">
-    <div class="sidebar-container">
-      <sidebar-menu ref="sidebarMenu"></sidebar-menu>
+    <div class="sidebar-container" :style="{ width: isCollapse ? '64px' : '200px' }">
+      <sidebar-menu ref="sidebarMenu" :isCollapse="isCollapse"></sidebar-menu>
     </div>
 
     <el-scrollbar class="main-container">
@@ -29,14 +29,13 @@ export default {
     navBar,
   },
   data() {
-    return {}
+    return {
+      isCollapse: false,
+    }
   },
   methods: {
     menuCollapse(val) {
-      //是否折叠菜单
-      this.$nextTick(() => {
-        this.$refs['sidebarMenu'].isCollapse = val
-      })
+      this.isCollapse = val
     },
   },
 }
@@ -50,11 +49,8 @@ export default {
   height: 100%;
 
   .sidebar-container {
-    //重置element菜单动画
-    .horizontal-collapse-transition {
-      transition: width 0.28s;
-      will-change: transform;
-    }
+    transition: width 0.28s;
+    will-change: transform;
   }
 
   .main-container {

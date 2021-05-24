@@ -1,7 +1,18 @@
 <template>
   <div class="nav-bar">
     <span :class="{ 'el-icon-s-fold': !isCollapse, 'el-icon-s-unfold': isCollapse }" @click="menuCollapse"></span>
-    <span class="el-icon-setting">小明</span>
+
+    <div>
+      <el-dropdown>
+        <i class="el-icon-setting" style="margin-right: 8px; font-size: 16px"></i>
+        <template #dropdown>
+          <el-dropdown-menu>
+            <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </template>
+      </el-dropdown>
+      <span>小明</span>
+    </div>
   </div>
 </template>
 
@@ -9,7 +20,7 @@
 export default {
   data() {
     return {
-      isCollapse: true,
+      isCollapse: false,
     }
   },
   methods: {
@@ -17,6 +28,11 @@ export default {
       const param = !this.isCollapse
       this.isCollapse = param
       this.$emit('menuCollapse', param)
+    },
+    logout() {
+      this.$store.dispatch('logout').then(() => {
+        window.location.href = '/'
+      })
     },
   },
 }
@@ -39,6 +55,7 @@ $appHeaderBg: #ffffff;
   > :first-child {
     margin-left: 20px;
     font-size: 22px;
+    cursor: pointer;
   }
 
   > :last-child {
