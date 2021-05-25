@@ -31,7 +31,7 @@ export default {
     },
     logout() {
       this.$store.dispatch('logout').then(() => {
-        window.location.href = '/'
+        this.$router.replace('/login')
       })
     },
   },

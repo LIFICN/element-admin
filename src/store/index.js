@@ -1,20 +1,34 @@
 import { createStore } from 'vuex'
 import { setToken, removeToken } from '@/utils/auth'
-import { resetRouter } from '@/router'
+import { constantRoutes } from '@/router'
+import router from '@/router'
+
+const removeRoutesCallback = []
 
 //https://next.vuex.vuejs.org/zh/
 const store = createStore({
     state: {
-        count: 0,
+        routes: []
+    },
+    getters: {
+        routes: state => state.routes
     },
     mutations: {
-        increment(state) {
-            state.count++
+        setRoutes(state, routes) {
+            state.routes = constantRoutes.concat(routes)
+            routes.forEach(el => {
+                const remove = router.addRoute(el)
+                removeRoutesCallback.push(remove)
+            })
+        },
+        resetRoutes(state) {
+            state.routes = []
+            removeRoutesCallback.forEach(el => el())
         }
     },
     actions: {
-        increment(context) {
-            context.commit('increment')
+        setRoutes(context, val) {
+            context.commit('setRoutes', val)
         },
         login(context, data) {
             return new Promise((resolve, reject) => {
@@ -29,9 +43,13 @@ const store = createStore({
         },
         logout(context) {
             return new Promise((resolve, reject) => {
-                removeToken()
-                resetRouter()
-                resolve()
+                try {
+                    removeToken()
+                    context.commit('resetRoutes')
+                    resolve()
+                } catch (err) {
+                    reject(err)
+                }
             })
         }
     }

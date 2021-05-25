@@ -8,7 +8,7 @@ const test = () => import('@/views/test/index.vue')
 const login = () => import('@/views/login/index.vue')
 
 //https://next.router.vuejs.org/zh/index.html
-const routes = [
+export const constantRoutes = [
     { path: '/', redirect: '/dashboard' },
     { path: '/login', component: login, hidden: true },
     {
@@ -49,15 +49,9 @@ const routes = [
     }
 ]
 
-const newRouter = () => createRouter({
+const router = createRouter({
     history: routerHistory,
-    routes,
+    routes: constantRoutes,
 })
-
-let router = newRouter()
-
-export function resetRouter() {
-    router = newRouter() // reset router
-}
 
 export default router

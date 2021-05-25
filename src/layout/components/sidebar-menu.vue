@@ -5,7 +5,7 @@
     :collapse="isCollapse"
     :router="true"
     :collapse-transition="false"
-    :unique-opened="true"
+    :unique-opened="false"
   >
     <menu-item v-for="(item, index) in routes" :key="'menuItem' + index" :item="item"></menu-item>
   </el-menu>
@@ -30,7 +30,7 @@ export default {
     },
     routes() {
       //获取路由列表
-      return this.$router.options.routes.slice(1)
+      return this.$store.getters.routes.filter((el) => el.path != '/')
     },
   },
 }
