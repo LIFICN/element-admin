@@ -7,6 +7,7 @@
 
     <el-scrollbar class="main-container">
       <nav-bar @menuCollapse="menuCollapse"></nav-bar>
+      <tabs-view></tabs-view>
 
       <div class="app-main">
         <router-view v-slot="{ Component }">
@@ -22,11 +23,13 @@
 <script>
 import sidebarMenu from './components/sidebar-menu.vue'
 import navBar from './components/nav-bar.vue'
+import tabsView from './components/tabs-view.vue'
 
 export default {
   components: {
     sidebarMenu,
     navBar,
+    tabsView,
   },
   data() {
     return {

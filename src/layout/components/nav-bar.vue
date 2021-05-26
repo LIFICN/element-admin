@@ -50,7 +50,7 @@ $appHeaderBg: #ffffff;
   justify-content: space-between;
   align-items: center;
   color: #333;
-  box-shadow: 0 1px 4px rgb(0, 21, 41, 0.08);
+  border: 1px solid #f6f6f6;
 
   > :first-child {
     margin-left: 20px;
