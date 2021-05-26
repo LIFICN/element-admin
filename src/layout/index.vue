@@ -5,18 +5,18 @@
       <sidebar-menu ref="sidebarMenu" :isCollapse="isCollapse"></sidebar-menu>
     </div>
 
-    <el-scrollbar class="main-container">
+    <div class="main-container">
       <nav-bar @menuCollapse="menuCollapse"></nav-bar>
       <tabs-view></tabs-view>
 
-      <div class="app-main">
+      <el-scrollbar class="app-main">
         <router-view v-slot="{ Component }">
           <transition name="fade-transform" mode="out-in">
             <component :is="Component" />
           </transition>
         </router-view>
-      </div>
-    </el-scrollbar>
+      </el-scrollbar>
+    </div>
   </div>
 </template>
 

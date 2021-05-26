@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import { getTransitionRawChildren } from 'vue'
 export default {
   data() {
     return {
@@ -73,14 +72,16 @@ export default {
 
 <style lang="scss" scoped>
 .tab-scrollbar {
-  padding: 10px 20px;
+  padding: 0px 20px;
   box-shadow: 0 1px 4px rgb(0, 21, 41, 0.08);
+  height: 50px;
 }
 
 .tabs-view {
   display: flex;
   align-items: center;
   box-sizing: border-box;
+  height: 50px;
 
   .tab-item {
     border: 1px solid #dcdfe6;
