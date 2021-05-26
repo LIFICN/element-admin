@@ -49,16 +49,18 @@ export default {
     tabRemove(target) {
       this.tabList.splice(target, 1)
 
+      //删除当前选项卡左边选项卡
+      if (target != this.currentIndex && target < this.currentIndex) {
+        this.currentIndex = this.currentIndex == 0 ? 0 : this.currentIndex - 1
+        return
+      }
+
+      //删除当前选项卡
       if (target == this.currentIndex) {
         if (target == 0) this.currentIndex = 0
         else this.currentIndex--
 
         this.$router.replace(this.tabList[this.currentIndex].path)
-      } else {
-        if (target < this.currentIndex) {
-          this.currentIndex--
-          if (this.currentIndex < 0) this.currentIndex = 0
-        }
       }
     },
     tabClick(index) {
