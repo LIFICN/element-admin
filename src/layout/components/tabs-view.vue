@@ -1,15 +1,19 @@
 <template>
-  <el-scrollbar class="tab-scrollbar">
-    <div class="tabs-view">
-      <div
-        :class="[{ active: currentIndex == index }, 'tab-item']"
-        :key="item.title"
-        v-for="(item, index) in tabList"
-        @click="tabClick(index)"
+  <el-scrollbar class="tab-scrollbar" view-class="tabs-view">
+    <div
+      :class="[{ active: currentIndex == index }, 'tab-item']"
+      :key="item.title"
+      v-for="(item, index) in tabList"
+      @click="tabClick(index)"
+      :id="`appTabItem${index}`"
+    >
+      <span class="title">{{ item.title }}</span>
+      <span
+        class="close el-icon-close"
+        @click.stop="tabRemove(index)"
+        :style="{ display: tabList.length == 1 ? 'none' : '' }"
       >
-        <span class="title">{{ item.title }}</span>
-        <span class="close el-icon-close" @click.stop="tabRemove(index)"></span>
-      </div>
+      </span>
     </div>
   </el-scrollbar>
 </template>
@@ -34,6 +38,11 @@ export default {
         this.currentIndex = this.tabList.findIndex((el) => el.title == newVal.title)
       },
     },
+    currentIndex: {
+      handler(newVal, _) {
+        this.srollTo(`appTabItem${newVal}`)
+      },
+    },
   },
   computed: {
     currentRoute() {
@@ -50,9 +59,8 @@ export default {
       this.tabList.splice(target, 1)
 
       //删除当前选项卡左边选项卡
-      if (target != this.currentIndex && target < this.currentIndex) {
-        this.currentIndex = this.currentIndex == 0 ? 0 : this.currentIndex - 1
-        return
+      if (target < this.currentIndex) {
+        this.currentIndex = this.currentIndex > 0 ? this.currentIndex - 1 : 0
       }
 
       //删除当前选项卡
@@ -68,54 +76,60 @@ export default {
       const currentTab = this.tabList[index]
       this.$router.replace(currentTab.path)
     },
+    srollTo(tag) {
+      this.$nextTick(() => {
+        const target = document.getElementById(tag)
+        target.parentNode.parentNode.scrollLeft = target.offsetLeft
+      })
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
 .tab-scrollbar {
-  padding: 0px 20px;
+  padding: 0 20px;
   box-shadow: 0 1px 4px rgb(0, 21, 41, 0.08);
   height: 50px;
-}
-
-.tabs-view {
-  display: flex;
-  align-items: center;
   box-sizing: border-box;
-  height: 50px;
 
-  .tab-item {
-    border: 1px solid #dcdfe6;
-    border-radius: 3px;
-    height: 30px;
-    line-height: 30px;
-    cursor: pointer;
-    color: #303133;
-    margin-right: 6px;
-    white-space: nowrap;
+  ::v-deep(.tabs-view) {
+    display: flex;
+    align-items: center;
+    height: 100%;
 
-    .title {
-      font-size: 14px;
-      font-weight: 500;
-      padding: 0 20px;
+    .tab-item {
+      border: 1px solid #dcdfe6;
+      border-radius: 3px;
+      height: 30px;
+      line-height: 30px;
+      cursor: pointer;
+      color: #303133;
+      margin-right: 6px;
+      white-space: nowrap;
+
+      .title {
+        font-size: 14px;
+        font-weight: 500;
+        padding: 0 10px;
+      }
+
+      .close {
+        color: #999999;
+        font-size: 14px;
+        font-weight: lighter;
+        padding-right: 10px;
+      }
     }
 
-    .close {
-      color: #999999;
-      font-size: 14px;
-      font-weight: lighter;
-      padding-right: 10px;
-    }
-  }
-
-  .active {
-    color: #1890ff;
-    background: #e8f4ff;
-    border: 1px solid #1890ff;
-
-    .close {
+    .active {
       color: #1890ff;
+      background: #e8f4ff;
+      border: 1px solid #1890ff;
+
+      .close {
+        color: #1890ff;
+      }
     }
   }
 }
