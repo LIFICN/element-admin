@@ -51,18 +51,20 @@ export default {
   },
   methods: {
     tabRemove(target) {
+      const lastIndex = this.tabList.length - 1
       this.tabList.splice(target, 1)
 
       //删除当前选项卡左边选项卡
       if (target < this.currentIndex) {
-        this.currentIndex = this.currentIndex > 0 ? this.currentIndex - 1 : 0
+        this.currentIndex-- //位置向后偏移
         return
       }
 
       //删除当前选项卡
       if (target == this.currentIndex) {
-        if (target == 0) this.currentIndex = 0
-        else this.currentIndex--
+        //位置向后偏移
+        if (target == lastIndex) this.currentIndex--
+        else this.currentIndex = target //位置不偏移(当前元素已删除),自动切换下一个元素
 
         this.$router.replace(this.tabList[this.currentIndex].path)
       }
