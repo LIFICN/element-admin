@@ -17,7 +17,7 @@ export const constantRoutes = [
         children: [{
             path: '',
             component: dashboard,
-            meta: { title: 'dashboard', icon: 'el-icon-location' }
+            meta: { title: 'dashboard', icon: 'el-icon-location', affix: true } //affix为是否固定选项卡
         }]
     },
     {

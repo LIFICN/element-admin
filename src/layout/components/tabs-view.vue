@@ -8,12 +8,7 @@
       :id="`appTabItem${index}`"
     >
       <span class="title">{{ item.title }}</span>
-      <span
-        class="close el-icon-close"
-        @click.stop="tabRemove(index)"
-        :style="{ display: tabList.length == 1 ? 'none' : '' }"
-      >
-      </span>
+      <span class="close el-icon-close" @click.stop="tabRemove(index)" v-if="!item.affix"></span>
     </div>
   </el-scrollbar>
 </template>

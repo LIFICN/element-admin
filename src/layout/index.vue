@@ -52,8 +52,8 @@ export default {
   height: 100%;
 
   .sidebar-container {
+    will-change: width;
     transition: width 0.28s;
-    will-change: transform;
   }
 
   .main-container {
