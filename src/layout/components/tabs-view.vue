@@ -61,6 +61,7 @@ export default {
       //删除当前选项卡左边选项卡
       if (target < this.currentIndex) {
         this.currentIndex = this.currentIndex > 0 ? this.currentIndex - 1 : 0
+        return
       }
 
       //删除当前选项卡
@@ -79,7 +80,7 @@ export default {
     srollTo(tag) {
       this.$nextTick(() => {
         const target = document.getElementById(tag)
-        target.parentNode.parentNode.scrollLeft = target.offsetLeft
+        target.parentNode.parentNode.scrollLeft = target.offsetLeft - 20 //因为有左右padding所以减去20
       })
     },
   },
