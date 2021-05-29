@@ -51,8 +51,11 @@ export default {
   width: 100%;
   height: 100%;
 
+  &:hover > .sidebar-container {
+    will-change: width; //Optimize animation fluency
+  }
+
   .sidebar-container {
-    will-change: width;
     transition: width 0.28s;
   }
 

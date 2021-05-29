@@ -4,7 +4,6 @@
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.28s;
-  will-change: transform;
 }
 
 .fade-enter,
@@ -13,10 +12,14 @@
 }
 
 /* fade-transform */
+.fade-transform {
+  /* Optimize animation fluency */
+  will-change: transform, opacity;
+}
+
 .fade-transform-leave-active,
 .fade-transform-enter-active {
-  transition: all .5s;
-  will-change: transform;
+  transition: all 0.5s;
 }
 
 .fade-transform-enter {
