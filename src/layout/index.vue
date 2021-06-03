@@ -52,7 +52,7 @@ export default {
   height: 100%;
 
   &:hover > .sidebar-container {
-    will-change: width; //Optimize animation fluency
+    will-change: width;
   }
 
   .sidebar-container {
@@ -62,9 +62,12 @@ export default {
   .main-container {
     flex: 1;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 
     .app-main {
       padding: 20px;
+      flex: 1;
     }
   }
 }
