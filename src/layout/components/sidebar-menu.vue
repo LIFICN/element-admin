@@ -46,6 +46,7 @@ $slidebarMenuHover: #263445;
   height: 100%;
   width: 100%;
   background-color: $sidebarBg;
+  overflow-x: hidden;
 
   &:not(.el-menu--collapse) {
     width: 100%;
