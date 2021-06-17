@@ -9,11 +9,11 @@ import './router/permission'
 //vue store
 import store from './store'
 // glob
-import globComponents from './utils/glob'
+import { globComponents } from './utils/glob'
 
 const app = createApp(App)
 app.use(ElementPlus)
 app.use(router)
 app.use(store)
-globComponents.forEach(el => app.component(el.key, el.value))
+globComponents(app)
 app.mount('#app')
