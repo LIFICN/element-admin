@@ -77,6 +77,7 @@ export default {
     srollTo(tag) {
       this.$nextTick(() => {
         const target = document.getElementById(tag)
+        if (!target) return
         target.parentNode.parentNode.scrollLeft = target.offsetLeft - 20 //因为有左右padding所以减去20
       })
     },

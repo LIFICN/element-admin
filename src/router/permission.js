@@ -3,9 +3,9 @@ import { getToken } from '@/utils/auth.js'
 import store from '@/store'
 const whiteList = ['/login']
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     const token = getToken()
-    const routes = store.getters.routes || []
+    const role = store.getters.role || ''
 
     if (whiteList.includes(to.path)) {
         next()
@@ -17,8 +17,9 @@ router.beforeEach((to, from, next) => {
         return
     }
 
-    if (!routes || routes.length <= 0) {
-        store.dispatch('setRoutes', [])
+    if (!role) {
+        await store.dispatch('getUserInfo')
+        await store.dispatch('setRoutes', [])
     }
 
     next()

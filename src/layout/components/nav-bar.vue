@@ -11,7 +11,7 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <span>小明</span>
+      <span>{{ username }}</span>
     </div>
   </div>
 </template>
@@ -22,6 +22,11 @@ export default {
     return {
       isCollapse: false,
     }
+  },
+  computed: {
+    username() {
+      return this.$store.getters.username
+    },
   },
   methods: {
     menuCollapse() {
