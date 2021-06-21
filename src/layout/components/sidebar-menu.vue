@@ -12,7 +12,10 @@
 </template>
 
 <script>
+import { computed } from 'vue'
 import menuItem from './menu-item.vue'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 
 export default {
   components: {
@@ -24,14 +27,13 @@ export default {
       default: false,
     },
   },
-  computed: {
-    currentPath() {
-      return this.$route.fullPath
-    },
-    routes() {
-      //获取路由列表
-      return this.$store.getters.routes.filter((el) => el.path != '/')
-    },
+  setup() {
+    const store = useStore()
+    const route = useRoute()
+    const currentPath = computed(() => route.fullPath)
+    const routes = computed(() => store.getters.routes.filter((el) => el.path != '/')) //获取路由列表
+
+    return { currentPath, routes }
   },
 }
 </script>

@@ -17,28 +17,30 @@
 </template>
 
 <script>
+import { reactive, toRefs, computed } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+
 export default {
-  data() {
-    return {
+  setup(_, { emit }) {
+    const store = useStore()
+    const router = useRouter()
+    const state = reactive({
       isCollapse: false,
-    }
-  },
-  computed: {
-    username() {
-      return this.$store.getters.username
-    },
-  },
-  methods: {
-    menuCollapse() {
-      const param = !this.isCollapse
-      this.isCollapse = param
-      this.$emit('menuCollapse', param)
-    },
-    logout() {
-      this.$store.dispatch('logout').then(() => {
-        this.$router.replace('/login')
-      })
-    },
+      username: computed(() => store.getters.username),
+      menuCollapse() {
+        const flag = !state.isCollapse
+        state.isCollapse = flag
+        emit('menuCollapse', flag)
+      },
+      logout() {
+        store.dispatch('logout').then(() => {
+          router.replace('/login')
+        })
+      },
+    })
+
+    return { ...toRefs(state) }
   },
 }
 </script>

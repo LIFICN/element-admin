@@ -14,73 +14,73 @@
 </template>
 
 <script>
+import { reactive, toRefs, watch, computed, nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
 export default {
-  data() {
-    return {
+  setup() {
+    const route = useRoute()
+    const router = useRouter()
+
+    const state = reactive({
       tabList: [],
       currentIndex: 0,
-    }
-  },
-  watch: {
-    currentRoute: {
-      deep: true,
-      immediate: true,
-      handler(newVal, _) {
-        if (newVal && !this.tabList.some((el) => el.title == newVal.title)) {
-          this.tabList.push(newVal)
+      currentRoute: computed(() => {
+        const param = {
+          ...route.meta,
+          path: route.path,
         }
 
-        this.currentIndex = this.tabList.findIndex((el) => el.title == newVal.title)
+        return param || {}
+      }),
+      tabRemove(target) {
+        const lastIndex = state.tabList.length - 1
+        state.tabList.splice(target, 1)
+
+        //删除当前选项卡左边选项卡
+        if (target < state.currentIndex) {
+          state.currentIndex-- //位置向后偏移
+          return
+        }
+
+        //删除当前选项卡
+        if (target == state.currentIndex) {
+          //位置向后偏移
+          if (target == lastIndex) state.currentIndex--
+          else state.currentIndex = target //位置不偏移(当前元素已删除),自动切换下一个元素
+
+          router.replace(state.tabList[state.currentIndex].path)
+        }
       },
-    },
-    currentIndex: {
-      handler(newVal, _) {
-        this.srollTo(`appTabItem${newVal}`)
+      tabClick(index) {
+        state.currentIndex = index
+        const currentTab = state.tabList[index]
+        router.replace(currentTab.path)
       },
-    },
-  },
-  computed: {
-    currentRoute() {
-      const param = {
-        ...this.$route.meta,
-        path: this.$route.path,
-      }
+      srollTo(tag) {
+        nextTick(() => {
+          const target = document.getElementById(tag)
+          if (!target) return
+          target.parentNode.parentNode.scrollLeft = target.offsetLeft - 20 //因为有左右padding所以减去20
+        })
+      },
+      watchCurrentRoute(newVal, _) {
+        if (newVal && !state.tabList.some((el) => el.title == newVal.title)) {
+          state.tabList.push(newVal)
+        }
 
-      return param || {}
-    },
-  },
-  methods: {
-    tabRemove(target) {
-      const lastIndex = this.tabList.length - 1
-      this.tabList.splice(target, 1)
+        state.currentIndex = state.tabList.findIndex((el) => el.title == newVal.title)
+      },
+      watchCurrentIndex(newVal, _) {
+        state.srollTo(`appTabItem${newVal}`)
+      },
+    })
 
-      //删除当前选项卡左边选项卡
-      if (target < this.currentIndex) {
-        this.currentIndex-- //位置向后偏移
-        return
-      }
+    const stateRef = toRefs(state)
+    watch(stateRef.currentRoute, state.watchCurrentRoute, { deep: true, immediate: true })
+    watch(stateRef.currentIndex, state.watchCurrentIndex)
 
-      //删除当前选项卡
-      if (target == this.currentIndex) {
-        //位置向后偏移
-        if (target == lastIndex) this.currentIndex--
-        else this.currentIndex = target //位置不偏移(当前元素已删除),自动切换下一个元素
-
-        this.$router.replace(this.tabList[this.currentIndex].path)
-      }
-    },
-    tabClick(index) {
-      this.currentIndex = index
-      const currentTab = this.tabList[index]
-      this.$router.replace(currentTab.path)
-    },
-    srollTo(tag) {
-      this.$nextTick(() => {
-        const target = document.getElementById(tag)
-        if (!target) return
-        target.parentNode.parentNode.scrollLeft = target.offsetLeft - 20 //因为有左右padding所以减去20
-      })
-    },
+    return { ...stateRef }
   },
 }
 </script>
@@ -115,7 +115,7 @@ export default {
 
       .close {
         color: #999999;
-        font-size: 14px;
+        font-size: 10px;
         font-weight: lighter;
         padding-right: 10px;
       }

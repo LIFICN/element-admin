@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import { reactive, toRefs, computed } from 'vue'
+
 export default {
   props: {
     item: {
@@ -29,21 +31,27 @@ export default {
       default: '',
     },
   },
-  computed: {
-    options() {
-      //判断当前menu-item层级
-      if (!this.item.children || this.item.children.length > 1) return this.item.meta
-      return this.item.children[0].meta
-    },
-    fullPath() {
-      //递归拼接路径
-      if (this.basePath) return this.basePath + '/' + this.item.path
-      return this.item.path
-    },
-    isMenuItem() {
-      const children = this.item.children
-      return !children || (children.length <= 1 && this.item.path.startsWith('/'))
-    },
+  setup(props) {
+    const { item, basePath } = props
+
+    const state = reactive({
+      options: computed(() => {
+        //判断当前menu-item层级
+        if (!item.children || item.children.length > 1) return item.meta
+        return item.children[0].meta
+      }),
+      fullPath: computed(() => {
+        //递归拼接路径
+        if (basePath) return basePath + '/' + item.path
+        return item.path
+      }),
+      isMenuItem: computed(() => {
+        const children = item.children
+        return !children || (children.length <= 1 && item.path.startsWith('/'))
+      }),
+    })
+
+    return { ...toRefs(state) }
   },
 }
 </script>
