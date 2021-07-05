@@ -22,17 +22,21 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
 export default {
-  setup(_, { emit }) {
+  emits: ['update:isCollapse'],
+  props: {
+    isCollapse: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  setup(props, { emit }) {
     const store = useStore()
     const router = useRouter()
+    const { isCollapse } = toRefs(props)
+
     const state = reactive({
-      isCollapse: false,
       username: computed(() => store.getters.username),
-      menuCollapse() {
-        const flag = !state.isCollapse
-        state.isCollapse = flag
-        emit('menuCollapse', flag)
-      },
+      menuCollapse: () => emit('update:isCollapse', !isCollapse.value),
       logout() {
         store.dispatch('logout').then(() => {
           router.replace('/login')

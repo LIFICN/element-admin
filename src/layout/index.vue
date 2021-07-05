@@ -6,7 +6,7 @@
     </div>
 
     <div class="main-container">
-      <nav-bar @menuCollapse="menuCollapse"></nav-bar>
+      <nav-bar v-model:isCollapse="isCollapse"></nav-bar>
       <tabs-view></tabs-view>
 
       <el-scrollbar class="app-main">
@@ -35,9 +35,6 @@ export default {
   setup() {
     const state = reactive({
       isCollapse: false,
-      menuCollapse(val) {
-        state.isCollapse = val
-      },
     })
 
     return { ...toRefs(state) }
