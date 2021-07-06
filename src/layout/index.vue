@@ -49,12 +49,9 @@ export default {
   width: 100%;
   height: 100%;
 
-  &:hover > .sidebar-container {
-    will-change: width;
-  }
-
   .sidebar-container {
     transition: width 0.28s;
+    will-change: width;
   }
 
   .main-container {
