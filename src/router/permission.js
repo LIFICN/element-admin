@@ -1,5 +1,5 @@
 import router from '@/router'
-import { getToken } from '@/utils/auth.js'
+import { getToken } from '@/utils/auth'
 import store from '@/store'
 const whiteList = ['/login']
 

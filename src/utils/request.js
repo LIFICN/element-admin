@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getToken } from '@/utils/auth'
 
 // http://www.axios-js.com/zh-cn/docs/
 const instance = axios.create({
@@ -8,9 +9,8 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   config => {
-    if (store.getters.token)
-      config.headers['X-Token'] = ''
-
+    const token = getToken()
+    if (token) config.headers['X-Token'] = token
     return config
   },
   error => {
