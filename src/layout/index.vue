@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
+import { ref } from 'vue'
 import sidebarMenu from './components/sidebar-menu.vue'
 import navBar from './components/nav-bar.vue'
 import tabsView from './components/tabs-view.vue'
@@ -33,11 +33,8 @@ export default {
     tabsView,
   },
   setup() {
-    const state = reactive({
-      isCollapse: false,
-    })
-
-    return { ...toRefs(state) }
+    const isCollapse = ref(false)
+    return { isCollapse }
   },
 }
 </script>
