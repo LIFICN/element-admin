@@ -66,13 +66,11 @@ export default {
       else callback()
     }
 
-    const route = useRoute()
     const store = useStore()
     const router = useRouter()
 
     const state = reactive({
       loading: false,
-      redirect: undefined,
       loginFormRef: '',
       loginForm: {
         username: 'admin',
@@ -90,25 +88,22 @@ export default {
             store
               .dispatch('login', state.loginForm)
               .then((res) => {
-                router.push({ path: state.redirect || '/' })
+                router.push({ path: '/' })
                 state.loading = false
               })
               .catch((err) => {
                 state.loading = false
                 alert(err)
               })
-          } else {
-            console.log('error submit!!')
-            return false
+
+            return
           }
+
+          console.log('error submit!!')
+          return false
         })
       },
-      watchRoute(route) {
-        state.redirect = route.query && route.query.redirect
-      },
     })
-
-    watch(() => route, state.watchRoute, { immediate: true })
 
     return { ...toRefs(state) }
   },
