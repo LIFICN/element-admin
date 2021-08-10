@@ -32,7 +32,7 @@
 
 <script>
 import { reactive, toRefs, onMounted } from 'vue'
-import TableForm from '@/views/table/components/TableForm.vue'
+import TableForm from './components/TableForm.vue'
 
 export default {
   components: {
