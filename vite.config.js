@@ -10,7 +10,7 @@ export default defineConfig({
     port: 3000,  //端口号
     cors: true   //跨域
   },
-  base: './',  //根路径
+  base: '/',  //根路径
   resolve: {
     alias: {
       '@': path.resolve(__dirname, "./src") // 转换 '@' to './src' 

@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory } from 'vue-router'
 const routerHistory = createWebHashHistory()
 
 const layout = () => import('@/layout/index.vue')
-const parentView = () => import('@/layout/parent-view.vue')
+const ParentView = () => import('@/layout/ParentView.vue')
 const login = () => import('@/views/login/index.vue')
 const dashboard = () => import('@/views/dashboard/index.vue')
 const test = () => import('@/views/test/index.vue')
@@ -27,17 +27,17 @@ export const constantRoutes = [
         meta: { title: 'menus', icon: 'el-icon-setting' },
         children: [{
             path: 'menu1',
-            component: parentView,
+            component: ParentView,
             meta: { title: 'menu1', icon: '' },
             children: [
                 {
                     path: 'menu1-1',
-                    component: parentView,
+                    component: ParentView,
                     meta: { title: 'menu1-1', icon: '' },
                 },
                 {
                     path: 'menu1-2',
-                    component: parentView,
+                    component: ParentView,
                     meta: { title: 'menu1-2', icon: '' },
                 },
             ]

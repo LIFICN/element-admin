@@ -22,21 +22,21 @@
       </el-table-column>
     </el-table>
 
-    <pagination class="pagination-wrap" :page-size="10" :total="100" @change="pageChange"></pagination>
+    <Pagination class="pagination-wrap" :page-size="10" :total="100" @change="pageChange" />
 
-    <modal ref="dialog" title="这是一个标题" width="600px">
-      <tableForm @submit="submit" @canel="canel"></tableForm>
-    </modal>
+    <Modal ref="dialog" title="这是一个标题" width="600px">
+      <TableForm @submit="submit" @canel="canel" />
+    </Modal>
   </div>
 </template>
 
 <script>
 import { reactive, toRefs, onMounted } from 'vue'
-import tableForm from './components/tableForm.vue'
+import TableForm from '@/views/table/components/TableForm.vue'
 
 export default {
   components: {
-    tableForm,
+    TableForm,
   },
   setup() {
     const state = reactive({

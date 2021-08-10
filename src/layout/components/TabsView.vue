@@ -76,11 +76,10 @@ export default {
       },
     })
 
-    const stateRef = toRefs(state)
-    watch(stateRef.currentRoute, state.watchCurrentRoute, { deep: true, immediate: true })
-    watch(stateRef.currentIndex, state.watchCurrentIndex)
+    watch(() => state.currentRoute, state.watchCurrentRoute, { deep: true, immediate: true })
+    watch(() => state.currentIndex, state.watchCurrentIndex)
 
-    return { ...stateRef }
+    return { ...toRefs(state) }
   },
 }
 </script>

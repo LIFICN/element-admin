@@ -11,7 +11,7 @@
     </template>
 
     <!-- 递归菜单 -->
-    <menu-item v-for="it in item.children" :key="it.path" :item="it" :basePath="fullPath"></menu-item>
+    <MenuItem v-for="it in item.children" :key="it.path" :item="it" :basePath="fullPath" />
   </el-submenu>
 </template>
 

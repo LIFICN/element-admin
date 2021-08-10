@@ -1,6 +1,6 @@
 
 <template>
-  <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+  <el-form :model="ruleForm" :rules="rules" ref="ruleFormRef" label-width="100px" class="demo-ruleForm">
     <el-form-item label="活动名称" prop="name">
       <el-input v-model="ruleForm.name"></el-input>
     </el-form-item>
@@ -34,22 +34,25 @@
       <el-input type="textarea" v-model="ruleForm.desc"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submitForm('ruleForm')">立即提交</el-button>
-      <el-button @click="resetForm('ruleForm')">重置</el-button>
+      <el-button type="primary" @click="submitForm">立即提交</el-button>
+      <el-button @click="resetForm">重置</el-button>
       <el-button @click="canelForm">取消</el-button>
     </el-form-item>
   </el-form>
 </template>
 
 <script>
+import { reactive, toRefs } from 'vue'
+
 export default {
-  data() {
+  setup(props, { emit }) {
     const checkAge = (rule, value, callback) => {
       if (!value) return callback(new Error('年龄不能为空'))
       callback()
     }
 
-    return {
+    const state = reactive({
+      ruleFormRef: '',
       ruleForm: {
         name: '',
         region: '',
@@ -68,27 +71,27 @@ export default {
         desc: [{ required: true, message: '请填写活动形式', trigger: 'blur' }],
         age: [{ required: true, validator: checkAge, trigger: 'blur' }],
       },
-    }
-  },
-  methods: {
-    submitForm(formName) {
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          console.log('submit!')
-          this.$emit('submit')
-          return
-        }
+      submitForm() {
+        state.ruleFormRef.validate((valid) => {
+          if (valid) {
+            console.log('submit!')
+            emit('submit')
+            return
+          }
 
-        console.log('error submit!!')
-        return false
-      })
-    },
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
-    canelForm() {
-      this.$emit('canel')
-    },
+          console.log('error submit!!')
+          return false
+        })
+      },
+      resetForm() {
+        state.ruleFormRef.resetFields()
+      },
+      canelForm() {
+        emit('canel')
+      },
+    })
+
+    return { ...toRefs(state) }
   },
 }
 </script>

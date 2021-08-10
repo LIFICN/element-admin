@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-form
-      ref="loginForm"
+      ref="loginFormRef"
       :model="loginForm"
       :rules="loginRules"
       class="login-form"
@@ -50,8 +50,12 @@
 </template>
 
 <script>
+import { reactive, toRefs, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+
 export default {
-  data() {
+  setup() {
     const validateUsername = (rule, value, callback) => {
       if (!value) callback(new Error('请输入用户名'))
       else callback()
@@ -62,7 +66,14 @@ export default {
       else callback()
     }
 
-    return {
+    const route = useRoute()
+    const store = useStore()
+    const router = useRouter()
+
+    const state = reactive({
+      loading: false,
+      redirect: undefined,
+      loginFormRef: '',
       loginForm: {
         username: 'admin',
         password: '123',
@@ -71,47 +82,41 @@ export default {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
       },
-      loading: false,
-      redirect: undefined,
-    }
-  },
-  watch: {
-    $route: {
-      handler: function (route) {
-        this.redirect = route.query && route.query.redirect
-      },
-      immediate: true,
-    },
-  },
-  methods: {
-    handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
-        if (valid) {
-          this.loading = true
+      handleLogin() {
+        state.loginFormRef.validate((valid) => {
+          if (valid) {
+            state.loading = true
 
-          this.$store
-            .dispatch('login', this.loginForm)
-            .then((res) => {
-              this.$router.push({ path: this.redirect || '/' })
-              this.loading = false
-            })
-            .catch((err) => {
-              this.loading = false
-              alert(err)
-            })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
-    },
+            store
+              .dispatch('login', state.loginForm)
+              .then((res) => {
+                router.push({ path: state.redirect || '/' })
+                state.loading = false
+              })
+              .catch((err) => {
+                state.loading = false
+                alert(err)
+              })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      },
+      watchRoute(route) {
+        state.redirect = route.query && route.query.redirect
+      },
+    })
+
+    watch(() => route, state.watchRoute, { immediate: true })
+
+    return { ...toRefs(state) }
   },
 }
 </script>
 
 <style lang="scss" scoped>
 $bg: #283443;
-$light_gray: #fff;
 $cursor: #fff;
 $dark_gray: #889aa4;
 $light_gray: #eee;

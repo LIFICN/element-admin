@@ -7,19 +7,19 @@
     :collapse-transition="false"
     :unique-opened="false"
   >
-    <menu-item v-for="(item, index) in routes" :key="'menuItem' + index" :item="item"></menu-item>
+    <MenuItem v-for="(item, index) in routes" :key="'menuItem' + index" :item="item" />
   </el-menu>
 </template>
 
 <script>
 import { computed } from 'vue'
-import menuItem from './menu-item.vue'
+import MenuItem from './MenuItem.vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 
 export default {
   components: {
-    menuItem,
+    MenuItem,
   },
   props: {
     isCollapse: {

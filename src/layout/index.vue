@@ -2,12 +2,12 @@
 <template>
   <div class="app-container">
     <div class="sidebar-container" :style="{ width: isCollapse ? '64px' : '200px' }">
-      <sidebar-menu ref="sidebarMenu" :isCollapse="isCollapse"></sidebar-menu>
+      <SidebarMenu ref="sidebarMenu" :isCollapse="isCollapse" />
     </div>
 
     <div class="main-container">
-      <nav-bar v-model:isCollapse="isCollapse"></nav-bar>
-      <tabs-view></tabs-view>
+      <NavBar v-model:isCollapse="isCollapse" />
+      <TabsView />
 
       <el-scrollbar class="app-main">
         <router-view v-slot="{ Component }">
@@ -22,15 +22,15 @@
 
 <script>
 import { ref } from 'vue'
-import sidebarMenu from './components/sidebar-menu.vue'
-import navBar from './components/nav-bar.vue'
-import tabsView from './components/tabs-view.vue'
+import SidebarMenu from './components/SidebarMenu.vue'
+import NavBar from './components/NavBar.vue'
+import TabsView from './components/TabsView.vue'
 
 export default {
   components: {
-    sidebarMenu,
-    navBar,
-    tabsView,
+    SidebarMenu,
+    NavBar,
+    TabsView,
   },
   setup() {
     const isCollapse = ref(false)
