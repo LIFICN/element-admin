@@ -50,8 +50,8 @@
 </template>
 
 <script>
-import { reactive, toRefs, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 
 export default {
