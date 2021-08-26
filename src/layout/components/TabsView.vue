@@ -89,9 +89,15 @@ export default {
 
         affixRoutes = []
         newVal.forEach((el) => state.recursionRoutes(el))
+
+        let addArr = []
         affixRoutes.forEach((el) => {
-          if (!state.tabList.some((tb) => tb.title === el.title)) state.tabList.unshift(el)
+          if (!state.tabList.some((tb) => tb.title === el.title)) addArr.push(el)
         })
+
+        const first = state.tabList.filter((el) => el.affix)
+        const second = state.tabList.filter((el) => !el.affix)
+        state.tabList = [...first, ...addArr, ...second]
       },
       recursionRoutes(val) {
         const { path: rootPath, children, meta } = val
@@ -100,7 +106,7 @@ export default {
         if (!children) return
 
         children.forEach((el) => {
-          let basePath = `${rootPath}/${el.path}`
+          let basePath = el.path ? `${rootPath}/${el.path}` : rootPath
           state.recursionRoutes({ path: basePath, meta: el.meta, children: el.children })
         })
       },
