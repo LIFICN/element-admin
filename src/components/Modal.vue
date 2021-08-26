@@ -53,9 +53,9 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .global-modal {
-  .el-dialog__body {
+  ::v-deep(.el-dialog__body) {
     overflow: hidden;
   }
 }

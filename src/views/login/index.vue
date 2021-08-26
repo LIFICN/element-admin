@@ -13,7 +13,10 @@
       </div>
 
       <el-form-item prop="username">
-        <span class="login-icon el-icon-user"> </span>
+        <el-icon class="login-icon">
+          <User />
+        </el-icon>
+
         <el-input
           ref="username"
           v-model="loginForm.username"
@@ -25,7 +28,10 @@
       </el-form-item>
 
       <el-form-item prop="password">
-        <span class="login-icon el-icon-lock"></span>
+        <el-icon class="login-icon">
+          <Lock />
+        </el-icon>
+
         <el-input
           ref="password"
           v-model="loginForm.password"
@@ -53,8 +59,13 @@
 import { reactive, toRefs } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import { User, Lock } from '@element-plus/icons'
 
 export default {
+  components: {
+    User,
+    Lock,
+  },
   setup() {
     const validateUsername = (rule, value, callback) => {
       if (!value) callback(new Error('请输入用户名'))

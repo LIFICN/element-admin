@@ -4,7 +4,7 @@
     <template #title>{{ options.title }}</template>
   </el-menu-item>
 
-  <el-submenu :index="fullPath" v-else-if="!item.hidden && !isMenuItem">
+  <el-sub-menu :index="fullPath" v-else-if="!item.hidden && !isMenuItem">
     <template #title>
       <i :class="options.icon"></i>
       <span>{{ options.title }}</span>
@@ -12,7 +12,7 @@
 
     <!-- 递归菜单 -->
     <MenuItem v-for="it in item.children" :key="it.path" :item="it" :basePath="fullPath" />
-  </el-submenu>
+  </el-sub-menu>
 </template>
 
 <script>

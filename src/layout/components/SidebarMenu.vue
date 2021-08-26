@@ -32,7 +32,6 @@ export default {
     const route = useRoute()
     const currentPath = computed(() => route.fullPath)
     const routes = computed(() => store.getters.routes.filter((el) => el.path != '/')) //获取路由列表
-
     return { currentPath, routes }
   },
 }
@@ -59,7 +58,7 @@ $slidebarMenuHover: #263445;
   }
 
   .el-menu-item,
-  .el-submenu__title {
+  .el-sub-menu__title {
     color: $slidebarText;
 
     i {
@@ -86,7 +85,7 @@ $slidebarMenuHover: #263445;
     background-color: $sidebarBg;
 
     .el-menu-item,
-    .el-submenu__title {
+    .el-sub-menu__title {
       color: $slidebarText;
 
       i {

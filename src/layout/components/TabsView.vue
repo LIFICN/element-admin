@@ -2,13 +2,15 @@
   <el-scrollbar class="tab-scrollbar" view-class="tabs-view">
     <div
       :class="[{ active: currentIndex == index }, 'tab-item']"
-      :key="item.title"
       v-for="(item, index) in tabList"
-      @click="tabClick(index)"
+      :key="item.title"
       :id="`appTabItem${index}`"
+      @click="tabClick(index)"
     >
       <span class="title">{{ item.title }}</span>
-      <span class="close el-icon-close" @click.stop="tabRemove(index)" v-if="!item.affix"></span>
+      <el-icon class="close-icon" @click.stop="tabRemove(index)" v-if="!item.affix">
+        <Close />
+      </el-icon>
     </div>
   </el-scrollbar>
 </template>
@@ -16,15 +18,23 @@
 <script>
 import { reactive, toRefs, watch, computed, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { Close } from '@element-plus/icons'
+import { useStore } from 'vuex'
 
 export default {
+  components: {
+    Close,
+  },
   setup() {
     const route = useRoute()
     const router = useRouter()
+    const store = useStore()
+    let affixRoutes = []
 
     const state = reactive({
       tabList: [],
       currentIndex: 0,
+      routesArr: computed(() => store.getters.routes),
       currentRoute: computed(() => {
         const param = {
           ...route.meta,
@@ -65,20 +75,40 @@ export default {
         })
       },
       watchCurrentRoute(newVal, _) {
-        if (newVal && !state.tabList.some((el) => el.title == newVal.title)) {
+        if (newVal && !state.tabList.some((el) => el.title === newVal.title)) {
           state.tabList.push(newVal)
         }
 
-        state.currentIndex = state.tabList.findIndex((el) => el.title == newVal.title)
+        state.currentIndex = state.tabList.findIndex((el) => el.title === newVal.title)
       },
       watchCurrentIndex(newVal, _) {
         state.srollTo(`appTabItem${newVal}`)
       },
+      watchRoutesArr(newVal, oldVal) {
+        if (oldVal && newVal.length === oldVal.length) return
+
+        affixRoutes = []
+        newVal.forEach((el) => state.recursionRoutes(el))
+        affixRoutes.forEach((el) => {
+          if (!state.tabList.some((tb) => tb.title === el.title)) state.tabList.unshift(el)
+        })
+      },
+      recursionRoutes(val) {
+        const { path: rootPath, children, meta } = val
+
+        if (meta && meta.affix) affixRoutes.push({ ...meta, path: rootPath })
+        if (!children) return
+
+        children.forEach((el) => {
+          let basePath = `${rootPath}/${el.path}`
+          state.recursionRoutes({ path: basePath, meta: el.meta, children: el.children })
+        })
+      },
     })
 
-    watch(() => state.currentRoute, state.watchCurrentRoute, { deep: true, immediate: true })
     watch(() => state.currentIndex, state.watchCurrentIndex)
-
+    watch(() => [...state.routesArr], state.watchRoutesArr, { deep: true, immediate: true })
+    watch(() => ({ ...state.currentRoute }), state.watchCurrentRoute, { deep: true, immediate: true })
     return { ...toRefs(state) }
   },
 }
@@ -112,10 +142,9 @@ export default {
         padding: 0 10px;
       }
 
-      .close {
+      .close-icon {
         color: #999999;
-        font-size: 10px;
-        font-weight: lighter;
+        font-size: 12px;
         padding-right: 10px;
       }
     }
@@ -125,7 +154,7 @@ export default {
       background: #e8f4ff;
       border: 1px solid #1890ff;
 
-      .close {
+      .close-icon {
         color: #1890ff;
       }
     }

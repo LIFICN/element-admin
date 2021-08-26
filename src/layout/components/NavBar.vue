@@ -1,10 +1,15 @@
 <template>
   <div class="nav-bar">
-    <span :class="{ 'el-icon-s-fold': !isCollapse, 'el-icon-s-unfold': isCollapse }" @click="menuCollapse"></span>
+    <el-icon @click="menuCollapse">
+      <component :is="isCollapse ? 'Expand' : 'Fold'"></component>
+    </el-icon>
 
     <div>
       <el-dropdown>
-        <i class="el-icon-setting" style="margin-right: 8px; font-size: 16px"></i>
+        <el-icon class="setting-icon">
+          <Setting />
+        </el-icon>
+
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="logout">退出登录</el-dropdown-item>
@@ -20,8 +25,14 @@
 import { reactive, toRefs, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import { Fold, Expand, Setting } from '@element-plus/icons'
 
 export default {
+  components: {
+    Fold,
+    Expand,
+    Setting,
+  },
   emits: ['update:isCollapse'],
   props: {
     isCollapse: {
@@ -49,7 +60,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 $appHeaderHeight: 50px;
 $appHeaderBg: #ffffff;
 
@@ -72,6 +83,12 @@ $appHeaderBg: #ffffff;
   > :last-child {
     margin-right: 20px;
     font-size: 16px;
+
+    .setting-icon {
+      margin-right: 8px;
+      font-size: 16px;
+      vertical-align: bottom;
+    }
   }
 }
 </style>
