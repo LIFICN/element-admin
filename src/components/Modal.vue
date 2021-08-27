@@ -6,7 +6,7 @@
     :close-on-click-modal="closeOnClickModal"
     :width="width"
   >
-    <slot></slot>
+    <slot />
     <template #footer>
       <span class="dialog-footer" v-if="showFooter">
         <el-button @click="canel">取 消</el-button>

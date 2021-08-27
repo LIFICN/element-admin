@@ -3,7 +3,7 @@
     background
     layout="prev, pager, next"
     :total="total"
-    :current-page="currentPage"
+    :current-page="pageIndex"
     @current-change="currentChange"
     :page-size="pageSize"
     :pager-count="pagerCount"
@@ -12,13 +12,16 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-
 export default {
+  emits: ['update:pageIndex'],
   props: {
     total: {
       type: Number,
       default: 0,
+    },
+    pageIndex: {
+      type: Number,
+      default: 1,
     },
     pageSize: {
       type: Number,
@@ -30,14 +33,8 @@ export default {
     },
   },
   setup(_, { emit }) {
-    const currentPage = ref(1)
-
-    const currentChange = (e) => {
-      currentPage.value = e
-      emit('change', e)
-    }
-
-    return { currentPage, currentChange }
+    const currentChange = (e) => emit('update:pageIndex', e)
+    return { currentChange }
   },
 }
 </script>

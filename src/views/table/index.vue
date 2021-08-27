@@ -28,7 +28,7 @@
       </el-table-column>
     </el-table>
 
-    <Pagination class="pagination-wrap" :page-size="10" :total="100" @change="pageChange" />
+    <Pagination class="pagination-wrap" :page-size="10" :total="100" v-model:pageIndex="pageIndex" />
 
     <Modal ref="dialog" title="这是一个标题" width="600px">
       <TableForm @submit="submit" @canel="canel" />
@@ -51,6 +51,7 @@ export default {
       tableData: [],
       dialog: null,
       input: '',
+      pageIndex: 1,
       handleClick(row, index) {
         state.dialog.open()
         console.log(row, index)
