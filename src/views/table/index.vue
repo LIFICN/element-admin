@@ -4,9 +4,7 @@
     <div class="search-bar">
       <el-input placeholder="请输入内容" v-model="input" class="input" clearable>
         <template #prefix>
-          <el-icon class="search-icon">
-            <Search />
-          </el-icon>
+          <el-icon class="search-icon"><Search /></el-icon>
         </template>
       </el-input>
 
@@ -94,8 +92,11 @@ export default {
       width: 200px;
 
       .search-icon {
-        vertical-align: -2px;
-        margin-left: 6px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 25px;
       }
     }
 
