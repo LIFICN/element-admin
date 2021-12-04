@@ -2,12 +2,7 @@
 <template>
   <div class="table">
     <div class="search-bar">
-      <el-input placeholder="请输入内容" v-model="input" class="input" clearable>
-        <template #prefix>
-          <el-icon class="search-icon"><Search /></el-icon>
-        </template>
-      </el-input>
-
+      <el-input placeholder="请输入内容" v-model="input" class="input" clearable :prefix-icon="Search"> </el-input>
       <el-button type="primary" class="search-btn">搜索</el-button>
     </div>
 
@@ -42,7 +37,6 @@ import { Search } from '@element-plus/icons'
 export default {
   components: {
     TableForm,
-    Search,
   },
   setup() {
     const state = reactive({
@@ -78,7 +72,7 @@ export default {
       }
     })
 
-    return { ...toRefs(state) }
+    return { ...toRefs(state), Search }
   },
 }
 </script>
@@ -90,14 +84,6 @@ export default {
 
     .input {
       width: 200px;
-
-      .search-icon {
-        height: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 25px;
-      }
     }
 
     .search-btn {

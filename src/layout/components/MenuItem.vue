@@ -1,12 +1,13 @@
 <template>
   <el-menu-item :index="fullPath" v-if="!item.hidden && isMenuItem">
-    <i :class="options.icon"></i>
+    <el-icon><component :is="options.icon" /></el-icon>
     <template #title>{{ options.title }}</template>
   </el-menu-item>
 
   <el-sub-menu :index="fullPath" v-else-if="!item.hidden && !isMenuItem">
     <template #title>
       <i :class="options.icon"></i>
+      <el-icon><component :is="options.icon" /></el-icon>
       <span>{{ options.title }}</span>
     </template>
 
@@ -17,8 +18,18 @@
 
 <script>
 import { reactive, toRefs, computed } from 'vue'
+import { Aim, AddLocation, Apple, AlarmClock, Bell, Baseball, Bicycle } from '@element-plus/icons'
 
 export default {
+  components: {
+    Aim,
+    AddLocation,
+    Apple,
+    AlarmClock,
+    Bell,
+    Baseball,
+    Bicycle,
+  },
   props: {
     item: {
       type: Object, //meun-item数据对象

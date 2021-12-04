@@ -18,34 +18,34 @@ export const constantRoutes = [
         children: [{
             path: '',
             component: dashboard,
-            meta: { title: 'dashboard', icon: 'el-icon-location', affix: true } //affix为是否固定选项卡
+            meta: { title: 'dashboard', icon: 'Aim', affix: true } //affix为是否固定选项卡
         }]
     },
     {
         path: '/menus',
         component: layout,
-        meta: { title: 'menus', icon: 'el-icon-setting' },
+        meta: { title: 'menus', icon: 'AddLocation' },
         children: [{
             path: 'menu1',
             component: ParentView,
-            meta: { title: 'menu1', icon: '' },
+            meta: { title: 'menu1', icon: 'Apple' },
             children: [
                 {
                     path: 'menu1-1',
                     component: ParentView,
-                    meta: { title: 'menu1-1', icon: '' },
+                    meta: { title: 'menu1-1', icon: 'AlarmClock' },
                 },
                 {
                     path: 'menu1-2',
                     component: ParentView,
-                    meta: { title: 'menu1-2', icon: '' },
+                    meta: { title: 'menu1-2', icon: 'Bell' },
                 },
             ]
         },
         {
             path: 'test',
             component: test,
-            meta: { title: 'test', icon: '' },
+            meta: { title: 'test', icon: 'Baseball' },
         }]
     },
     {
@@ -54,7 +54,7 @@ export const constantRoutes = [
         children: [{
             path: '',
             component: table,
-            meta: { title: 'tabel', icon: '' },
+            meta: { title: 'tabel', icon: 'Bicycle' },
         }]
     }
 ]
