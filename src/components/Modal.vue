@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import { defineEmits, defineProps, defineExpose, reactive } from 'vue'
+import { reactive } from 'vue'
 
 const emits = defineEmits(['canel', 'submit'])
 

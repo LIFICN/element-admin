@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits, computed, toRefs } from 'vue'
+import { computed, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { Fold, Expand, Setting } from '@element-plus/icons-vue'
