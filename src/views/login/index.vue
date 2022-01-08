@@ -40,6 +40,7 @@
           tabindex="2"
           auto-complete="on"
           @keyup.enter="handleLogin"
+          :show-password="true"
         />
       </el-form-item>
 
