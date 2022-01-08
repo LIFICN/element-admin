@@ -20,23 +20,13 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import SidebarMenu from './components/SidebarMenu.vue'
 import NavBar from './components/NavBar.vue'
 import TabsView from './components/TabsView.vue'
 
-export default {
-  components: {
-    SidebarMenu,
-    NavBar,
-    TabsView,
-  },
-  setup() {
-    const isCollapse = ref(false)
-    return { isCollapse }
-  },
-}
+const isCollapse = ref(false)
 </script>
 
 <style lang="scss" scoped>

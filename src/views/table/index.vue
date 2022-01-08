@@ -2,11 +2,12 @@
 <template>
   <div class="table">
     <div class="search-bar">
-      <el-input placeholder="请输入内容" v-model="input" class="input" clearable :prefix-icon="Search"> </el-input>
+      <el-input placeholder="请输入内容" v-model="state.input" class="input" clearable :prefix-icon="Search">
+      </el-input>
       <el-button type="primary" class="search-btn">搜索</el-button>
     </div>
 
-    <el-table :data="tableData" border style="width: 100%" size="small">
+    <el-table :data="state.tableData" border style="width: 100%" size="small">
       <el-table-column fixed prop="date" label="日期" width="150"> </el-table-column>
       <el-table-column prop="name" label="姓名" width="120"> </el-table-column>
       <el-table-column prop="province" label="省份" width="120"> </el-table-column>
@@ -21,7 +22,7 @@
       </el-table-column>
     </el-table>
 
-    <Pagination class="pagination-wrap" :page-size="10" :total="100" v-model:pageIndex="pageIndex" />
+    <Pagination class="pagination-wrap" :page-size="10" :total="100" v-model:pageIndex="state.pageIndex" />
 
     <Modal ref="dialog" title="这是一个标题" width="600px">
       <TableForm @submit="submit" @canel="canel" />
@@ -29,52 +30,44 @@
   </div>
 </template>
 
-<script>
-import { reactive, toRefs, onMounted } from 'vue'
+<script setup>
+import { reactive, ref, onMounted } from 'vue'
 import TableForm from './components/TableForm.vue'
-import { Search } from '@element-plus/icons'
+import { Search } from '@element-plus/icons-vue'
 
-export default {
-  components: {
-    TableForm,
-  },
-  setup() {
-    const state = reactive({
-      tableData: [],
-      dialog: null,
-      input: '',
-      pageIndex: 1,
-      handleClick(row, index) {
-        state.dialog.open()
-        console.log(row, index)
-      },
-      pageChange(e) {
-        console.log(e)
-      },
-      canel() {
-        state.dialog.close()
-      },
-      submit() {
-        state.dialog.close()
-      },
-    })
+const dialog = ref(null)
 
-    onMounted(() => {
-      for (let index = 0; index < 10; index++) {
-        state.tableData.push({
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1519 弄',
-          zip: 200333,
-        })
-      }
-    })
+const state = reactive({
+  tableData: [],
+  input: '',
+  pageIndex: 1,
+})
 
-    return { ...toRefs(state), Search }
-  },
+function handleClick(row, index) {
+  dialog.value.open()
+  console.log(row, index)
 }
+
+function canel() {
+  dialog.value.close()
+}
+
+function submit() {
+  dialog.value.close()
+}
+
+onMounted(() => {
+  for (let index = 0; index < 10; index++) {
+    state.tableData.push({
+      date: '2016-05-01',
+      name: '王小虎',
+      province: '上海',
+      city: '普陀区',
+      address: '上海市普陀区金沙江路 1519 弄',
+      zip: 200333,
+    })
+  }
+})
 </script>
 
 <style lang="scss" scoped>

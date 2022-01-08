@@ -41,58 +41,57 @@
   </el-form>
 </template>
 
-<script>
-import { reactive, toRefs } from 'vue'
+<script setup>
+import { defineEmits, reactive, ref } from 'vue'
 
-export default {
-  setup(props, { emit }) {
-    const checkAge = (rule, value, callback) => {
-      if (!value) return callback(new Error('年龄不能为空'))
-      callback()
+const emits = defineEmits(['submit', 'canel'])
+
+const checkAge = (rule, value, callback) => {
+  if (!value) return callback(new Error('年龄不能为空'))
+  callback()
+}
+
+const ruleFormRef = ref('')
+
+const ruleForm = reactive({
+  name: '',
+  region: '',
+  date1: '',
+  type: [],
+  resource: '',
+  desc: '',
+  age: '',
+})
+
+const rules = reactive({
+  name: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
+  region: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
+  date1: [{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }],
+  type: [{ type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
+  resource: [{ required: true, message: '请选择活动资源', trigger: 'change' }],
+  desc: [{ required: true, message: '请填写活动形式', trigger: 'blur' }],
+  age: [{ required: true, validator: checkAge, trigger: 'blur' }],
+})
+
+function submitForm() {
+  ruleFormRef.value.validate((valid) => {
+    if (valid) {
+      console.log('submit!')
+      emits('submit')
+      return
     }
 
-    const state = reactive({
-      ruleFormRef: '',
-      ruleForm: {
-        name: '',
-        region: '',
-        date1: '',
-        type: [],
-        resource: '',
-        desc: '',
-        age: '',
-      },
-      rules: {
-        name: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
-        region: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
-        date1: [{ type: 'date', required: true, message: '请选择日期', trigger: 'change' }],
-        type: [{ type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change' }],
-        resource: [{ required: true, message: '请选择活动资源', trigger: 'change' }],
-        desc: [{ required: true, message: '请填写活动形式', trigger: 'blur' }],
-        age: [{ required: true, validator: checkAge, trigger: 'blur' }],
-      },
-      submitForm() {
-        state.ruleFormRef.validate((valid) => {
-          if (valid) {
-            console.log('submit!')
-            emit('submit')
-            return
-          }
+    console.log('error submit!!')
+    return false
+  })
+}
 
-          console.log('error submit!!')
-          return false
-        })
-      },
-      resetForm() {
-        state.ruleFormRef.resetFields()
-      },
-      canelForm() {
-        emit('canel')
-      },
-    })
+function resetForm() {
+  ruleFormRef.value.resetFields()
+}
 
-    return { ...toRefs(state) }
-  },
+function canelForm() {
+  emits('canel')
 }
 </script>
 

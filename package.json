@@ -7,7 +7,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
-    "@element-plus/icons": "^0.0.11",
+    "@element-plus/icons-vue-vue": "^0.2.4",
     "axios": "^0.24.0",
     "element-plus": "latest",
     "js-cookie": "^3.0.1",

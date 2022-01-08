@@ -1,7 +1,7 @@
 <template>
   <div class="nav-bar">
     <el-icon @click="menuCollapse">
-      <component :is="isCollapse ? 'Expand' : 'Fold'"></component>
+      <component :is="isCollapse ? Expand : Fold"></component>
     </el-icon>
 
     <div>
@@ -21,42 +21,32 @@
   </div>
 </template>
 
-<script>
-import { reactive, toRefs, computed } from 'vue'
+<script setup>
+import { defineProps, defineEmits, computed, toRefs } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { Fold, Expand, Setting } from '@element-plus/icons'
+import { Fold, Expand, Setting } from '@element-plus/icons-vue'
 
-export default {
-  components: {
-    Fold,
-    Expand,
-    Setting,
-  },
-  emits: ['update:isCollapse'],
-  props: {
-    isCollapse: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props, { emit }) {
-    const store = useStore()
-    const router = useRouter()
-    const { isCollapse } = toRefs(props)
+const emits = defineEmits(['update:isCollapse'])
 
-    const state = reactive({
-      username: computed(() => store.getters.username),
-      menuCollapse: () => emit('update:isCollapse', !isCollapse.value),
-      logout() {
-        store.dispatch('logout').then(() => {
-          router.replace('/login')
-        })
-      },
-    })
-
-    return { ...toRefs(state) }
+const props = defineProps({
+  isCollapse: {
+    type: Boolean,
+    default: false,
   },
+})
+
+const store = useStore()
+const router = useRouter()
+const { isCollapse } = toRefs(props)
+
+const username = computed(() => store.getters.username)
+const menuCollapse = () => emits('update:isCollapse', !isCollapse.value)
+
+function logout() {
+  store.dispatch('logout').then(() => {
+    router.replace('/login')
+  })
 }
 </script>
 

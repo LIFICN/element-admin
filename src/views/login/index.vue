@@ -55,69 +55,60 @@
   </div>
 </template>
 
-<script>
-import { reactive, toRefs } from 'vue'
+<script setup>
+import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { User, Lock } from '@element-plus/icons'
+import { User, Lock } from '@element-plus/icons-vue'
 
-export default {
-  components: {
-    User,
-    Lock,
-  },
-  setup() {
-    const validateUsername = (rule, value, callback) => {
-      if (!value) callback(new Error('请输入用户名'))
-      else callback()
-    }
+const store = useStore()
+const router = useRouter()
 
-    const validatePassword = (rule, value, callback) => {
-      if (!value) callback(new Error('请输入密码'))
-      else callback()
-    }
+const validateUsername = (rule, value, callback) => {
+  if (!value) callback(new Error('请输入用户名'))
+  else callback()
+}
 
-    const store = useStore()
-    const router = useRouter()
+const validatePassword = (rule, value, callback) => {
+  if (!value) callback(new Error('请输入密码'))
+  else callback()
+}
 
-    const state = reactive({
-      loading: false,
-      loginFormRef: '',
-      loginForm: {
-        username: 'admin',
-        password: '123',
-      },
-      loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
-      },
-      handleLogin() {
-        state.loginFormRef.validate((valid) => {
-          if (valid) {
-            state.loading = true
+const loginFormRef = ref('')
+const loading = ref(false)
 
-            store
-              .dispatch('login', state.loginForm)
-              .then((res) => {
-                router.push({ path: '/' })
-                state.loading = false
-              })
-              .catch((err) => {
-                state.loading = false
-                alert(err)
-              })
+const loginForm = reactive({
+  username: 'admin',
+  password: '123',
+})
 
-            return
-          }
+const loginRules = reactive({
+  username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+  password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+})
 
-          console.log('error submit!!')
-          return false
+const handleLogin = function () {
+  loginFormRef.value.validate((valid) => {
+    if (valid) {
+      loading.value = true
+
+      store
+        .dispatch('login', loginForm)
+        .then((res) => {
+          router.push({ path: '/' })
+          loading.value = false
         })
-      },
-    })
+        .catch((err) => {
+          loading.value = false
+          alert(err)
+        })
 
-    return { ...toRefs(state) }
-  },
+      return
+    }
+
+    console.log('error submit!!')
+    return false
+  })
 }
 </script>
 

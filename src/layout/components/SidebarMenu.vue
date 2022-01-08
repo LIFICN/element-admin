@@ -11,30 +11,23 @@
   </el-menu>
 </template>
 
-<script>
-import { computed } from 'vue'
-import MenuItem from './MenuItem.vue'
+<script setup>
+import { defineProps, computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
+import MenuItem from './MenuItem.vue'
 
-export default {
-  components: {
-    MenuItem,
+defineProps({
+  isCollapse: {
+    type: Boolean,
+    default: false,
   },
-  props: {
-    isCollapse: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup() {
-    const store = useStore()
-    const route = useRoute()
-    const currentPath = computed(() => route.fullPath)
-    const routes = computed(() => store.getters.routes.filter((el) => el.path != '/')) //获取路由列表
-    return { currentPath, routes }
-  },
-}
+})
+
+const store = useStore()
+const route = useRoute()
+const currentPath = computed(() => route.fullPath)
+const routes = computed(() => store.getters.routes.filter((el) => el.path != '/')) //获取路由列表
 </script>
 
 <style lang="scss">

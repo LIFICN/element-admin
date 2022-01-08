@@ -11,32 +11,31 @@
   </el-pagination>
 </template>
 
-<script>
-export default {
-  emits: ['update:pageIndex'],
-  props: {
-    total: {
-      type: Number,
-      default: 0,
-    },
-    pageIndex: {
-      type: Number,
-      default: 1,
-    },
-    pageSize: {
-      type: Number,
-      default: 10,
-    },
-    pagerCount: {
-      type: Number,
-      default: 7,
-    },
+<script setup>
+import { defineProps, defineEmits } from 'vue'
+
+const emits = defineEmits(['update:pageIndex'])
+
+defineProps({
+  total: {
+    type: Number,
+    default: 0,
   },
-  setup(_, { emit }) {
-    const currentChange = (e) => emit('update:pageIndex', e)
-    return { currentChange }
+  pageIndex: {
+    type: Number,
+    default: 1,
   },
-}
+  pageSize: {
+    type: Number,
+    default: 10,
+  },
+  pagerCount: {
+    type: Number,
+    default: 7,
+  },
+})
+
+const currentChange = (e) => emits('update:pageIndex', e)
 </script>
 
 <style>

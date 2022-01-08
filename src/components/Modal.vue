@@ -2,7 +2,7 @@
   <el-dialog
     custom-class="global-modal"
     :title="title"
-    v-model="dialogFormVisible"
+    v-model="state.dialogFormVisible"
     :close-on-click-modal="closeOnClickModal"
     :width="width"
   >
@@ -16,41 +16,43 @@
   </el-dialog>
 </template>
 
-<script>
-import { reactive, toRefs } from 'vue'
+<script setup>
+import { defineEmits, defineProps, defineExpose, reactive } from 'vue'
 
-export default {
-  emits: ['canel', 'submit'], //去掉警告
-  props: {
-    width: {
-      type: String,
-      default: '600px',
-    },
-    title: {
-      type: String,
-      default: '',
-    },
-    closeOnClickModal: {
-      type: Boolean,
-      default: false,
-    },
-    showFooter: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(_, { emit }) {
-    const state = reactive({
-      dialogFormVisible: false,
-      canel: () => emit('canel'),
-      submit: () => emit('submit'),
-      open: () => (state.dialogFormVisible = true),
-      close: () => (state.dialogFormVisible = false),
-    })
+const emits = defineEmits(['canel', 'submit'])
 
-    return { ...toRefs(state) }
+defineProps({
+  width: {
+    type: String,
+    default: '600px',
   },
-}
+  title: {
+    type: String,
+    default: '',
+  },
+  closeOnClickModal: {
+    type: Boolean,
+    default: false,
+  },
+  showFooter: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const state = reactive({
+  dialogFormVisible: false,
+})
+
+const canel = () => emits('canel')
+const submit = () => emits('submit')
+const open = () => (state.dialogFormVisible = true)
+const close = () => (state.dialogFormVisible = false)
+
+defineExpose({
+  open,
+  close,
+})
 </script>
 
 <style lang="scss" scoped>

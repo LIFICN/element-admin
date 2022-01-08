@@ -1,13 +1,12 @@
 <template>
   <el-menu-item :index="fullPath" v-if="!item.hidden && isMenuItem">
-    <el-icon><component :is="options.icon" /></el-icon>
+    <el-icon><component :is="Icons[options.icon]" /></el-icon>
     <template #title>{{ options.title }}</template>
   </el-menu-item>
 
   <el-sub-menu :index="fullPath" v-else-if="!item.hidden && !isMenuItem">
     <template #title>
-      <i :class="options.icon"></i>
-      <el-icon><component :is="options.icon" /></el-icon>
+      <el-icon><component :is="Icons[options.icon]" /></el-icon>
       <span>{{ options.title }}</span>
     </template>
 
@@ -16,55 +15,41 @@
   </el-sub-menu>
 </template>
 
-<script>
-import { reactive, toRefs, computed } from 'vue'
-import { Aim, AddLocation, Apple, AlarmClock, Bell, Baseball, Bicycle } from '@element-plus/icons'
+<script setup>
+import { defineProps, computed } from 'vue'
+import * as Icons from '@element-plus/icons-vue'
 
-export default {
-  components: {
-    Aim,
-    AddLocation,
-    Apple,
-    AlarmClock,
-    Bell,
-    Baseball,
-    Bicycle,
-  },
-  props: {
-    item: {
-      type: Object, //meun-item数据对象
-      default: function () {
-        return {}
-      },
-    },
-    basePath: {
-      type: String, //上一层级路径
-      default: '',
+const props = defineProps({
+  item: {
+    type: Object, //meun-item数据对象
+    default: function () {
+      return {}
     },
   },
-  setup(props) {
-    const { item, basePath } = props
-
-    const state = reactive({
-      options: computed(() => {
-        //判断当前menu-item层级
-        if (!item.children || item.children.length > 1) return item.meta
-        return item.children[0].meta
-      }),
-      fullPath: computed(() => {
-        //递归拼接路径
-        if (basePath) return basePath + '/' + item.path
-        return item.path
-      }),
-      isMenuItem: computed(() => {
-        const children = item.children
-        return !children || (children.length <= 1 && item.path.startsWith('/'))
-      }),
-    })
-
-    return { ...toRefs(state) }
+  basePath: {
+    type: String, //上一层级路径
+    default: '',
   },
-}
+})
+
+const { item, basePath } = props
+
+const options = computed(() => {
+  //判断当前menu-item层级
+  if (!item.children || item.children.length > 1) return item.meta
+  return item.children[0].meta
+})
+
+const fullPath = computed(() => {
+  //递归拼接路径
+  if (basePath) return basePath + '/' + item.path
+  return item.path
+})
+
+const isMenuItem = computed(() => {
+  const children = item.children
+  return !children || (children.length <= 1 && item.path.startsWith('/'))
+})
 </script>
 
 <style>
