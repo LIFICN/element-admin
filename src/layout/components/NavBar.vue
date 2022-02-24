@@ -73,11 +73,13 @@ $appHeaderBg: #ffffff;
   > :last-child {
     margin-right: 20px;
     font-size: 16px;
+    display: flex;
+    align-items: center;
 
     .setting-icon {
       margin-right: 8px;
       font-size: 16px;
-      vertical-align: bottom;
+      vertical-align: middle;
     }
   }
 }

@@ -16,9 +16,13 @@ import store from './store'
 // glob
 import { globComponents } from './utils/glob'
 
+// directive
+import { importDirectives } from './directives'
+
 const app = createApp(App)
 app.use(ElementPlus, { locale: zhCn })
 app.use(router)
 app.use(store)
 globComponents(app)
+importDirectives(app)
 app.mount('#app')
