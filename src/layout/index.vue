@@ -1,4 +1,3 @@
-
 <template>
   <div class="app-container">
     <div class="sidebar-container" :style="{ width: isCollapse ? '64px' : '200px' }">

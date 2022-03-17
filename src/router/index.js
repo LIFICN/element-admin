@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 const routerHistory = createWebHashHistory()
 
-const layout = () => import('@/layout/index.vue')
+const Layout = () => import('@/layout/index.vue')
 const ParentView = () => import('@/layout/ParentView.vue')
 const login = () => import('@/views/login/index.vue')
 const dashboard = () => import('@/views/dashboard/index.vue')
@@ -14,7 +14,7 @@ export const constantRoutes = [
     { path: '/login', component: login, hidden: true },
     {
         path: '/dashboard',
-        component: layout,
+        component: Layout,
         children: [{
             path: '',
             component: dashboard,
@@ -23,7 +23,7 @@ export const constantRoutes = [
     },
     {
         path: '/menus',
-        component: layout,
+        component: Layout,
         meta: { title: 'menus', icon: 'AddLocation' },
         children: [{
             path: 'menu1',
@@ -50,7 +50,7 @@ export const constantRoutes = [
     },
     {
         path: '/table',
-        component: layout,
+        component: Layout,
         children: [{
             path: '',
             component: table,

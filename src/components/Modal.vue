@@ -1,14 +1,14 @@
 <template>
   <el-dialog
-    custom-class="global-modal"
+    custom-class="custom-modal-wrap"
     :title="title"
     v-model="state.dialogFormVisible"
     :close-on-click-modal="closeOnClickModal"
     :width="width"
   >
     <slot />
-    <template #footer>
-      <span class="dialog-footer" v-if="showFooter">
+    <template v-if="showFooter" #footer>
+      <span class="dialog-footer">
         <el-button @click="canel">取 消</el-button>
         <el-button type="primary" @click="submit">确 定</el-button>
       </span>
@@ -55,9 +55,9 @@ defineExpose({
 })
 </script>
 
-<style lang="scss" scoped>
-.global-modal {
-  ::v-deep(.el-dialog__body) {
+<style lang="scss">
+.custom-modal-wrap {
+  .el-dialog__body {
     overflow: hidden;
   }
 }

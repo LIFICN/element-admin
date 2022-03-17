@@ -13,18 +13,12 @@ instance.interceptors.request.use(
     if (token) config.headers['X-Token'] = token
     return config
   },
-  error => {
-    return Promise.reject(error)
-  }
+  error => Promise.reject(error)
 )
 
 instance.interceptors.response.use(
-  response => {
-    return response.data
-  },
-  error => {
-    return Promise.reject(error)
-  }
+  response => response.data,
+  error => Promise.reject(error)
 )
 
 export default instance

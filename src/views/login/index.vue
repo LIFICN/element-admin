@@ -44,7 +44,13 @@
         />
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width: 100%; margin-bottom: 30px" @click="handleLogin">
+      <el-button
+        :loading="loading"
+        type="primary"
+        style="width: 100%; margin-bottom: 30px"
+        @click="handleLogin"
+        size="large"
+      >
         Login
       </el-button>
 
@@ -188,6 +194,7 @@ $light_gray: #eee;
         color: $light_gray;
         height: 47px;
         caret-color: $cursor;
+        box-shadow: none;
 
         &:-webkit-autofill {
           box-shadow: 0 0 0px 1000px $bg inset !important;

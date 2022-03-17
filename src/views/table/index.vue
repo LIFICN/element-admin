@@ -1,4 +1,3 @@
-
 <template>
   <div class="table">
     <div class="search-bar">
