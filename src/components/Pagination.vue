@@ -1,25 +1,25 @@
 <template>
   <el-pagination
     background
-    layout="prev, pager, next"
+    :layout="layout"
     :total="total"
-    :current-page="pageIndex"
-    @current-change="currentChange"
-    :page-size="pageSize"
-    :pager-count="pagerCount"
+    v-model:currentPage="state.currentPage"
+    v-model:pageSize="state.pageSize"
+    :page-sizes="pageSizes"
   >
   </el-pagination>
 </template>
 
 <script setup>
-const emits = defineEmits(['update:pageIndex'])
+import { reactive, watch } from 'vue'
+const emits = defineEmits(['update:currentPage', 'update:pageSize'])
 
-defineProps({
+const props = defineProps({
   total: {
     type: Number,
     default: 0,
   },
-  pageIndex: {
+  currentPage: {
     type: Number,
     default: 1,
   },
@@ -27,13 +27,39 @@ defineProps({
     type: Number,
     default: 10,
   },
-  pagerCount: {
-    type: Number,
-    default: 7,
+  layout: {
+    type: String,
+    default: 'total, sizes, prev, pager, next',
+  },
+  pageSizes: {
+    type: Array,
+    default: () => [10, 50, 100, 200],
   },
 })
 
-const currentChange = (e) => emits('update:pageIndex', e)
+const state = reactive({ currentPage: 1, pageSize: 10 })
+
+watch(
+  () => state.currentPage,
+  (val, _) => emits('update:currentPage', val)
+)
+
+watch(
+  () => state.pageSize,
+  (val, _) => emits('update:pageSize', val)
+)
+
+watch(
+  () => props.currentPage,
+  (val, _) => (state.currentPage = val),
+  { immediate: true }
+)
+
+watch(
+  () => props.pageSize,
+  (val, _) => (state.pageSize = val),
+  { immediate: true }
+)
 </script>
 
 <style>

@@ -21,38 +21,43 @@
       </el-table-column>
     </el-table>
 
-    <Pagination class="pagination-wrap" :page-size="10" :total="100" v-model:pageIndex="state.pageIndex" />
+    <Pagination
+      class="pagination-wrap"
+      v-model:pageSize="state.pageSize"
+      :total="100"
+      v-model:currentPage="state.currentPage"
+    />
 
-    <Modal ref="dialog" title="这是一个标题" width="600px">
+    <Modal title="这是一个标题" width="600px" v-model="state.dialogVisible">
       <TableForm @submit="submit" @canel="canel" />
     </Modal>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, onMounted } from 'vue'
 import TableForm from './components/TableForm.vue'
 import { Search } from '@element-plus/icons-vue'
-
-const dialog = ref(null)
 
 const state = reactive({
   tableData: [],
   input: '',
-  pageIndex: 1,
+  currentPage: 1,
+  pageSize: 10,
+  dialogVisible: false,
 })
 
 function handleClick(row, index) {
-  dialog.value.open()
+  state.dialogVisible = true
   console.log(row, index)
 }
 
 function canel() {
-  dialog.value.close()
+  state.dialogVisible = false
 }
 
 function submit() {
-  dialog.value.close()
+  state.dialogVisible = false
 }
 
 onMounted(() => {

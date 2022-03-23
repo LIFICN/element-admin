@@ -2,13 +2,17 @@
   <el-dialog
     custom-class="custom-modal-wrap"
     :title="title"
-    v-model="state.dialogFormVisible"
+    v-model="dialogVisible"
     :close-on-click-modal="closeOnClickModal"
     :width="width"
+    :fullscreen="fullscreen"
+    :top="top"
+    :destroy-on-close="destroyOnClose"
+    @closed="closed"
   >
     <slot />
     <template v-if="showFooter" #footer>
-      <span class="dialog-footer">
+      <span>
         <el-button @click="canel">取 消</el-button>
         <el-button type="primary" @click="submit">确 定</el-button>
       </span>
@@ -17,11 +21,11 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { ref, watch } from 'vue'
 
-const emits = defineEmits(['canel', 'submit'])
+const emits = defineEmits(['canel', 'submit', 'update:modelValue'])
 
-defineProps({
+const props = defineProps({
   width: {
     type: String,
     default: '600px',
@@ -38,21 +42,35 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  fullscreen: {
+    type: Boolean,
+    default: false,
+  },
+  top: {
+    type: String,
+    default: '15vh',
+  },
+  destroyOnClose: {
+    type: Boolean,
+    default: false,
+  },
+  modelValue: {
+    type: Boolean,
+    default: false,
+  },
 })
 
-const state = reactive({
-  dialogFormVisible: false,
-})
+const dialogVisible = ref(false)
 
 const canel = () => emits('canel')
 const submit = () => emits('submit')
-const open = () => (state.dialogFormVisible = true)
-const close = () => (state.dialogFormVisible = false)
+const closed = () => emits('update:modelValue', false)
 
-defineExpose({
-  open,
-  close,
-})
+watch(
+  () => props.modelValue,
+  (val) => (dialogVisible.value = val),
+  { immediate: true }
+)
 </script>
 
 <style lang="scss">
