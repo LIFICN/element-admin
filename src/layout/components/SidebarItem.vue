@@ -21,7 +21,7 @@ import * as Icons from '@element-plus/icons-vue'
 
 const props = defineProps({
   item: {
-    type: Object, //meun-item数据对象
+    type: Object, //item数据对象
     default: function () {
       return {}
     },
@@ -35,7 +35,7 @@ const props = defineProps({
 const { item, basePath } = props
 
 const options = computed(() => {
-  //判断当前menu-item层级
+  //判断item层级
   if (!item.children || item.children.length > 1) return item.meta
   return item.children[0].meta
 })
@@ -44,10 +44,7 @@ const fullPath = computed(() => {
   if (basePath) return `${basePath}/${item.path}`
 
   let isHaveChild = Array.isArray(item.children) && item.children.length == 1
-  if (isHaveChild && item.children[0].path) {
-    let childPath = item.children[0].path
-    return item.path == '/' ? item.path + childPath : `${item.path}/${childPath}`
-  }
+  if (isHaveChild && item.children[0].path) return `${item.path}/${item.children[0].path}`
 
   return item.path
 })

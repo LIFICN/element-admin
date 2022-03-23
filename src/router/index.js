@@ -10,13 +10,13 @@ const table = () => import('@/views/table/index.vue')
 
 //https://next.router.vuejs.org/zh/index.html
 export const constantRoutes = [
+    { path: '/', redirect: '/dashboard', hidden: true },
     { path: '/login', component: login, hidden: true },
     {
-        path: '/',
-        redirect: '/dashboard',
+        path: '/dashboard',
         component: Layout,
         children: [{
-            path: 'dashboard',
+            path: '',
             component: dashboard,
             meta: { title: 'dashboard', icon: 'Aim', affix: true } //affix为是否固定选项卡
         }]
