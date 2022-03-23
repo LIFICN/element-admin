@@ -7,7 +7,7 @@
     :collapse-transition="false"
     :unique-opened="false"
   >
-    <MenuItem v-for="(item, index) in routes" :key="'menuItem' + index" :item="item" />
+    <SidebarItem v-for="(item, index) in routes" :key="'sidebarItem' + index" :item="item" />
   </el-menu>
 </template>
 
@@ -15,7 +15,7 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
-import MenuItem from './MenuItem.vue'
+import SidebarItem from './SidebarItem.vue'
 
 defineProps({
   isCollapse: {
@@ -27,7 +27,7 @@ defineProps({
 const store = useStore()
 const route = useRoute()
 const currentPath = computed(() => route.fullPath)
-const routes = computed(() => store.getters.routes.filter((el) => el.path != '/')) //获取路由列表
+const routes = computed(() => store.getters.routes) //获取路由列表
 </script>
 
 <style lang="scss">
