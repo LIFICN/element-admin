@@ -1,17 +1,17 @@
 <template>
-  <el-menu-item :index="fullPath" v-if="!item.hidden && isMenuItem">
+  <el-menu-item :index="fullPath" v-if="!item.hidden && isSingleItem">
     <el-icon><component :is="Icons[options.icon]" /></el-icon>
     <template #title>{{ options.title }}</template>
   </el-menu-item>
 
-  <el-sub-menu :index="fullPath" v-else-if="!item.hidden && !isMenuItem">
+  <el-sub-menu :index="fullPath" v-else-if="!item.hidden && !isSingleItem">
     <template #title>
       <el-icon><component :is="Icons[options.icon]" /></el-icon>
       <span>{{ options.title }}</span>
     </template>
 
     <!-- 递归菜单 -->
-    <MenuItem v-for="it in item.children" :key="it.path" :item="it" :basePath="fullPath" />
+    <SidebarItem v-for="it in item.children" :key="it.path" :item="it" :basePath="fullPath" />
   </el-sub-menu>
 </template>
 
@@ -41,14 +41,20 @@ const options = computed(() => {
 })
 
 const fullPath = computed(() => {
-  //递归拼接路径
-  if (basePath) return basePath + '/' + item.path
+  if (basePath) return `${basePath}/${item.path}`
+
+  let isHaveChild = Array.isArray(item.children) && item.children.length == 1
+  if (isHaveChild && item.children[0].path) {
+    let childPath = item.children[0].path
+    return item.path == '/' ? item.path + childPath : `${item.path}/${childPath}`
+  }
+
   return item.path
 })
 
-const isMenuItem = computed(() => {
+const isSingleItem = computed(() => {
   const children = item.children
-  return !children || (children.length <= 1 && item.path.startsWith('/'))
+  return !children || (Array.isArray(children) && children.length <= 1)
 })
 </script>
 

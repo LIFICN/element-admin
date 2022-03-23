@@ -5,7 +5,7 @@
     </div>
 
     <div class="main-container">
-      <NavBar v-model:isCollapse="isCollapse" />
+      <Navbar v-model:isCollapse="isCollapse" />
       <TabsView />
 
       <el-scrollbar class="app-main">
@@ -22,7 +22,7 @@
 <script setup>
 import { ref } from 'vue'
 import SidebarMenu from './components/SidebarMenu.vue'
-import NavBar from './components/NavBar.vue'
+import Navbar from './components/Navbar.vue'
 import TabsView from './components/TabsView.vue'
 
 const isCollapse = ref(false)
