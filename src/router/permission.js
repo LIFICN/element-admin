@@ -1,9 +1,14 @@
 import router from '@/router'
 import { getToken } from '@/utils/auth'
 import store from '@/store'
+import NProgress from 'nprogress'
+
+NProgress.configure({ showSpinner: false })
 const whiteList = ['/login']
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, _, next) => {
+    NProgress.start()
+
     const token = getToken()
     const role = store.getters.role || ''
 
@@ -23,4 +28,13 @@ router.beforeEach(async (to, from, next) => {
     }
 
     next()
+})
+
+router.afterEach(() => {
+    NProgress.done()
+})
+
+router.onError((err, to, from) => {
+    console.log(err, to, from)
+    NProgress.done()
 })

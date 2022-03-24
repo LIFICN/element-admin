@@ -19,6 +19,9 @@ import { globComponents } from './utils/glob'
 // directive
 import { importDirectives } from './directives'
 
+//nprogress
+import 'nprogress/nprogress.css'
+
 const app = createApp(App)
 app.use(ElementPlus, { locale: zhCn })
 app.use(router)
