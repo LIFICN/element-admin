@@ -1,16 +1,5 @@
 // global transition css
 
-/* fade */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.28s;
-}
-
-.fade-enter,
-.fade-leave-active {
-  opacity: 0;
-}
-
 /* fade-transform */
 .fade-transform {
   will-change: transform, opacity;
@@ -18,7 +7,7 @@
 
 .fade-transform-leave-active,
 .fade-transform-enter-active {
-  transition: all 0.5s;
+  transition: all 0.3s;
 }
 
 .fade-transform-enter-from {
