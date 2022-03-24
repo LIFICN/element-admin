@@ -135,23 +135,25 @@ watch(() => ({ ...currentRoute.value }), watchCurrentRoute, { deep: true, immedi
     .tab-item {
       border: 1px solid #dcdfe6;
       border-radius: 3px;
-      height: 30px;
-      line-height: 30px;
+      height: 28px;
       cursor: pointer;
       color: #303133;
-      margin-right: 6px;
+      margin-right: 8px;
       white-space: nowrap;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      justify-content: space-between;
 
       .title {
         font-size: 14px;
         font-weight: 500;
-        padding: 0 10px;
       }
 
       .close-icon {
         color: #999999;
         font-size: 12px;
-        padding-right: 10px;
+        margin-left: 10px;
       }
     }
 
