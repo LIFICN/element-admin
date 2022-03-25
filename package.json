@@ -1,6 +1,6 @@
 {
-  "name": "element-admin",
-  "version": "0.0.1",
+  "name": "vue3-admin-template",
+  "version": "0.0.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
