@@ -55,7 +55,8 @@ const isSingleItem = computed(() => {
 })
 
 function getIcon(options: any) {
-  return options.icon as keyof typeof Icons
+  const iconName = options.icon as string
+  return Icons[iconName as keyof typeof Icons]
 }
 </script>
 
