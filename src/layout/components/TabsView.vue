@@ -22,14 +22,14 @@ import { useRouteStore } from '@/store/route'
 import { Close } from '@element-plus/icons-vue'
 import { RouteRecordRawExt } from '@/router'
 
-const route = useRoute()
-const router = useRouter()
-const store = useRouteStore()
-let affixRoutes: any[] = []
-
 type RouteObjExt = RouteMeta & {
   path: string
 }
+
+const route = useRoute()
+const router = useRouter()
+const store = useRouteStore()
+let affixRoutes: RouteObjExt[] = []
 
 const state = reactive({
   tabList: [] as RouteObjExt[],

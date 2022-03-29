@@ -1,7 +1,7 @@
 import { useUserStore } from '@/store/user'
 import { App } from 'vue'
 
-export function importDirectives(app: App<Element>) {
+export function importDirectives(app: App<Element>): void {
     app.directive('role', {
         mounted(el: any, binding: any) {
             const value = binding.value

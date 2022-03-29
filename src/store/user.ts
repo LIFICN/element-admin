@@ -2,6 +2,11 @@ import { defineStore } from 'pinia'
 import { setToken, removeToken } from '@/utils/auth'
 import { useRouteStore } from './route'
 
+export interface UserInfo {
+    username: string
+    role: string
+}
+
 export const useUserStore = defineStore('user', {
     state: () => ({
         role: '',
@@ -12,11 +17,11 @@ export const useUserStore = defineStore('user', {
         usernameGetter: (state): string => state.username
     },
     actions: {
-        changeUserInfo(obj: any) {
+        changeUserInfo(obj: UserInfo) {
             this.username = obj['username']
             this.role = obj['role']
         },
-        login(data: any) {
+        login(data: any): Promise<void> {
             return new Promise<void>((resolve, reject) => {
                 if (data.username != 'admin' || data.password != '123') {
                     reject('用户名或密码错误！')
@@ -27,7 +32,7 @@ export const useUserStore = defineStore('user', {
                 resolve()
             })
         },
-        logout() {
+        logout(): Promise<void> {
             return new Promise<void>((resolve, reject) => {
                 try {
                     const stroe = useRouteStore()
@@ -40,9 +45,9 @@ export const useUserStore = defineStore('user', {
                 }
             })
         },
-        getUserInfo() {
-            return new Promise((resolve) => {
-                const info = { username: '超级管理员', role: 'admin' }
+        getUserInfo(): Promise<UserInfo> {
+            return new Promise<UserInfo>((resolve) => {
+                const info: UserInfo = { username: '超级管理员', role: 'admin' }
                 this.username = info['username']
                 this.role = info['role']
                 resolve(info)

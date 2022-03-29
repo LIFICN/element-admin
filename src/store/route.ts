@@ -11,7 +11,7 @@ export const useRouteStore = defineStore('router', {
         routesGetter: (state): RouteRecordRawExt[] => state.routes,
     },
     actions: {
-        addRoutes(routes: RouteRecordRawExt[]) {
+        addRoutes(routes: RouteRecordRawExt[]): Promise<void> {
             return new Promise<void>((resolve, _) => {
                 this.routes = constantRoutes.concat(routes)
                 routes.forEach(el => {
@@ -22,7 +22,7 @@ export const useRouteStore = defineStore('router', {
                 resolve()
             })
         },
-        resetRoutes() {
+        resetRoutes(): void {
             this.routes = []
             removeRoutesArr.forEach(el => el())
             removeRoutesArr = []

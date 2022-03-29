@@ -57,7 +57,7 @@ const ruleForm = reactive({
   name: '',
   region: '',
   date1: '',
-  type: [],
+  type: [] as any[],
   resource: '',
   desc: '',
   age: '',

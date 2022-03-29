@@ -1,6 +1,6 @@
 import { App, defineAsyncComponent } from 'vue'
 
-export function globComponents(app: App<Element>) {
+export function globComponents(app: App<Element>): void {
     const modulesRoot = import.meta.glob('/src/components/*.vue')
     const modulesSon = import.meta.glob('/src/components/**/index.vue')
 
