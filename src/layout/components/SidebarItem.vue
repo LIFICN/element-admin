@@ -55,5 +55,4 @@ const isSingleItem = computed(() => {
 })
 </script>
 
-<style>
-</style>
+<style></style>
