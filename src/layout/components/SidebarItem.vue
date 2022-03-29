@@ -60,5 +60,4 @@ function getIcon(options: any) {
 }
 </script>
 
-<style>
-</style>
+<style></style>
