@@ -5,32 +5,35 @@
 //     { id: 4, name: '部门4', pid: 3 },
 //     { id: 5, name: '部门5', pid: 4 },
 // ]
-// console.log(toTree(arr, 'id', 'pid', [0]))
-// console.log(toTree2(arr, 'id', 'pid', [0]))
+// console.log(toTree(arr, 'id', 'pid'))
+// console.log(toTree2(arr, 'id', 'pid'))
 
-export function toTree(arr: any[], idKey: string = 'id', parentKey: string = 'pid', parentIds: any[] = []): any[] {
-  if (arr.length == 0 || !idKey || !parentKey || parentIds.length == 0) return []
+export function toTree(arr: any[], idKey: string = 'id', parentKey: string = 'pid'): any[] {
+  if (arr.length == 0 || !idKey || !parentKey) return []
 
   const arrMap: any = {}
+  const res: any[] = []
 
   arr.forEach((item) => {
     const id = item[idKey]
     const pid = item[parentKey]
 
-    if (!arrMap[id]) arrMap[id] = { ...item, chidren: [] as any[] }
-
-    if (arrMap[pid]) arrMap[pid].chidren.push(arrMap[id])
+    if (!arrMap[id]) arrMap[id] = { ...item, chidren: [] as any[] } //create template
+    if (arrMap[pid]) arrMap[pid].chidren.push(arrMap[id]) //find children
+    if (!pid) res.push(arrMap[id]) //top item
   })
 
-  return Object.values(arrMap).filter((el: any) => parentIds.includes(el[parentKey]))
+  return res
 }
 
-export function toTree2(arr: any[], idKey: string = 'id', parentKey: string = 'pid', parentIds: any[] = []): any[] {
-  if (arr.length == 0 || !idKey || !parentKey || parentIds.length == 0) return []
+export function toTree2(arr: any[], idKey: string = 'id', parentKey: string = 'pid'): any[] {
+  if (arr.length == 0 || !idKey || !parentKey) return []
 
+  const res: any[] = []
   arr.forEach((item) => {
-    item['chidren'] = arr.filter((el) => item[idKey] == el[parentKey])
+    item['chidren'] = arr.filter((el) => item[idKey] == el[parentKey]) //find children
+    if (!item[parentKey]) res.push(item) //top item
   })
 
-  return arr.filter((el) => parentIds.includes(el[parentKey]))
+  return res
 }
