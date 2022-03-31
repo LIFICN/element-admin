@@ -16,13 +16,13 @@ export function toTree(arr = [], idKey = 'id', parentKey = 'pid') {
   const arrMap = {}
   const res = []
 
-  arr.forEach((item) => (arrMap[item[idKey]] = { ...item, chidren: [] }))
+  arr.forEach((item) => (arrMap[item[idKey]] = { ...item, chidren: [] })) //create template
   arr.forEach((item) => {
     const id = item[idKey]
     const pid = item[parentKey]
 
-    if (arrMap[pid]) arrMap[pid].chidren.push(arrMap[id])
-    if (!pid) res.push(arrMap[id])
+    if (arrMap[pid]) arrMap[pid].chidren.push(arrMap[id]) //find children
+    if (!pid) res.push(arrMap[id]) //top item
   })
 
   return res
@@ -33,8 +33,8 @@ export function toTree2(arr = [], idKey = 'id', parentKey = 'pid') {
 
   const res = []
   arr.forEach((item) => {
-    item['chidren'] = arr.filter((el) => item[idKey] == el[parentKey])
-    if (!item[parentKey]) res.push(item)
+    item['chidren'] = arr.filter((el) => item[idKey] == el[parentKey]) //find children
+    if (!item[parentKey]) res.push(item) //top item
   })
 
   return res
