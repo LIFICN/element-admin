@@ -14,11 +14,11 @@ export function toTree(arr: any[], idKey: string = 'id', parentKey: string = 'pi
   const arrMap: any = {}
   const res: any[] = []
 
+  arr.forEach((item) => (arrMap[item[idKey]] = { ...item, chidren: [] })) //create template
   arr.forEach((item) => {
     const id = item[idKey]
     const pid = item[parentKey]
 
-    if (!arrMap[id]) arrMap[id] = { ...item, chidren: [] as any[] } //create template
     if (arrMap[pid]) arrMap[pid].chidren.push(arrMap[id]) //find children
     if (!pid) res.push(arrMap[id]) //top item
   })
