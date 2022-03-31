@@ -5,34 +5,37 @@
 //     { id: 4, name: '部门4', pid: 3 },
 //     { id: 5, name: '部门5', pid: 4 },
 //   ]
-//   console.log(toTree(arr, 'id', 'pid', [0]))
-//   console.log(toTree2(arr, 'id', 'pid', [0]))
+//   console.log(toTree(arr, 'id', 'pid'))
+//   console.log(toTree2(arr, 'id', 'pid'))
 
 const isArray = (arr) => Array.isArray(arr)
 
-export function toTree(arr = [], idKey = 'id', parentKey = 'pid', parentIds = []) {
-  if (!isArray(arr) || !idKey || !parentKey || !isArray(parentIds)) return []
+export function toTree(arr = [], idKey = 'id', parentKey = 'pid') {
+  if (!isArray(arr) || !idKey || !parentKey) return []
 
   const arrMap = {}
+  const res = []
 
   arr.forEach((item) => {
     const id = item[idKey]
     const pid = item[parentKey]
 
     if (!arrMap[id]) arrMap[id] = { ...item, chidren: [] }
-
     if (arrMap[pid]) arrMap[pid].chidren.push(arrMap[id])
+    if (!pid) res.push(arrMap[id])
   })
 
-  return Object.values(arrMap).filter((el) => parentIds.includes(el[parentKey]))
+  return res
 }
 
-export function toTree2(arr = [], idKey = 'id', parentKey = 'pid', parentIds = []) {
-  if (!isArray(arr) || !idKey || !parentKey || !isArray(parentIds)) return []
+export function toTree2(arr = [], idKey = 'id', parentKey = 'pid') {
+  if (!isArray(arr) || !idKey || !parentKey) return []
 
+  const res = []
   arr.forEach((item) => {
     item['chidren'] = arr.filter((el) => item[idKey] == el[parentKey])
+    if (!item[parentKey]) res.push(item)
   })
 
-  return arr.filter((el) => parentIds.includes(el[parentKey]))
+  return res
 }
