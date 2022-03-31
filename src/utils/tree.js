@@ -16,11 +16,11 @@ export function toTree(arr = [], idKey = 'id', parentKey = 'pid') {
   const arrMap = {}
   const res = []
 
+  arr.forEach((item) => (arrMap[item[idKey]] = { ...item, chidren: [] }))
   arr.forEach((item) => {
     const id = item[idKey]
     const pid = item[parentKey]
 
-    if (!arrMap[id]) arrMap[id] = { ...item, chidren: [] }
     if (arrMap[pid]) arrMap[pid].chidren.push(arrMap[id])
     if (!pid) res.push(arrMap[id])
   })
