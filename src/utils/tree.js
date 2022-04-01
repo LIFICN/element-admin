@@ -10,30 +10,30 @@
 
 const isArray = (arr) => Array.isArray(arr)
 
-export function toTree(arr = [], idKey = 'id', parentKey = 'pid') {
-  if (!isArray(arr) || !idKey || !parentKey) return []
+export function toTree(arr = [], idKey = 'id', parentKey = 'pid', childKey = 'children') {
+  if (!isArray(arr) || !idKey || !parentKey || !childKey) return []
 
   const arrMap = {}
   const res = []
 
-  arr.forEach((item) => (arrMap[item[idKey]] = { ...item, chidren: [] })) //create template
+  arr.forEach((item) => (arrMap[item[idKey]] = { ...item, [childKey]: [] })) //create template
   arr.forEach((item) => {
     const id = item[idKey]
     const pid = item[parentKey]
 
-    if (arrMap[pid]) arrMap[pid].chidren.push(arrMap[id]) //find children
+    if (arrMap[pid]) arrMap[pid][childKey].push(arrMap[id]) //find children
     if (!pid) res.push(arrMap[id]) //top item
   })
 
   return res
 }
 
-export function toTree2(arr = [], idKey = 'id', parentKey = 'pid') {
-  if (!isArray(arr) || !idKey || !parentKey) return []
+export function toTree2(arr = [], idKey = 'id', parentKey = 'pid', childKey = 'children') {
+  if (!isArray(arr) || !idKey || !parentKe || !childKey) return []
 
   const res = []
   arr.forEach((item) => {
-    item['chidren'] = arr.filter((el) => item[idKey] == el[parentKey]) //find children
+    item[childKey] = arr.filter((el) => item[idKey] == el[parentKey]) //find children
     if (!item[parentKey]) res.push(item) //top item
   })
 
