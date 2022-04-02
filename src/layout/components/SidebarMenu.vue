@@ -27,7 +27,7 @@ defineProps({
 const store = useRouteStore()
 const route = useRoute()
 const currentPath = computed(() => route.fullPath)
-const routes = store.routesGetter //获取路由列表
+const routes = computed(() => store.routesGetter) //获取路由列表
 </script>
 
 <style lang="scss">

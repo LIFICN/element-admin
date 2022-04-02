@@ -36,7 +36,7 @@ const state = reactive({
   currentIndex: 0 as number,
 })
 
-const routesArr = store.routesGetter
+const routesArr = computed(() => store.routesGetter)
 const currentRoute = computed(() => {
   const param: RouteObjExt = {
     ...route.meta,
@@ -124,7 +124,7 @@ function recursionRoutes(val: RouteRecordRawExt) {
 const getKey = (param: unknown): string => param as string
 
 watch(() => state.currentIndex, watchCurrentIndex)
-watch(() => [...routesArr], watchRoutesArr, { deep: true, immediate: true })
+watch(() => [...routesArr.value], watchRoutesArr, { deep: true, immediate: true })
 watch(() => ({ ...currentRoute.value }), watchCurrentRoute, { deep: true, immediate: true })
 </script>
 
