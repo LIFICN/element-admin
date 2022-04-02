@@ -13,7 +13,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useStore } from 'vuex'
+import { useRouteStore } from '@/store/route'
 import { useRoute } from 'vue-router'
 import SidebarItem from './SidebarItem.vue'
 
@@ -24,10 +24,10 @@ defineProps({
   },
 })
 
-const store = useStore()
+const store = useRouteStore()
 const route = useRoute()
 const currentPath = computed(() => route.fullPath)
-const routes = computed(() => store.getters.routes) //获取路由列表
+const routes = computed(() => store.routesGetter) //获取路由列表
 </script>
 
 <style lang="scss">

@@ -10,9 +10,6 @@ import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import router from './router'
 import './router/permission'
 
-//vue store
-import store from './store'
-
 // glob
 import { globComponents } from './utils/glob'
 
@@ -22,10 +19,13 @@ import { importDirectives } from './directives'
 //nprogress
 import 'nprogress/nprogress.css'
 
+//pinia
+import { createPinia } from 'pinia'
+
 const app = createApp(App)
 app.use(ElementPlus, { locale: zhCn })
 app.use(router)
-app.use(store)
+app.use(createPinia())
 globComponents(app)
 importDirectives(app)
 app.mount('#app')

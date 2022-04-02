@@ -1,7 +1,8 @@
 import router from '@/router'
 import { getToken } from '@/utils/auth'
-import store from '@/store'
+import { useUserStore } from '@/store/user'
 import NProgress from 'nprogress'
+import { useRouteStore } from '@/store/route'
 
 NProgress.configure({ showSpinner: false })
 const whiteList = ['/login']
@@ -10,7 +11,8 @@ router.beforeEach(async (to, _, next) => {
   NProgress.start()
 
   const token = getToken()
-  const role = store.getters.role || ''
+  const userStore = useUserStore()
+  const role = userStore.roleGetter || ''
 
   if (whiteList.includes(to.path)) {
     next()
@@ -23,8 +25,9 @@ router.beforeEach(async (to, _, next) => {
   }
 
   if (!role) {
-    await store.dispatch('getUserInfo')
-    await store.dispatch('setRoutes', [])
+    const routeStore = useRouteStore()
+    await userStore.getUserInfo()
+    await routeStore.addRoutes([])
   }
 
   next()

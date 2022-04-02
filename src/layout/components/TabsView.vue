@@ -18,12 +18,12 @@
 <script setup>
 import { reactive, watch, computed, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { useRouteStore } from '@/store/route'
 import { Close } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()
-const store = useStore()
+const store = useRouteStore()
 let affixRoutes = []
 
 const state = reactive({
@@ -31,7 +31,7 @@ const state = reactive({
   currentIndex: 0,
 })
 
-const routesArr = computed(() => store.getters.routes)
+const routesArr = computed(() => store.routesGetter)
 const currentRoute = computed(() => {
   const param = {
     ...route.meta,

@@ -16,14 +16,14 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <span>{{ username }}</span>
+      <span>{{ store.usernameGetter }}</span>
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed, toRefs } from 'vue'
-import { useStore } from 'vuex'
+import { useUserStore } from '@/store/user'
 import { useRouter } from 'vue-router'
 import { Fold, Expand, Setting } from '@element-plus/icons-vue'
 
@@ -36,15 +36,14 @@ const props = defineProps({
   },
 })
 
-const store = useStore()
+const store = useUserStore()
 const router = useRouter()
 const { isCollapse } = toRefs(props)
 
-const username = computed(() => store.getters.username)
 const menuCollapse = () => emits('update:isCollapse', !isCollapse.value)
 
 function logout() {
-  store.dispatch('logout').then(() => {
+  store.logout().then(() => {
     router.replace('/login')
   })
 }

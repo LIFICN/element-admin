@@ -65,10 +65,10 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { useUserStore } from '@/store/user'
 import { User, Lock } from '@element-plus/icons-vue'
 
-const store = useStore()
+const store = useUserStore()
 const router = useRouter()
 
 const validateUsername = (rule, value, callback) => {
@@ -100,7 +100,7 @@ const handleLogin = function () {
       loading.value = true
 
       store
-        .dispatch('login', loginForm)
+        .login(loginForm)
         .then((res) => {
           router.push({ path: '/' })
           loading.value = false
