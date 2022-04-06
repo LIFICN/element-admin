@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { FormInstance } from 'element-plus/lib/components/form'
+import type { FormInstance } from 'element-plus'
 import { reactive, ref } from 'vue'
 
 const emits = defineEmits(['submit', 'canel'])

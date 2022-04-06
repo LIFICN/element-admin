@@ -67,7 +67,7 @@ import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/user'
 import { User, Lock } from '@element-plus/icons-vue'
-import { FormInstance } from 'element-plus/lib/components/form'
+import type { FormInstance } from 'element-plus'
 
 const store = useUserStore()
 const router = useRouter()
