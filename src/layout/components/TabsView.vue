@@ -19,26 +19,27 @@
 import { reactive, watch, computed, nextTick } from 'vue'
 import { RouteMeta, useRoute, useRouter } from 'vue-router'
 import { useRouteStore } from '@/store/route'
-import { Close } from '@element-plus/icons-vue'
 import { RouteRecordRawExt } from '@/router'
+import { storeToRefs } from 'pinia'
+import { Close } from '@element-plus/icons-vue'
 
-type RouteObjExt = RouteMeta & {
+type RouteMetaExt = RouteMeta & {
   path: string
 }
 
 const route = useRoute()
 const router = useRouter()
-const store = useRouteStore()
-let affixRoutes: RouteObjExt[] = []
+let affixRoutes: RouteMetaExt[] = []
 
 const state = reactive({
-  tabList: [] as RouteObjExt[],
+  tabList: [] as RouteMetaExt[],
   currentIndex: 0 as number,
 })
 
-const routesArr = computed(() => store.routesGetter)
+const { routesGetter: routesArr } = storeToRefs(useRouteStore())
+
 const currentRoute = computed(() => {
-  const param: RouteObjExt = {
+  const param: RouteMetaExt = {
     ...route.meta,
     path: route.path,
   }
@@ -81,7 +82,7 @@ function srollTo(tag: string) {
   })
 }
 
-function watchCurrentRoute(newVal: RouteObjExt) {
+function watchCurrentRoute(newVal: RouteMetaExt) {
   if (newVal && !state.tabList.some((el) => el.title === newVal.title)) {
     state.tabList.push(newVal)
   }
@@ -99,7 +100,7 @@ function watchRoutesArr(newVal: RouteRecordRawExt[], oldVal: RouteRecordRawExt[]
   affixRoutes = []
   newVal.forEach((el) => recursionRoutes(el))
 
-  let addArr: RouteObjExt[] = []
+  let addArr: RouteMetaExt[] = []
   affixRoutes.forEach((el) => {
     if (!state.tabList.some((tb) => tb.title === el.title)) addArr.push(el)
   })
