@@ -19,11 +19,11 @@
 import { reactive, watch, computed, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useRouteStore } from '@/store/route'
+import { storeToRefs } from 'pinia'
 import { Close } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()
-const store = useRouteStore()
 let affixRoutes = []
 
 const state = reactive({
@@ -31,7 +31,8 @@ const state = reactive({
   currentIndex: 0,
 })
 
-const routesArr = computed(() => store.routesGetter)
+const { routesGetter: routesArr } = storeToRefs(useRouteStore())
+
 const currentRoute = computed(() => {
   const param = {
     ...route.meta,

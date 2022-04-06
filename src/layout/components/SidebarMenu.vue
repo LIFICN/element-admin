@@ -15,6 +15,7 @@
 import { computed } from 'vue'
 import { useRouteStore } from '@/store/route'
 import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import SidebarItem from './SidebarItem.vue'
 
 defineProps({
@@ -24,10 +25,9 @@ defineProps({
   },
 })
 
-const store = useRouteStore()
 const route = useRoute()
 const currentPath = computed(() => route.fullPath)
-const routes = computed(() => store.routesGetter) //获取路由列表
+const { routesGetter: routes } = storeToRefs(useRouteStore()) //获取路由列表
 </script>
 
 <style lang="scss">
