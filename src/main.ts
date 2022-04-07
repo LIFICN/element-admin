@@ -2,9 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 
 //element plus
-import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import zhCn from 'element-plus/es/locale/lang/zh-cn'
 
 //nprogress
 import 'nprogress/nprogress.css'
@@ -23,9 +21,8 @@ import { globComponents } from './utils/glob'
 import { importDirectives } from './directives'
 
 const app = createApp(App)
-app.use(ElementPlus, { locale: zhCn })
+app.use(router)
 app.use(createPinia())
 globComponents(app)
 importDirectives(app)
-app.use(router)
 app.mount('#app')
