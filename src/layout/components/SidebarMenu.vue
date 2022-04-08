@@ -41,13 +41,10 @@ $slidebarMenuHover: #263445;
   width: 100%;
   background-color: $sidebarBg;
   overflow-x: hidden;
+  border: none;
 
   &:not(.el-menu--collapse) {
     width: 100%;
-  }
-
-  .el-menu {
-    background-color: $sidebarBg !important;
   }
 
   .el-menu-item,
