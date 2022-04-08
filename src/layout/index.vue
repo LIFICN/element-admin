@@ -1,6 +1,7 @@
 <template>
   <div class="app-container">
     <div class="sidebar-container" :style="{ width: isCollapse ? '64px' : '200px' }">
+      <SidebarLogo :isCollapse="isCollapse" />
       <SidebarMenu ref="sidebarMenu" :isCollapse="isCollapse" />
     </div>
 
@@ -24,6 +25,7 @@ import { ref } from 'vue'
 import SidebarMenu from './components/SidebarMenu.vue'
 import Navbar from './components/Navbar.vue'
 import TabsView from './components/TabsView.vue'
+import SidebarLogo from './components/SidebarLogo.vue'
 
 const isCollapse = ref<boolean>(false)
 </script>

@@ -32,15 +32,16 @@ const { routesGetter: routes } = storeToRefs(useRouteStore()) //获取路由列�
 
 <style lang="scss">
 $sidebarBg: #304156;
-$slidebarText: #bfcbd9;
-$slidebarTextActive: #409eff;
-$slidebarMenuHover: #263445;
+$sidebarText: #bfcbd9;
+$sidebarTextActive: #409eff;
+$sidebarMenuHover: #263445;
 
 .sidebar-menu {
   height: 100%;
   width: 100%;
   background-color: $sidebarBg;
   overflow-x: hidden;
+  border: none;
 
   &:not(.el-menu--collapse) {
     width: 100%;
@@ -52,23 +53,23 @@ $slidebarMenuHover: #263445;
 
   .el-menu-item,
   .el-sub-menu__title {
-    color: $slidebarText;
+    color: $sidebarText;
 
     i {
-      color: $slidebarText;
+      color: $sidebarText;
     }
 
     &:hover {
-      background-color: $slidebarMenuHover !important;
+      background-color: $sidebarMenuHover !important;
     }
   }
 
   .el-menu-item.is-active {
-    color: $slidebarTextActive;
+    color: $sidebarTextActive;
     background-color: $sidebarBg;
 
     i {
-      color: $slidebarTextActive;
+      color: $sidebarTextActive;
     }
   }
 }
@@ -79,23 +80,23 @@ $slidebarMenuHover: #263445;
 
     .el-menu-item,
     .el-sub-menu__title {
-      color: $slidebarText;
+      color: $sidebarText;
 
       i {
-        color: $slidebarText;
+        color: $sidebarText;
       }
 
       &:hover {
-        background-color: $slidebarMenuHover !important;
+        background-color: $sidebarMenuHover !important;
       }
     }
 
     .el-menu-item.is-active {
-      color: $slidebarTextActive;
+      color: $sidebarTextActive;
       background-color: $sidebarBg;
 
       i {
-        color: $slidebarTextActive;
+        color: $sidebarTextActive;
       }
     }
   }
