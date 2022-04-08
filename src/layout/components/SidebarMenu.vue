@@ -47,6 +47,10 @@ $slidebarMenuHover: #263445;
     width: 100%;
   }
 
+  .el-menu {
+    background-color: $sidebarBg !important;
+  }
+
   .el-menu-item,
   .el-sub-menu__title {
     color: $slidebarText;
