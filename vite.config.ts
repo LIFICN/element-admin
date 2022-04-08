@@ -1,20 +1,11 @@
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import path from 'path'
 
 // https://cn.vitejs.dev/
 export default defineConfig({
   plugins: [
     Vue(),
-    AutoImport({
-      resolvers: [ElementPlusResolver()],
-    }),
-    Components({
-      resolvers: [ElementPlusResolver()],
-    }),
   ],
   server: {
     open: true,  //是否打开浏览器
