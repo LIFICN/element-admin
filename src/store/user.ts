@@ -4,22 +4,22 @@ import { useRouteStore } from './route'
 
 export interface UserInfo {
   username: string
-  role: string
+  role: string[]
 }
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    role: '',
+    role: [] as string[],
     username: '',
   }),
   getters: {
-    roleGetter: (state): string => state.role,
+    roleGetter: (state): string[] => state.role,
     usernameGetter: (state): string => state.username,
   },
   actions: {
     changeUserInfo(obj: UserInfo) {
       this.username = obj['username']
-      this.role = obj['role']
+      this.role = obj['role'] || []
     },
     login(data: any): Promise<void> {
       return new Promise<void>((resolve, reject) => {
@@ -47,7 +47,7 @@ export const useUserStore = defineStore('user', {
     },
     getUserInfo(): Promise<UserInfo> {
       return new Promise<UserInfo>((resolve) => {
-        const info: UserInfo = { username: '超级管理员', role: 'admin' }
+        const info: UserInfo = { username: '超级管理员', role: ['admin'] }
         this.username = info['username']
         this.role = info['role']
         resolve(info)
