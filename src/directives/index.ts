@@ -7,7 +7,7 @@ export function importDirectives(app: App<Element>): void {
       const value = binding.value
       const store = useUserStore()
       const role = store.roleGetter
-      if (Array.isArray(value) && !value.some(val => role.includes(val))) el.remove()
+      if (Array.isArray(value) && !value.some((val) => role.includes(val))) el.remove()
     },
   })
 }
