@@ -12,7 +12,7 @@ router.beforeEach(async (to, _, next) => {
 
   const token = getToken()
   const userStore = useUserStore()
-  const role = userStore.roleGetter || ''
+  const hasRole = Array.isArray(userStore.roleGetter) && userStore.roleGetter.length > 0
 
   if (whiteList.includes(to.path)) {
     next()
@@ -24,7 +24,7 @@ router.beforeEach(async (to, _, next) => {
     return
   }
 
-  if (!role) {
+  if (!hasRole) {
     const routeStore = useRouteStore()
     await userStore.getUserInfo()
     await routeStore.addRoutes([])

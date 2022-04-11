@@ -4,7 +4,7 @@ import { useRouteStore } from './route'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    role: '',
+    role: [],
     username: '',
   }),
   getters: {
@@ -14,7 +14,7 @@ export const useUserStore = defineStore('user', {
   actions: {
     changeUserInfo(obj) {
       this.username = obj['username'] || ''
-      this.role = obj['role'] || ''
+      this.role = obj['role'] || []
     },
     login(data) {
       return new Promise((resolve, reject) => {
@@ -42,9 +42,8 @@ export const useUserStore = defineStore('user', {
     },
     getUserInfo() {
       return new Promise((resolve) => {
-        const info = { username: '超级管理员', role: 'admin' }
-        this.username = info['username']
-        this.role = info['role']
+        const info = { username: '超级管理员', role: ['admin'] }
+        this.changeUserInfo(info)
         resolve(info)
       })
     },
