@@ -48,8 +48,7 @@ export const useUserStore = defineStore('user', {
     getUserInfo(): Promise<UserInfo> {
       return new Promise<UserInfo>((resolve) => {
         const info: UserInfo = { username: '超级管理员', role: ['admin'] }
-        this.username = info['username']
-        this.role = info['role']
+        this.changeUserInfo(info)
         resolve(info)
       })
     },
