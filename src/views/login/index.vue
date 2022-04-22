@@ -23,7 +23,7 @@
           placeholder="Username"
           type="text"
           tabindex="1"
-          auto-complete="on"
+          autocomplete="on"
         />
       </el-form-item>
 
@@ -38,7 +38,7 @@
           type="password"
           placeholder="Password"
           tabindex="2"
-          auto-complete="on"
+          autocomplete="on"
           @keyup.enter="handleLogin"
           :show-password="true"
         />
@@ -103,7 +103,7 @@ const handleLogin = function () {
       store
         .login(loginForm)
         .then((res) => {
-          router.push({ path: '/' })
+          router.replace({ path: '/' })
           loading.value = false
         })
         .catch((err) => {
@@ -182,24 +182,26 @@ $light_gray: #eee;
 
   ::v-deep() {
     .el-input {
-      display: inline-block;
       height: 47px;
       width: 85%;
+      overflow: hidden;
 
-      input {
-        background: transparent;
-        border: 0px;
-        -webkit-appearance: none;
-        border-radius: 0px;
-        padding: 12px 5px 12px 15px;
-        color: $light_gray;
-        height: 47px;
-        caret-color: $cursor;
+      .el-input__wrapper {
         box-shadow: none;
+        background-color: transparent;
 
-        &:-webkit-autofill {
-          box-shadow: 0 0 0px 1000px $bg inset !important;
-          -webkit-text-fill-color: $cursor !important;
+        input {
+          border: 0px;
+          -webkit-appearance: none;
+          border-radius: 0px;
+          padding: 12px 5px 12px 15px;
+          color: $light_gray;
+          height: 47px;
+          caret-color: $cursor;
+          &:-webkit-autofill {
+            box-shadow: 0 0 0px 1000px $bg inset !important;
+            -webkit-text-fill-color: $cursor !important;
+          }
         }
       }
     }
