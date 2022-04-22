@@ -41,7 +41,7 @@ const { routesGetter: routesArr } = storeToRefs(useRouteStore())
 const currentRoute = computed(() => {
   const param: RouteMetaExt = {
     ...route.meta,
-    path: route.path,
+    path: route.fullPath,
   }
 
   return param || {}

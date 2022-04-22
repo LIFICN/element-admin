@@ -10,7 +10,8 @@ export default defineConfig({
   server: {
     open: true,  //是否打开浏览器
     port: 3000,  //端口号
-    cors: true   //跨域
+    cors: true,   //跨域
+    host: '0.0.0.0' //ip地址
   },
   base: '/',  //根路径
   resolve: {

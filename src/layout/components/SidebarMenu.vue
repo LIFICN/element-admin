@@ -26,7 +26,7 @@ defineProps({
 })
 
 const route = useRoute()
-const currentPath = computed(() => route.fullPath)
+const currentPath = computed(() => route.path)
 const { routesGetter: routes } = storeToRefs(useRouteStore()) //获取路由列表
 </script>
 
