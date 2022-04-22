@@ -6,7 +6,7 @@
       <el-button type="primary" class="search-btn">搜索</el-button>
     </div>
 
-    <el-table :data="state.tableData" border style="width: 100%" size="small">
+    <el-table :data="state.tableData" border style="width: 100%">
       <el-table-column fixed prop="date" label="日期" width="150"> </el-table-column>
       <el-table-column prop="name" label="姓名" width="120"> </el-table-column>
       <el-table-column prop="province" label="省份" width="120"> </el-table-column>
@@ -15,8 +15,8 @@
       <el-table-column prop="zip" label="邮编" width="120"> </el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template v-slot="{ row, $index }">
-          <el-button type="text" size="small" @click="handleClick(row, $index)">编辑</el-button>
-          <el-button type="text" size="small" @click="handleClick(row, $index)">查看</el-button>
+          <el-button type="text" @click="handleClick(row, $index)">编辑</el-button>
+          <el-button type="text" @click="handleClick(row, $index)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -78,6 +78,8 @@ onMounted(() => {
 .table {
   .search-bar {
     margin-bottom: 20px;
+    display: inline-flex;
+    align-items: center;
 
     .input {
       width: 200px;
