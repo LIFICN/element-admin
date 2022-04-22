@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import router, { RouteRecordRawExt, constantRoutes } from '@/router'
+import router, { RouteRecordRawExt, constantRoutes, asyncRoutes } from '@/router'
 
 let removeRoutesArr: Function[] = []
 
@@ -13,8 +13,10 @@ export const useRouteStore = defineStore('router', {
   actions: {
     addRoutes(routes: RouteRecordRawExt[]): Promise<void> {
       return new Promise<void>((resolve, _) => {
-        this.routes = constantRoutes.concat(routes)
-        routes.forEach((el) => {
+        const addRouteList = [...routes, ...asyncRoutes]
+        this.routes = constantRoutes.concat(addRouteList)
+
+        addRouteList.forEach((el) => {
           const remove = router.addRoute(el)
           removeRoutesArr.push(remove)
         })

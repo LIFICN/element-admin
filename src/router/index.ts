@@ -3,6 +3,7 @@ const routerHistory = createWebHashHistory()
 
 const Layout = () => import('@/layout/index.vue')
 const ParentView = () => import('@/layout/ParentView.vue')
+const NotFound = () => import('@/views/404/index.vue')
 const login = () => import('@/views/login/index.vue')
 const dashboard = () => import('@/views/dashboard/index.vue')
 const test = () => import('@/views/test/index.vue')
@@ -66,6 +67,22 @@ export const constantRoutes: RouteRecordRawExt[] = [
         meta: { title: 'tabel', icon: 'Bicycle' },
       },
     ],
+  },
+]
+
+export const asyncRoutes = [
+  {
+    path: '/404',
+    hidden: true,
+    component: NotFound,
+    meta: { title: '404' },
+  },
+
+  // 404 page must be placed at the end !!!
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/404',
+    hidden: true,
   },
 ]
 
