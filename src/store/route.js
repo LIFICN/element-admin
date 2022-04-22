@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import router, { constantRoutes } from '@/router'
+import router, { constantRoutes, asyncRoutes } from '@/router'
 
 let removeRoutesArr = []
 
@@ -18,8 +18,10 @@ export const useRouteStore = defineStore('router', {
           return
         }
 
-        this.routes = constantRoutes.concat(routes)
-        routes.forEach((el) => {
+        const addRouteList = [...routes, ...asyncRoutes]
+        this.routes = constantRoutes.concat(addRouteList)
+
+        addRouteList.forEach((el) => {
           const remove = router.addRoute(el)
           removeRoutesArr.push(remove)
         })
