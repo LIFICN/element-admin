@@ -36,7 +36,7 @@ const { routesGetter: routesArr } = storeToRefs(useRouteStore())
 const currentRoute = computed(() => {
   const param = {
     ...route.meta,
-    path: route.path,
+    path: route.fullPath,
   }
 
   return param || {}
