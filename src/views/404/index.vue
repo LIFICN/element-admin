@@ -11,8 +11,7 @@
   </div>
 </template>
 
-<script setup>
-</script>
+<script setup></script>
 
 <style lang="scss" scoped>
 $color: rgb(#1890ff, 0.95);

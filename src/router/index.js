@@ -69,7 +69,6 @@ export const constantRoutes = [
 export const asyncRoutes = [
   {
     path: '/404',
-    component: Layout,
     hidden: true,
     component: NotFound,
     meta: { title: '404' },
@@ -80,7 +79,7 @@ export const asyncRoutes = [
     path: '/:pathMatch(.*)*',
     redirect: '/404',
     hidden: true,
-  }
+  },
 ]
 
 const router = createRouter({
