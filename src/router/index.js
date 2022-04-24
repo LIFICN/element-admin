@@ -3,7 +3,7 @@ const routerHistory = createWebHashHistory()
 
 const Layout = () => import('@/layout/index.vue')
 const ParentView = () => import('@/layout/ParentView.vue')
-const NotFound = () => import('@/views/404/index.vue')
+const ErrorPage = () => import('@/views/error-page/index.vue')
 const login = () => import('@/views/login/index.vue')
 const dashboard = () => import('@/views/dashboard/index.vue')
 const test = () => import('@/views/test/index.vue')
@@ -70,7 +70,7 @@ export const asyncRoutes = [
   {
     path: '/404',
     hidden: true,
-    component: NotFound,
+    component: ErrorPage,
     meta: { title: '404' },
   },
 
