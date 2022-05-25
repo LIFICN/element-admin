@@ -13,10 +13,10 @@
       <el-table-column prop="city" label="市区" width="120"> </el-table-column>
       <el-table-column prop="address" label="地址"> </el-table-column>
       <el-table-column prop="zip" label="邮编" width="120"> </el-table-column>
-      <el-table-column fixed="right" label="操作" width="100">
+      <el-table-column fixed="right" label="操作" width="120">
         <template v-slot="{ row, $index }">
-          <el-button type="text" @click="handleClick(row, $index)">编辑</el-button>
-          <el-button type="text" @click="handleClick(row, $index)">查看</el-button>
+          <el-button link type="primary" @click="handleClick(row, $index)">编辑</el-button>
+          <el-button link type="primary" @click="handleClick(row, $index)">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
