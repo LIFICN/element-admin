@@ -2,7 +2,7 @@
   <router-view />
 </template>
 
-<style>
+<style lang="scss">
 @import url('@/styles/transition.scss');
 
 html,
@@ -15,5 +15,6 @@ body {
 
 #app {
   height: 100%;
+  box-sizing: border-box;
 }
 </style>
