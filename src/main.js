@@ -22,10 +22,14 @@ import 'nprogress/nprogress.css'
 //pinia
 import { createPinia } from 'pinia'
 
+//element-plus utils
+import { useElementPlusIcons } from '@/utils/element-plus'
+
 const app = createApp(App)
 app.use(router)
 app.use(createPinia())
 app.use(ElementPlus, { locale: zhCn })
 globComponents(app)
 importDirectives(app)
+useElementPlusIcons(app)
 app.mount('#app')

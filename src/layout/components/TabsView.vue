@@ -9,7 +9,7 @@
     >
       <span class="title">{{ item.title }}</span>
       <el-icon class="close-icon" @click.stop="tabRemove(index)" v-if="!item.affix">
-        <Close />
+        <CloseIcon />
       </el-icon>
     </div>
   </el-scrollbar>
@@ -20,7 +20,6 @@ import { reactive, watch, computed, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useRouteStore } from '@/store/route'
 import { storeToRefs } from 'pinia'
-import { Close } from '@element-plus/icons-vue'
 
 const route = useRoute()
 const router = useRouter()

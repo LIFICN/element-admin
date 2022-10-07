@@ -1,13 +1,13 @@
 <template>
   <div class="nav-bar">
     <el-icon @click="menuCollapse">
-      <component :is="isCollapse ? Expand : Fold"></component>
+      <component :is="isCollapse ? 'ExpandIcon' : 'FoldIcon'"></component>
     </el-icon>
 
     <div>
       <el-dropdown>
         <el-icon class="setting-icon">
-          <Setting />
+          <SettingIcon />
         </el-icon>
 
         <template #dropdown>
@@ -22,10 +22,9 @@
 </template>
 
 <script setup>
-import { computed, toRefs } from 'vue'
+import { toRefs } from 'vue'
 import { useUserStore } from '@/store/user'
 import { useRouter } from 'vue-router'
-import { Fold, Expand, Setting } from '@element-plus/icons-vue'
 
 const emits = defineEmits(['update:isCollapse'])
 

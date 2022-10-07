@@ -1,12 +1,12 @@
 <template>
   <el-menu-item :index="fullPath" v-if="!item.hidden && isSingleItem">
-    <el-icon><component :is="Icons[options.icon]" /></el-icon>
+    <el-icon><component :is="options.icon" /></el-icon>
     <template #title>{{ options.title }}</template>
   </el-menu-item>
 
   <el-sub-menu :index="fullPath" v-else-if="!item.hidden && !isSingleItem">
     <template #title>
-      <el-icon><component :is="Icons[options.icon]" /></el-icon>
+      <el-icon><component :is="options.icon" /></el-icon>
       <span>{{ options.title }}</span>
     </template>
 
@@ -17,7 +17,6 @@
 
 <script setup>
 import { computed } from 'vue'
-import * as Icons from '@element-plus/icons-vue'
 
 const props = defineProps({
   item: {
