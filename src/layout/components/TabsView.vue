@@ -74,7 +74,7 @@ function tabClick(index: number) {
 
 function srollTo(tag: string) {
   nextTick(() => {
-    const target = <HTMLElement>document.getElementById(tag)
+    const target = document.getElementById(tag) as HTMLElement
     if (!target) return
     const item = target!.parentNode!.parentNode! as HTMLElement
     item.scrollLeft = target.offsetLeft - 20 //因为有左右padding所以减去20
