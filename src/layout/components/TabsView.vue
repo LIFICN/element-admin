@@ -9,7 +9,7 @@
     >
       <span class="title">{{ item.title }}</span>
       <el-icon class="close-icon" @click.stop="tabRemove(index)" v-if="!item.affix">
-        <Close />
+        <CloseIcon />
       </el-icon>
     </div>
   </el-scrollbar>
@@ -21,7 +21,6 @@ import { RouteMeta, useRoute, useRouter } from 'vue-router'
 import { useRouteStore } from '@/store/route'
 import { RouteRecordRawExt } from '@/router'
 import { storeToRefs } from 'pinia'
-import { Close } from '@element-plus/icons-vue'
 
 type RouteMetaExt = RouteMeta & {
   path: string

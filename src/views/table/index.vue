@@ -1,7 +1,7 @@
 <template>
   <div class="table">
     <div class="search-bar">
-      <el-input placeholder="请输入内容" v-model="state.input" class="input" clearable :prefix-icon="Search">
+      <el-input placeholder="请输入内容" v-model="state.input" class="input" clearable prefix-icon="SearchIcon">
       </el-input>
       <el-button type="primary" class="search-btn">搜索</el-button>
     </div>
@@ -37,7 +37,6 @@
 <script lang="ts" setup>
 import { reactive, onMounted } from 'vue'
 import TableForm from './components/TableForm.vue'
-import { Search } from '@element-plus/icons-vue'
 
 const state = reactive({
   tableData: [] as any[],

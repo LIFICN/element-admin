@@ -4,10 +4,10 @@ const routerHistory = createWebHashHistory()
 const Layout = () => import('@/layout/index.vue')
 const ParentView = () => import('@/layout/ParentView.vue')
 const ErrorPage = () => import('@/views/error-page/index.vue')
-const login = () => import('@/views/login/index.vue')
-const dashboard = () => import('@/views/dashboard/index.vue')
-const test = () => import('@/views/test/index.vue')
-const table = () => import('@/views/table/index.vue')
+const Login = () => import('@/views/login/index.vue')
+const Dashboard = () => import('@/views/dashboard/index.vue')
+const Test = () => import('@/views/test/index.vue')
+const Table = () => import('@/views/table/index.vue')
 
 export type RouteRecordRawExt = RouteRecordRaw & {
   hidden?: Boolean
@@ -16,44 +16,44 @@ export type RouteRecordRawExt = RouteRecordRaw & {
 //https://next.router.vuejs.org/zh/index.html
 export const constantRoutes: RouteRecordRawExt[] = [
   { path: '/', redirect: '/dashboard', hidden: true },
-  { path: '/login', component: login, hidden: true },
+  { path: '/login', component: Login, hidden: true },
   {
     path: '/dashboard',
     component: Layout,
     children: [
       {
         path: '',
-        component: dashboard,
-        meta: { title: 'dashboard', icon: 'Aim', affix: true }, //affix为是否固定选项卡
+        component: Dashboard,
+        meta: { title: 'dashboard', icon: 'AimIcon', affix: true }, //affix为是否固定选项卡
       },
     ],
   },
   {
     path: '/menus',
     component: Layout,
-    meta: { title: 'menus', icon: 'AddLocation' },
+    meta: { title: 'menus', icon: 'AddLocationIcon' },
     children: [
       {
         path: 'menu1',
         component: ParentView,
-        meta: { title: 'menu1', icon: 'Apple' },
+        meta: { title: 'menu1', icon: 'AppleIcon' },
         children: [
           {
             path: 'menu1-1',
             component: ParentView,
-            meta: { title: 'menu1-1', icon: 'AlarmClock' },
+            meta: { title: 'menu1-1', icon: 'AlarmClockIcon' },
           },
           {
             path: 'menu1-2',
             component: ParentView,
-            meta: { title: 'menu1-2', icon: 'Bell' },
+            meta: { title: 'menu1-2', icon: 'BellIcon' },
           },
         ],
       },
       {
         path: 'test',
-        component: test,
-        meta: { title: 'test', icon: 'Baseball' },
+        component: Test,
+        meta: { title: 'test', icon: 'BaseballIcon' },
       },
     ],
   },
@@ -63,8 +63,8 @@ export const constantRoutes: RouteRecordRawExt[] = [
     children: [
       {
         path: '',
-        component: table,
-        meta: { title: 'tabel', icon: 'Bicycle' },
+        component: Table,
+        meta: { title: 'tabel', icon: 'BicycleIcon' },
       },
     ],
   },

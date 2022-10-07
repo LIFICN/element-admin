@@ -14,7 +14,7 @@
 
       <el-form-item prop="username">
         <el-icon class="login-icon">
-          <User />
+          <UserIcon />
         </el-icon>
 
         <el-input
@@ -29,7 +29,7 @@
 
       <el-form-item prop="password">
         <el-icon class="login-icon">
-          <Lock />
+          <LockIcon />
         </el-icon>
 
         <el-input
@@ -66,7 +66,6 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/user'
-import { User, Lock } from '@element-plus/icons-vue'
 import type { FormInstance } from 'element-plus'
 
 const store = useUserStore()
