@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    custom-class="custom-modal-wrap"
+    class="custom-modal-wrap"
     :title="title"
     v-model="dialogVisible"
     :close-on-click-modal="closeOnClickModal"
