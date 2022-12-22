@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
-import path from 'path'
+import { fileURLToPath, URL } from 'node:url'
 
 // https://cn.vitejs.dev/
 export default defineConfig({
@@ -11,10 +11,9 @@ export default defineConfig({
     cors: true, //跨域
     host: '0.0.0.0', //ip地址
   },
-  base: '/', //根路径
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'), // 转换 '@' to 'src'
+      '@': fileURLToPath(new URL('./src', import.meta.url)), // 转换 '@' to 'src'
     },
   },
 })
