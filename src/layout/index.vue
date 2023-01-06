@@ -12,7 +12,7 @@
       <el-scrollbar class="app-main">
         <router-view v-slot="{ Component }">
           <transition name="fade-transform" mode="out-in">
-            <component :is="Component" />
+            <component :is="Component" :key="$route.fullPath" />
           </transition>
         </router-view>
       </el-scrollbar>
