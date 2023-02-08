@@ -1,14 +1,14 @@
-export type DataType = 'object' | 'formData'
 export type ResponseType = 'text' | 'json' | 'blob' | 'arrayBuffer'
-export type RequestInitExt = RequestInit & { data: any; dataType?: DataType; responseType?: ResponseType }
+export type RequestInitExt = RequestInit & { data: any; responseType?: ResponseType }
 
 export interface RequestObj<T> {
   data: T
   method: string
   url: string
   headers?: Record<string, string>
-  dataType?: DataType //object 或者 formData
   responseType?: ResponseType //text json blob arrayBuffer
+  credentials?: RequestCredentials | undefined
+  cache?: RequestCache
 }
 
 export interface Interceptor {
@@ -20,8 +20,14 @@ export interface Interceptor {
 //fetch拦截器
 const interceptor: Interceptor = {
   request(req: RequestInitExt): RequestInitExt {
-    if (!req.headers || !(req.headers as Record<string, string>)['Content-Type']) {
+    const headers = (req.headers || {}) as Record<string, string>
+
+    if (!headers || !headers['Content-Type']) {
       req.headers = { 'Content-Type': 'application/json' }
+    }
+
+    if (req.responseType === 'blob') {
+      req.headers = { ...req.headers, 'Content-Type': '' }
     }
 
     return req
@@ -34,11 +40,13 @@ const interceptor: Interceptor = {
   },
 }
 
-const BaseUrl = '' //环境变量URL
+const BaseUrl = process.env.REACT_APP_BASE_URL //环境变量URL
 const Timeout = 6000 //接口超时时间
 
-export default function request({ data, method, url, headers, dataType, responseType }: RequestObj<any>): Promise<any> {
-  return createFetch(BaseUrl + url, { data, method, headers, dataType, responseType }, interceptor, Timeout)
+export default function request(obj: RequestObj<any>): Promise<any> {
+  const { data, method, url, headers, responseType, credentials, cache } = obj
+  const options: RequestInitExt = { data, method, headers, responseType, credentials, cache }
+  return createFetch(!url.startsWith('http') ? BaseUrl + url : url, options, interceptor, Timeout)
 }
 
 //创建fetch请求
@@ -46,23 +54,25 @@ const createFetch = (url: string, options: RequestInitExt, interceptor?: Interce
   return new Promise<any>(async (resolve, reject) => {
     try {
       options = interceptor?.request?.(options) || options
-      options.dataType = options.dataType || 'object'
       options.responseType = options.responseType || 'json'
       options.method = options.method?.toUpperCase() || 'GET'
-      options.data = options.data || {}
+      options.data = options.data || null
+      options.credentials = options.credentials || 'same-origin' //处理是否携带cookie
+      options.cache = options.cache || 'default' //处理缓存
 
       //处理fetch请求参数
-      const isObj = options.dataType === 'object'
-      options.body = !isObj ? options.data : null
+      const isObj = Object.prototype.toString.call(options.data) === '[object Object]'
+      const isArray = Object.prototype.toString.call(options.data) === '[object Array]'
+      options.body = isObj || isArray || options.method === 'GET' ? null : options.data
 
-      if (options.method === 'GET' && isObj) {
+      if (options.method === 'GET' && (isObj || isArray)) {
         const keys = Object.keys(options.data)
         let searchStr: string = keys.length > 0 ? '?' + new URLSearchParams(options.data).toString() : ''
         url = url + searchStr
       }
 
-      if (options.method !== 'GET' && isObj) {
-        const contentType: string | null = (options.headers as { [key: string]: string })['Content-Type']
+      if (options.method !== 'GET' && (isObj || isArray)) {
+        const contentType: string | undefined = ((options.headers || {}) as { [key: string]: string })['Content-Type']
         if (contentType?.includes('application/json')) options.body = JSON.stringify(options.data)
         if (contentType?.includes('application/x-www-form-urlencoded')) options.body = new URLSearchParams(options.data)
       }
@@ -75,7 +85,7 @@ const createFetch = (url: string, options: RequestInitExt, interceptor?: Interce
       }, timeout || 6000)
 
       //执行fetch请求
-      const response: Response = await fetch(url, { ...options, credentials: 'include', signal }) //处理cookie
+      const response: Response = await fetch(url, { ...options, signal }) //处理cookie
 
       //处理fetch状态码不抛异常的问题
       if (response.status >= 300)
