@@ -35,7 +35,7 @@
     <el-form-item>
       <el-button type="primary" @click="submitForm">立即提交</el-button>
       <el-button @click="resetForm">重置</el-button>
-      <el-button @click="canelForm">取消</el-button>
+      <el-button @click="cancelForm">取消</el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -44,7 +44,7 @@
 import type { FormInstance } from 'element-plus'
 import { reactive, ref } from 'vue'
 
-const emits = defineEmits(['submit', 'canel'])
+const emits = defineEmits(['submit', 'cancel'])
 
 const checkAge = (rule: any, value: any, callback: Function) => {
   if (!value) return callback(new Error('年龄不能为空'))
@@ -90,8 +90,8 @@ function resetForm() {
   ruleFormRef?.value?.resetFields()
 }
 
-function canelForm() {
-  emits('canel')
+function cancelForm() {
+  emits('cancel')
 }
 </script>
 
