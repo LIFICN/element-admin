@@ -29,7 +29,7 @@
     />
 
     <Modal title="这是一个标题" width="600px" v-model="state.dialogVisible">
-      <TableForm @submit="submit" @canel="canel" />
+      <TableForm @submit="submit" @cancel="cancel" />
     </Modal>
   </div>
 </template>
@@ -51,7 +51,7 @@ function handleClick(row, index) {
   console.log(row, index)
 }
 
-function canel() {
+function cancel() {
   state.dialogVisible = false
 }
 

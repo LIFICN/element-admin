@@ -12,7 +12,7 @@
 
 <script setup>
 import { reactive, watch } from 'vue'
-const emits = defineEmits(['update:currentPage', 'update:pageSize'])
+const emits = defineEmits(['update:currentPage', 'update:pageSize', 'change'])
 
 const props = defineProps({
   total: {
@@ -41,12 +41,18 @@ const state = reactive({ currentPage: 1, pageSize: 10 })
 
 watch(
   () => state.currentPage,
-  (val, _) => emits('update:currentPage', val)
+  (val, _) => {
+    emits('update:currentPage', val)
+    emits('change')
+  }
 )
 
 watch(
   () => state.pageSize,
-  (val, _) => emits('update:pageSize', val)
+  (val, _) => {
+    emits('update:pageSize', val)
+    emits('change')
+  }
 )
 
 watch(

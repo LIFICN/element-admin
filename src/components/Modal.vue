@@ -13,7 +13,7 @@
     <slot />
     <template v-if="showFooter" #footer>
       <span>
-        <el-button @click="canel">取 消</el-button>
+        <el-button @click="cancel">取 消</el-button>
         <el-button type="primary" @click="submit">确 定</el-button>
       </span>
     </template>
@@ -23,7 +23,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 
-const emits = defineEmits(['canel', 'submit', 'update:modelValue'])
+const emits = defineEmits(['cancel', 'submit', 'update:modelValue'])
 
 const props = defineProps({
   width: {
@@ -62,7 +62,7 @@ const props = defineProps({
 
 const dialogVisible = ref(false)
 
-const canel = () => emits('canel')
+const cancel = () => emits('cancel')
 const submit = () => emits('submit')
 const closed = () => emits('update:modelValue', false)
 

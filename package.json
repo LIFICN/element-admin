@@ -21,7 +21,6 @@
     "@vitejs/plugin-vue": "^4.0.0",
     "prettier": "2.6.1",
     "sass": "^1.44.0",
-    "unplugin-vue-components": "^0.22.12",
     "vite": "^4.0.0"
   }
 }
