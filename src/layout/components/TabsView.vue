@@ -1,5 +1,5 @@
 <template>
-  <el-scrollbar class="tab-scrollbar" view-class="tabs-view">
+  <div class="tab-scrollbar">
     <div
       :class="[{ active: state.currentIndex == index }, 'tab-item']"
       v-for="(item, index) in state.tabList"
@@ -8,11 +8,16 @@
       @click="tabClick(index)"
     >
       <span class="title">{{ item.title }}</span>
-      <el-icon class="close-icon" @click.stop="tabRemove(index)" v-if="!item.affix">
-        <CloseIcon />
-      </el-icon>
+      <i class="close-icon" @click.stop="tabRemove(index)" v-if="!item.affix">
+        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M567.168 512l189.184 188.352a40.064 40.064 0 0 1 0.768 55.68 37.76 37.76 0 0 1-54.4 0.832L512 566.912l-190.72 189.952a37.76 37.76 0 0 1-54.4-0.768 40.064 40.064 0 0 1 0.768-55.68L456.832 512 267.648 323.648a40.064 40.064 0 0 1-0.768-55.68 37.76 37.76 0 0 1 54.4-0.832L512 457.088l190.72-189.952a37.76 37.76 0 0 1 54.4 0.768 40.064 40.064 0 0 1-0.768 55.68L567.168 512z"
+            fill="#666"
+          ></path>
+        </svg>
+      </i>
     </div>
-  </el-scrollbar>
+  </div>
 </template>
 
 <script setup>
@@ -24,21 +29,18 @@ import { storeToRefs } from 'pinia'
 const route = useRoute()
 const router = useRouter()
 let affixRoutes = []
+const { routesGetter: routesArr } = storeToRefs(useRouteStore())
 
 const state = reactive({
   tabList: [],
   currentIndex: 0,
 })
 
-const { routesGetter: routesArr } = storeToRefs(useRouteStore())
-
 const currentRoute = computed(() => {
-  const param = {
+  return {
     ...route.meta,
     path: route.fullPath,
   }
-
-  return param || {}
 })
 
 function tabRemove(target) {
@@ -56,7 +58,6 @@ function tabRemove(target) {
     //位置向后偏移
     if (target == lastIndex) state.currentIndex--
     else state.currentIndex = target //位置不偏移(当前元素已删除),自动切换下一个元素
-
     router.replace(state.tabList[state.currentIndex].path)
   }
 }
@@ -71,7 +72,7 @@ function srollTo(tag) {
   nextTick(() => {
     const target = document.getElementById(tag)
     if (!target) return
-    target.parentNode.parentNode.scrollLeft = target.offsetLeft - 20 //因为有左右padding所以减去20
+    target.parentNode.scrollLeft = target.offsetLeft - 20 //因为有左右padding所以减去20
   })
 }
 
@@ -89,11 +90,9 @@ function watchCurrentIndex(newVal, _) {
 
 function watchRoutesArr(newVal, oldVal) {
   if (oldVal && newVal.length === oldVal.length) return
-
   affixRoutes = []
-  newVal.forEach((el) => recursionRoutes(el))
-
   let addArr = []
+  newVal.forEach((el) => recursionRoutes(el))
   affixRoutes.forEach((el) => {
     if (!state.tabList.some((tb) => tb.title === el.title)) addArr.push(el)
   })
@@ -105,10 +104,8 @@ function watchRoutesArr(newVal, oldVal) {
 
 function recursionRoutes(val) {
   const { path: rootPath, children, meta } = val
-
   if (meta && meta.affix) affixRoutes.push({ ...meta, path: rootPath })
   if (!children) return
-
   children.forEach((el) => {
     let basePath = el.path ? `${rootPath}/${el.path}` : rootPath
     recursionRoutes({ path: basePath, meta: el.meta, children: el.children })
@@ -122,50 +119,79 @@ watch(() => ({ ...currentRoute.value }), watchCurrentRoute, { deep: true, immedi
 
 <style lang="scss" scoped>
 .tab-scrollbar {
-  padding: 0 20px;
+  padding: 0 18px;
   box-shadow: 0 1px 4px rgb(0, 21, 41, 0.08);
   height: 50px;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  overflow-y: hidden;
 
-  ::v-deep(.tabs-view) {
+  .tab-item {
+    border: 1px solid #dcdfe6;
+    border-radius: 3px;
+    height: 26px;
+    cursor: pointer;
+    color: #303133;
+    margin-right: 8px;
+    white-space: nowrap;
     display: flex;
     align-items: center;
-    height: 100%;
+    padding: 0 7px;
+    justify-content: space-between;
 
-    .tab-item {
-      border: 1px solid #dcdfe6;
-      border-radius: 3px;
-      height: 28px;
-      cursor: pointer;
-      color: #303133;
-      margin-right: 8px;
-      white-space: nowrap;
-      display: flex;
-      align-items: center;
-      padding: 0 10px;
-      justify-content: space-between;
-
-      .title {
-        font-size: 14px;
-        font-weight: 500;
-      }
-
-      .close-icon {
-        color: #999999;
-        font-size: 12px;
-        margin-left: 10px;
-      }
+    .title {
+      font-size: 14px;
+      font-weight: 500;
     }
 
-    .active {
+    .close-icon {
+      margin-left: 6px;
+      width: 16px;
+      height: 16px;
+      overflow: hidden;
+    }
+  }
+
+  .active {
+    color: #1890ff;
+    background: #e8f4ff;
+    border: 1px solid #1890ff;
+
+    .close-icon {
       color: #1890ff;
-      background: #e8f4ff;
-      border: 1px solid #1890ff;
+    }
 
-      .close-icon {
-        color: #1890ff;
+    svg {
+      path {
+        fill: #1890ff;
       }
     }
+  }
+
+  &::-webkit-scrollbar {
+    width: 10px; /* 宽度 */
+    height: 10px; /* 高度 */
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #fcfcfc; /* 淡色轨道背景 */
+    border-radius: 5px; /* 圆角 */
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ddd; /* 淡色滑块 */
+    border-radius: 5px; /* 圆角 */
+    border: 2px solid #fcfcfc; /* 边框 */
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #ccc; /* 更淡的悬停颜色 */
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background-color: #bbb; /* 最淡的滑动颜色 */
   }
 }
 </style>

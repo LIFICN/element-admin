@@ -178,7 +178,7 @@ $light_gray: #eee;
     }
   }
 
-  ::v-deep() {
+  :deep() {
     .el-input {
       height: 47px;
       width: 85%;
