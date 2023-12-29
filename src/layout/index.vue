@@ -1,12 +1,9 @@
 <template>
   <div class="app-container">
-    <div class="sidebar-container" :style="{ width: sidebarWidth }">
-      <SidebarLogo :isCollapse="isCollapse" />
-      <SidebarMenu ref="sidebarMenu" :isCollapse="isCollapse" />
-    </div>
+    <SidebarMenu ref="sidebarMenu" :collapse="collapse" :width="sidebarWidth" @change="setCollapse" />
 
     <div class="main-container" :style="{ left: sidebarWidth, width: `calc(100% - ${sidebarWidth})` }">
-      <Navbar v-model:isCollapse="isCollapse" />
+      <Navbar />
       <TabsView />
 
       <div class="app-main">
@@ -21,14 +18,12 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import SidebarMenu from './components/SidebarMenu.vue'
-import Navbar from './components/Navbar.vue'
-import TabsView from './components/TabsView.vue'
-import SidebarLogo from './components/SidebarLogo.vue'
+import SidebarMenu from './components/SidebarMenu/index.vue'
+import Navbar from './components/Navbar/index.vue'
+import TabsView from './components/TabsView/index.vue'
+import { useCollapse } from './hooks'
 
-const isCollapse = ref(false)
-const sidebarWidth = computed(() => (isCollapse.value ? '64px' : '200px'))
+const [collapse, sidebarWidth, setCollapse] = useCollapse()
 </script>
 
 <style lang="scss" scoped>
@@ -37,16 +32,6 @@ const sidebarWidth = computed(() => (isCollapse.value ? '64px' : '200px'))
   width: 100%;
   height: 100%;
   position: relative;
-
-  .sidebar-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    box-sizing: border-box;
-    will-change: width;
-    transition: width 0.26s ease;
-  }
 
   .main-container {
     position: absolute;

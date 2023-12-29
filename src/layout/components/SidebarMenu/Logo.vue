@@ -1,9 +1,9 @@
 <template>
-  <router-link :class="['sidebar-logo-wrap', { 'sidebar-logo-wrap-collapse': isCollapse }]" to="/">
+  <router-link :class="['sidebar-logo-wrap', { 'sidebar-logo-wrap-collapse': collapse }]" to="/">
     <img v-if="logo" :src="logo" class="sidebar-logo" />
 
     <transition name="sidebarLogoTitleFade">
-      <h1 v-if="!isCollapse" class="sidebar-logo-title">{{ title }}</h1>
+      <h1 v-if="!collapse" class="sidebar-logo-title">{{ title }}</h1>
     </transition>
   </router-link>
 </template>
@@ -12,7 +12,7 @@
 import { ref } from 'vue'
 
 defineProps({
-  isCollapse: {
+  collapse: {
     type: Boolean,
     required: true,
   },
@@ -23,7 +23,8 @@ const logo = ref('https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef525
 </script>
 
 <style lang="scss" scoped>
-$sidebarBg: #304156;
+$sidebarBg: transparent;
+$sidebarText: #333;
 
 .sidebarLogoTitleFade-enter-active {
   transition: opacity 1s;
@@ -53,7 +54,7 @@ $sidebarBg: #304156;
   .sidebar-logo-title {
     display: inline-block;
     margin: 0;
-    color: #fff;
+    color: $sidebarText;
     font-weight: 600;
     font-size: 14px;
     white-space: nowrap;

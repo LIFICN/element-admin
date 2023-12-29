@@ -1,10 +1,6 @@
 <template>
   <div class="nav-bar">
-    <el-icon @click="menuCollapse">
-      <component :is="isCollapse ? 'ExpandIcon' : 'FoldIcon'"></component>
-    </el-icon>
-
-    <div>
+    <div class="right-slot">
       <el-dropdown>
         <el-icon class="setting-icon">
           <SettingIcon />
@@ -22,24 +18,11 @@
 </template>
 
 <script setup>
-import { toRefs } from 'vue'
 import { useUserStore } from '@/store/user'
 import { useRouter } from 'vue-router'
 
-const emits = defineEmits(['update:isCollapse'])
-
-const props = defineProps({
-  isCollapse: {
-    type: Boolean,
-    default: false,
-  },
-})
-
 const store = useUserStore()
 const router = useRouter()
-const { isCollapse } = toRefs(props)
-
-const menuCollapse = () => emits('update:isCollapse', !isCollapse.value)
 
 function logout() {
   store.logout().then(() => {
@@ -57,18 +40,12 @@ $appHeaderBg: #ffffff;
   width: 100%;
   background-color: $appHeaderBg;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   color: #333;
   border: 1px solid #f6f6f6;
 
-  > :first-child {
-    margin-left: 20px;
-    font-size: 22px;
-    cursor: pointer;
-  }
-
-  > :last-child {
+  .right-slot {
     margin-right: 20px;
     font-size: 16px;
     display: flex;
