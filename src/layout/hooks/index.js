@@ -2,7 +2,7 @@ import { ref, computed } from 'vue'
 
 export function useCollapse() {
   const isCollapse = ref(false)
-  const sidebarWidth = computed(() => (isCollapse.value ? '64px' : '200px'))
+  const sidebarWidth = computed(() => (isCollapse.value ? '72px' : '240px'))
 
   function setCollapse() {
     isCollapse.value = !isCollapse.value

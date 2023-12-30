@@ -3,8 +3,6 @@
 </template>
 
 <style lang="scss">
-@import url('@/styles/transition.scss');
-
 html,
 body {
   padding: 0;

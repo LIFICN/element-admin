@@ -120,13 +120,14 @@ watch(() => ({ ...currentRoute.value }), watchCurrentRoute, { deep: true, immedi
 <style lang="scss" scoped>
 .tab-scrollbar {
   padding: 0 18px;
-  box-shadow: 0 1px 4px rgb(0, 21, 41, 0.08);
   height: 50px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
   overflow-x: auto;
   overflow-y: hidden;
+  border-bottom: 1px solid rgba(5, 5, 5, 0.06);
+  //box-shadow: 0 1px 4px rgb(0, 21, 41, 0.06);
 
   .tab-item {
     border: 1px solid #dcdfe6;

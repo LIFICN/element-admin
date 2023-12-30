@@ -1,29 +1,60 @@
 <template>
   <div class="app-container">
-    <SidebarMenu ref="sidebarMenu" :collapse="collapse" :width="sidebarWidth" @change="setCollapse" />
+    <div class="sidebarmenu-wrap" :style="{ width: sidebarWidth }">
+      <Sidebar :collapse="collapse" @collapse-change="setCollapse" width="auto" :list="menuList" />
+    </div>
 
     <div class="main-container" :style="{ left: sidebarWidth, width: `calc(100% - ${sidebarWidth})` }">
       <Navbar />
       <TabsView />
-
-      <div class="app-main">
-        <router-view v-slot="{ Component }">
-          <transition name="fade-transform" mode="out-in">
-            <component :is="Component" :key="$route.fullPath" />
-          </transition>
-        </router-view>
-      </div>
+      <AppMain />
     </div>
   </div>
 </template>
 
 <script setup>
-import SidebarMenu from './components/SidebarMenu/index.vue'
+import Sidebar from './components/Sidebar/index.vue'
 import Navbar from './components/Navbar/index.vue'
 import TabsView from './components/TabsView/index.vue'
+import AppMain from './components/AppMain/index.vue'
 import { useCollapse } from './hooks'
-
+import { reactive } from 'vue'
 const [collapse, sidebarWidth, setCollapse] = useCollapse()
+
+const menuList = reactive([
+  {
+    key: '1',
+    label: '菜单1',
+  },
+  {
+    key: '2',
+    label: '菜单2',
+    children: [
+      {
+        key: '2-1',
+        label: '菜单2-1',
+      },
+      {
+        key: '2-2',
+        label: '菜单2-2',
+      },
+      {
+        key: '2-3',
+        label: '菜单2-3',
+        children: [
+          {
+            key: '2-3-1',
+            label: '菜单2-3-1',
+          },
+          {
+            key: '2-3-2',
+            label: '菜单2-3-2',
+          },
+        ],
+      },
+    ],
+  },
+])
 </script>
 
 <style lang="scss" scoped>
@@ -32,6 +63,18 @@ const [collapse, sidebarWidth, setCollapse] = useCollapse()
   width: 100%;
   height: 100%;
   position: relative;
+
+  .sidebarmenu-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    box-sizing: border-box;
+    will-change: width;
+    transition: width 0.26s ease;
+    border-right: 1px solid rgba(5, 5, 5, 0.06);
+    padding: 0 4px;
+  }
 
   .main-container {
     position: absolute;
@@ -43,37 +86,6 @@ const [collapse, sidebarWidth, setCollapse] = useCollapse()
     will-change: left;
     transition: left 0.26s ease;
     height: 100%;
-
-    .app-main {
-      padding: 13px 13px 0 13px;
-      flex: 1;
-      overflow-y: auto;
-      overflow-x: hidden;
-
-      &::-webkit-scrollbar {
-        width: 10px; /* 宽度 */
-        height: 10px; /* 高度 */
-      }
-
-      &::-webkit-scrollbar-track {
-        background-color: #fcfcfc; /* 淡色轨道背景 */
-        border-radius: 5px; /* 圆角 */
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background-color: #ddd; /* 淡色滑块 */
-        border-radius: 5px; /* 圆角 */
-        border: 2px solid #fcfcfc; /* 边框 */
-      }
-
-      &::-webkit-scrollbar-thumb:hover {
-        background-color: #ccc; /* 更淡的悬停颜色 */
-      }
-
-      &::-webkit-scrollbar-thumb:active {
-        background-color: #bbb; /* 最淡的滑动颜色 */
-      }
-    }
   }
 }
 </style>
