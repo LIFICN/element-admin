@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar-container" :style="{ width: width }">
     <Logo :collapse="collapse" />
-    <VMenus :collapse="collapse" :list="list" :active-key="activeKey">
+    <VMenus :collapse="collapse" :active-key="'/dashboard'" :list="routes">
       <template #icon="{ item, active }">
         <el-icon :color="active ? '#1677ff' : 'inherit'" :size="16">
           <component :is="item.icon" />
@@ -26,13 +26,9 @@
 <script setup>
 import Logo from './Logo.vue'
 import VMenus from '../VMenus/index.vue'
+import { useCovertRoutes } from '../../hooks'
 
 defineProps({
-  list: {
-    type: Array,
-    default: () => [],
-    required: true,
-  },
   collapse: {
     type: Boolean,
     default: false,
@@ -42,13 +38,61 @@ defineProps({
     type: String,
     default: '240px',
   },
-  activeKey: {
-    type: String,
-    default: '',
-  },
 })
 
 const emits = defineEmits(['collapse-change'])
+const [routes] = useCovertRoutes()
+
+// const menuList = reactive([
+//   {
+//     icon: 'StarIcon',
+//     key: '1',
+//     label: '菜单1',
+//   },
+//   {
+//     icon: 'HouseIcon',
+//     key: '2',
+//     label: '菜单2',
+//     children: [
+//       {
+//         key: '2-1',
+//         label: '菜单2-1',
+//       },
+//       {
+//         key: '2-2',
+//         label: '菜单2-2',
+//       },
+//       {
+//         key: '2-3',
+//         label: '菜单2-3',
+//         children: [
+//           {
+//             key: '2-3-1',
+//             label: '菜单2-3-1',
+//           },
+//           {
+//             key: '2-3-2',
+//             label: '菜单2-3-2',
+//           },
+//           {
+//             key: '2-4',
+//             label: '菜单2-4',
+//             children: [
+//               {
+//                 key: '2-4-1',
+//                 label: '菜单2-4-1',
+//               },
+//               {
+//                 key: '2-4-2',
+//                 label: '菜单2-4-2',
+//               },
+//             ],
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ])
 </script>
 
 <style lang="scss" scoped>

@@ -1,4 +1,5 @@
-import { ref, computed } from 'vue'
+import { ref, computed, readonly, watch } from 'vue'
+import { useRouteStore } from '@/store/route'
 
 export function useCollapse() {
   const isCollapse = ref(false)
@@ -9,4 +10,47 @@ export function useCollapse() {
   }
 
   return [isCollapse, sidebarWidth, setCollapse]
+}
+
+export function useCovertRoutes() {
+  const store = useRouteStore() //获取路由列表
+  const routeArr = ref([])
+
+  watch(
+    () => store.routesGetter,
+    (newVal) => (routeArr.value = forEachRoutes(newVal || [], '')),
+    { deep: true, immediate: true }
+  )
+
+  function forEachRoutes(routes = [], basePath = '') {
+    if (!routes || routes.length == 0) return []
+    const res = []
+
+    routes.forEach((el) => {
+      if (el.hidden) return
+      let obj = {}
+      let flag = basePath && el.path && !basePath.endsWith('/') && !el.path.startsWith('/')
+      obj.key = flag ? basePath + '/' + el.path : basePath + el.path
+      obj.icon = getIcon(el)
+      obj.label = getLabel(el)
+      if (el.children && el.children.length > 1) obj.children = forEachRoutes(el.children, obj.key)
+      res.push(obj)
+    })
+
+    return res
+  }
+
+  function getIcon(item) {
+    if (item.meta?.icon) return item.meta.icon
+    if (item.children && item.children.length == 1) return item.children[0].meta?.icon || ''
+    return ''
+  }
+
+  function getLabel(item) {
+    if (item.meta?.title) return item.meta.title
+    if (item.children && item.children.length == 1) return item.children[0].meta?.title || ''
+    return ''
+  }
+
+  return [readonly(routeArr)]
 }

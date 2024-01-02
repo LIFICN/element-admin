@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="sidebarmenu-wrap" :style="{ width: sidebarWidth }">
-      <Sidebar :collapse="collapse" @collapse-change="setCollapse" width="auto" :list="menuList" :active-key="'1'" />
+      <Sidebar :collapse="collapse" @collapse-change="setCollapse" width="auto" />
     </div>
 
     <div class="main-container" :style="{ left: sidebarWidth, width: `calc(100% - ${sidebarWidth})` }">
@@ -18,59 +18,7 @@ import Navbar from './components/Navbar/index.vue'
 import TabsView from './components/TabsView/index.vue'
 import AppMain from './components/AppMain/index.vue'
 import { useCollapse } from './hooks'
-import { reactive } from 'vue'
 const [collapse, sidebarWidth, setCollapse] = useCollapse()
-
-const menuList = reactive([
-  {
-    icon: 'StarIcon',
-    key: '1',
-    label: '菜单1',
-  },
-  {
-    icon: 'HouseIcon',
-    key: '2',
-    label: '菜单2',
-    children: [
-      {
-        key: '2-1',
-        label: '菜单2-1',
-      },
-      {
-        key: '2-2',
-        label: '菜单2-2',
-      },
-      {
-        key: '2-3',
-        label: '菜单2-3',
-        children: [
-          {
-            key: '2-3-1',
-            label: '菜单2-3-1',
-          },
-          {
-            key: '2-3-2',
-            label: '菜单2-3-2',
-          },
-          {
-            key: '2-4',
-            label: '菜单2-4',
-            children: [
-              {
-                key: '2-4-1',
-                label: '菜单2-4-1',
-              },
-              {
-                key: '2-4-2',
-                label: '菜单2-4-2',
-              },
-            ],
-          },
-        ],
-      },
-    ],
-  },
-])
 </script>
 
 <style lang="scss" scoped>
