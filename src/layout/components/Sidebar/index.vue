@@ -1,7 +1,13 @@
 <template>
   <div class="sidebar-container" :style="{ width: width }">
     <Logo :collapse="collapse" />
-    <Menus :collapse="collapse" :list="list" />
+    <VMenus :collapse="collapse" :list="list" :active-key="activeKey">
+      <template #icon="{ item, active }">
+        <el-icon :color="active ? '#1677ff' : 'inherit'" :size="16">
+          <component :is="item.icon" />
+        </el-icon>
+      </template>
+    </VMenus>
 
     <div
       class="collapse-btn"
@@ -19,7 +25,7 @@
 
 <script setup>
 import Logo from './Logo.vue'
-import Menus from '../Menus/index.vue'
+import VMenus from '../VMenus/index.vue'
 
 defineProps({
   list: {
@@ -35,6 +41,10 @@ defineProps({
   width: {
     type: String,
     default: '240px',
+  },
+  activeKey: {
+    type: String,
+    default: '',
   },
 })
 

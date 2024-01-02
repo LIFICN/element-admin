@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="sidebarmenu-wrap" :style="{ width: sidebarWidth }">
-      <Sidebar :collapse="collapse" @collapse-change="setCollapse" width="auto" :list="menuList" />
+      <Sidebar :collapse="collapse" @collapse-change="setCollapse" width="auto" :list="menuList" :active-key="'1'" />
     </div>
 
     <div class="main-container" :style="{ left: sidebarWidth, width: `calc(100% - ${sidebarWidth})` }">
@@ -23,10 +23,12 @@ const [collapse, sidebarWidth, setCollapse] = useCollapse()
 
 const menuList = reactive([
   {
+    icon: 'StarIcon',
     key: '1',
     label: '菜单1',
   },
   {
+    icon: 'HouseIcon',
     key: '2',
     label: '菜单2',
     children: [
@@ -49,6 +51,20 @@ const menuList = reactive([
           {
             key: '2-3-2',
             label: '菜单2-3-2',
+          },
+          {
+            key: '2-4',
+            label: '菜单2-4',
+            children: [
+              {
+                key: '2-4-1',
+                label: '菜单2-4-1',
+              },
+              {
+                key: '2-4-2',
+                label: '菜单2-4-2',
+              },
+            ],
           },
         ],
       },

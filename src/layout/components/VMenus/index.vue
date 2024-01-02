@@ -7,7 +7,8 @@
 
 <script setup>
 import RenderMenuItem from './RenderMenuItem.vue'
-import { provide, computed, ref, readonly, watch } from 'vue'
+import { provide, computed, ref, readonly, watch, useSlots } from 'vue'
+const rootSlots = useSlots()
 
 const props = defineProps({
   list: {
@@ -19,6 +20,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  activeKey: {
+    typed: String,
+    default: '',
+  },
 })
 
 const activeKey = ref('')
@@ -27,37 +32,46 @@ const treeParentMap = {}
 provide('scopeObj', {
   collapse: computed(() => props.collapse),
   activeKey: readonly(activeKey),
-  setActiveKey: setActiveKey,
   getTreeParentMap: () => treeParentMap,
+  setActiveKey: setActiveKey,
+  slots: rootSlots,
 })
 
 function setActiveKey(val) {
   activeKey.value = val || ''
 }
 
+function forEachTree(arr, parentKey = '') {
+  if (!arr || !arr.length) return
+
+  arr.forEach((el) => {
+    el.children &&
+      el.children.forEach((x) => {
+        treeParentMap[x.key] = [el]
+      })
+
+    if (parentKey) {
+      treeParentMap[el.key] = [...(treeParentMap[parentKey] || []), ...(treeParentMap[el.key] || [])]
+    }
+
+    forEachTree(el.children, el.key)
+  })
+}
+
 watch(
   () => props.list,
   () => {
     forEachTree(props.list)
-    console.log(treeParentMap)
+    console.log('treeParentMap', treeParentMap)
   },
   { deep: true, immediate: true }
 )
 
-function forEachTree(arr, parent = []) {
-  if (!arr || arr.length == 0) return
-
-  arr.forEach((el, index) => {
-    if (el.children && el.children.length > 0) {
-      parent = parent.concat(el)
-    } else {
-      treeParentMap[el.key] = parent
-      if (index == arr.length - 1) parent = []
-    }
-
-    forEachTree(el.children, parent)
-  })
-}
+watch(
+  () => props.activeKey,
+  (newVal) => setActiveKey(newVal),
+  { immediate: true }
+)
 </script>
 
 <style lang="scss" scoped>
