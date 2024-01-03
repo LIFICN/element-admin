@@ -1,5 +1,4 @@
 import { ref, computed, readonly, watch } from 'vue'
-import { useRouteStore } from '@/store/route'
 
 export function useCollapse() {
   const isCollapse = ref(false)
@@ -12,12 +11,11 @@ export function useCollapse() {
   return [isCollapse, sidebarWidth, setCollapse]
 }
 
-export function useCovertRoutes() {
-  const store = useRouteStore() //获取路由列表
+export function useCovertRoutesToMenus(routeStoreData = []) {
   const routeArr = ref([])
 
   watch(
-    () => store.routesGetter,
+    () => routeStoreData,
     (newVal) => (routeArr.value = forEachRoutes(newVal || [], '')),
     { deep: true, immediate: true }
   )

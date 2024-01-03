@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { createApp, defineAsyncComponent } from 'vue'
 import App from './App.vue'
 
 //element plus
@@ -19,13 +19,18 @@ import 'nprogress/nprogress.css'
 //pinia
 import { createPinia } from 'pinia'
 
-//element-plus utils
-import { useElementPlusIcons } from '@/utils/element-plus'
+//element-plus icons
+import * as Icons from '@element-plus/icons-vue'
 
 const app = createApp(App)
 app.use(router)
 app.use(createPinia())
 app.use(ElementPlus, { locale: zhCn, size: 'small' })
 globComponents(app)
-useElementPlusIcons(app)
 app.mount('#app')
+
+//import element-plus icons
+Object.keys(Icons).forEach((el) => {
+  const asyncComponent = defineAsyncComponent(() => Promise.resolve(Icons[el]))
+  app.component(`${el}Icon`, asyncComponent)
+})

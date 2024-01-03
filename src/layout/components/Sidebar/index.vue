@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar-container" :style="{ width: width }">
     <Logo :collapse="collapse" />
-    <VMenus :collapse="collapse" :active-key="'/dashboard'" :list="routes">
+    <VMenus :collapse="collapse" :active-key="activeKey" :list="routes" @menu-item-click="menuItemClick">
       <template #icon="{ item, active }">
         <el-icon :color="active ? '#1677ff' : 'inherit'" :size="16">
           <component :is="item.icon" />
@@ -24,9 +24,12 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
 import Logo from './Logo.vue'
 import VMenus from '../VMenus/index.vue'
-import { useCovertRoutes } from '../../hooks'
+import { useCovertRoutesToMenus } from '../../hooks'
+import { useRouter, useRoute } from 'vue-router'
+import { useRouteStore } from '@/store/route'
 
 defineProps({
   collapse: {
@@ -41,7 +44,11 @@ defineProps({
 })
 
 const emits = defineEmits(['collapse-change'])
-const [routes] = useCovertRoutes()
+const router = useRouter()
+const store = useRouteStore()
+const route = useRoute()
+const [routes] = useCovertRoutesToMenus(store.routesGetter)
+const activeKey = computed(() => route.path)
 
 // const menuList = reactive([
 //   {
@@ -62,37 +69,13 @@ const [routes] = useCovertRoutes()
 //         key: '2-2',
 //         label: '菜单2-2',
 //       },
-//       {
-//         key: '2-3',
-//         label: '菜单2-3',
-//         children: [
-//           {
-//             key: '2-3-1',
-//             label: '菜单2-3-1',
-//           },
-//           {
-//             key: '2-3-2',
-//             label: '菜单2-3-2',
-//           },
-//           {
-//             key: '2-4',
-//             label: '菜单2-4',
-//             children: [
-//               {
-//                 key: '2-4-1',
-//                 label: '菜单2-4-1',
-//               },
-//               {
-//                 key: '2-4-2',
-//                 label: '菜单2-4-2',
-//               },
-//             ],
-//           },
-//         ],
-//       },
 //     ],
 //   },
 // ])
+
+const menuItemClick = (menuItem) => {
+  router.push(menuItem.key)
+}
 </script>
 
 <style lang="scss" scoped>

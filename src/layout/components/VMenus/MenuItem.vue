@@ -49,7 +49,7 @@ const props = defineProps({
   },
 })
 
-const { collapse, activeKey, setActiveKey, getTreeParentMap, slots } = inject('scopeObj')
+const { collapse, activeKey, menuItemClick, getTreeParentMap, slots } = inject('scopeObj')
 
 const isSubmenuItem = computed(() => props.type == 'submenuItem')
 const paddingLeftStyle = computed(() => {
@@ -71,7 +71,7 @@ const mergeActive = computed(() => {
 })
 
 function menuClick() {
-  if (!isSubmenuItem.value) setActiveKey(props.item.key)
+  if (!isSubmenuItem.value) menuItemClick(props.item)
   else expandMenu()
 }
 

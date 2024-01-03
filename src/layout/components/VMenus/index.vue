@@ -8,7 +8,8 @@
 <script setup>
 import RenderMenuItem from './RenderMenuItem.vue'
 import { provide, computed, ref, readonly, watch, useSlots } from 'vue'
-const rootSlots = useSlots()
+
+const emits = defineEmits(['menuItemClick'])
 
 const props = defineProps({
   list: {
@@ -26,16 +27,22 @@ const props = defineProps({
   },
 })
 
-const activeKey = ref('')
+const rootSlots = useSlots()
 const treeParentMap = {}
+const activeKey = ref('')
 
 provide('scopeObj', {
   collapse: computed(() => props.collapse),
   activeKey: readonly(activeKey),
   getTreeParentMap: () => treeParentMap,
-  setActiveKey: setActiveKey,
+  menuItemClick: menuItemClick,
   slots: rootSlots,
 })
+
+function menuItemClick(item) {
+  emits('menuItemClick', item)
+  setActiveKey(item.key)
+}
 
 function setActiveKey(val) {
   activeKey.value = val || ''
