@@ -2,9 +2,9 @@
   <div
     :class="[
       'menu-item',
-      { 'menu-item-active': activeMenu && !isSubmenuItem },
+      { 'menu-item-active': isActiveMenuItem && !isSubmenuItem },
       { 'submenu-item-expand': expand && isSubmenuItem },
-      { 'submenu-item-active': isSubmenuItem && activeSubmenu },
+      { 'submenu-item-active': isSubmenuItem && isActiveSubmenuItem },
     ]"
     :style="{ 'padding-left': paddingLeftStyle, 'justify-content': collapse ? 'center' : '' }"
     @click.stop="menuClick"
@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-import { computed, inject } from 'vue'
+import { computed, inject, watch } from 'vue'
 
 const emits = defineEmits(['update:expand'])
 
@@ -57,17 +57,17 @@ const paddingLeftStyle = computed(() => {
   return count * 16 + 'px'
 })
 
-const activeSubmenu = computed(() => {
+const isActiveSubmenuItem = computed(() => {
   return getTreeParentMap()[activeKey.value]?.includes(props.item) || false
 })
 
-const activeMenu = computed(() => {
+const isActiveMenuItem = computed(() => {
   return activeKey.value == props.item.key
 })
 
 const mergeActive = computed(() => {
-  if (!isSubmenuItem.value) return activeMenu.value
-  return activeSubmenu.value
+  if (!isSubmenuItem.value) return isActiveMenuItem.value
+  return isActiveSubmenuItem.value
 })
 
 function menuClick() {
@@ -79,6 +79,13 @@ function expandMenu() {
   if (collapse.value) return
   emits('update:expand', !props.expand)
 }
+
+watch(
+  () => [isActiveSubmenuItem.value, collapse.value],
+  () => {
+    if (!isActiveSubmenuItem.value && collapse.value) emits('update:expand', false)
+  }
+)
 </script>
 
 <style lang="scss" scoped>
