@@ -29,7 +29,8 @@
 </template>
 
 <script setup>
-import { computed, inject, watch } from 'vue'
+import { computed, watch } from 'vue'
+import { useInjectMeunsKey } from './hooks'
 
 const emits = defineEmits(['update:expand'])
 
@@ -49,16 +50,16 @@ const props = defineProps({
   },
 })
 
-const { collapse, activeKey, menuItemClick, getTreeParentMap, slots } = inject('scopeObj')
+const { collapse, activeKey, menuItemClick, treeParentMap, slots } = useInjectMeunsKey()
 
 const isSubmenuItem = computed(() => props.type == 'submenuItem')
 const paddingLeftStyle = computed(() => {
-  const count = getTreeParentMap()[props.item.key]?.length + 1 || 1
+  const count = treeParentMap.value[props.item.key]?.length + 1 || 1
   return count * 16 + 'px'
 })
 
 const isActiveSubmenuItem = computed(() => {
-  return getTreeParentMap()[activeKey.value]?.includes(props.item) || false
+  return treeParentMap.value[activeKey.value]?.includes(props.item) || false
 })
 
 const isActiveMenuItem = computed(() => {
@@ -92,7 +93,7 @@ watch(
 .menu-item {
   display: flex;
   align-items: center;
-  color: #333;
+  color: var(--menuText);
   height: 40px;
   box-sizing: border-box;
   padding: 0 16px;
@@ -100,9 +101,11 @@ watch(
   margin-bottom: 4px;
   cursor: pointer;
   transition: background-color 0.3s cubic-bezier(0.215, 0.61, 0.355, 1);
+  position: relative;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.06);
+    background-color: var(--menuHoverBg);
+    color: var(--menuHoverText);
   }
 
   &-icon {
@@ -132,14 +135,14 @@ watch(
 
   svg {
     path {
-      fill: #999;
+      fill: var(--menuArrowColor);
     }
   }
 }
 
 .menu-item-active {
-  background-color: #e6f4ff !important;
-  color: #1677ff !important;
+  background-color: var(--menuActiveBg) !important;
+  color: var(--menuActiveText) !important;
 }
 
 .submenu-item-expand {
@@ -149,12 +152,12 @@ watch(
 }
 
 .submenu-item-active {
-  color: #1677ff !important;
+  color: var(--menuActiveText) !important;
 
   .submenu-item-arrow {
     svg {
       path {
-        fill: #1677ff;
+        fill: var(--menuActiveArrowColor);
       }
     }
   }

@@ -8,6 +8,7 @@
 <script setup>
 import RenderMenuItem from './RenderMenuItem.vue'
 import { provide, computed, ref, readonly, watch, useSlots } from 'vue'
+import { useTreeToParentMap, useProvideMenusKey } from './hooks'
 
 const emits = defineEmits(['menuItemClick'])
 
@@ -28,13 +29,14 @@ const props = defineProps({
 })
 
 const rootSlots = useSlots()
-const treeParentMap = {}
+const [treeParentMap] = useTreeToParentMap(props.list)
+const provideKey = useProvideMenusKey()
 const activeKey = ref('')
 
-provide('scopeObj', {
+provide(provideKey, {
   collapse: computed(() => props.collapse),
   activeKey: readonly(activeKey),
-  getTreeParentMap: () => treeParentMap,
+  treeParentMap: readonly(treeParentMap),
   menuItemClick: menuItemClick,
   slots: rootSlots,
 })
@@ -48,32 +50,6 @@ function setActiveKey(val) {
   activeKey.value = val || ''
 }
 
-function forEachTree(arr, parentKey = '') {
-  if (!arr || !arr.length) return
-
-  arr.forEach((el) => {
-    el.children &&
-      el.children.forEach((x) => {
-        treeParentMap[x.key] = [el]
-      })
-
-    if (parentKey) {
-      treeParentMap[el.key] = [...(treeParentMap[parentKey] || []), ...(treeParentMap[el.key] || [])]
-    }
-
-    forEachTree(el.children, el.key)
-  })
-}
-
-watch(
-  () => props.list,
-  () => {
-    forEachTree(props.list)
-    console.log('treeParentMap', treeParentMap)
-  },
-  { deep: true, immediate: true }
-)
-
 watch(
   () => props.activeKey,
   (newVal) => setActiveKey(newVal),
@@ -83,7 +59,16 @@ watch(
 
 <style lang="scss" scoped>
 .app-menus {
-  background-color: #fff;
+  --menuBg: #fff;
+  --menuText: #333;
+  --menuHoverBg: rgba(0, 0, 0, 0.06);
+  --menuHoverText: inherit;
+  --menuArrowColor: #999;
+  --menuActiveArrowColor: #1677ff;
+  --menuActiveBg: #e6f4ff;
+  --menuActiveText: #1677ff;
+
+  background-color: var(--menuBg);
   width: 100%;
   overflow-x: hidden;
   box-sizing: border-box;

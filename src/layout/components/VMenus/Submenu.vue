@@ -11,9 +11,10 @@
 </template>
 
 <script setup>
-import { inject, ref } from 'vue'
+import { ref } from 'vue'
 import CollapseTransition from './CollapseTransition.vue'
 import MenuItem from './MenuItem.vue'
+import { useInjectMeunsKey } from './hooks'
 
 const props = defineProps({
   item: {
@@ -23,7 +24,7 @@ const props = defineProps({
   },
 })
 
-const { collapse } = inject('scopeObj')
+const { collapse } = useInjectMeunsKey()
 const expand = ref(false)
 </script>
 
