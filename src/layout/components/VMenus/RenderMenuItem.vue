@@ -1,10 +1,15 @@
 <template>
-  <VToolTip :item="item" v-if="isFirstLevel">
-    <MenuItem :item="item" v-if="!hasChildren" />
-    <Submenu :item="item" v-else-if="hasChildren">
-      <RenderMenuItem v-for="it in item.children" :key="it.key" :item="it" />
-    </Submenu>
-  </VToolTip>
+  <template v-if="isFirstLevel">
+    <VToolTip :item="item" v-if="!hasChildren">
+      <MenuItem :item="item" />
+    </VToolTip>
+
+    <VMenusToolTip :item="item" v-else-if="hasChildren">
+      <Submenu :item="item">
+        <RenderMenuItem v-for="it in item.children" :key="it.key" :item="it" />
+      </Submenu>
+    </VMenusToolTip>
+  </template>
 
   <template v-else>
     <MenuItem :item="item" v-if="!hasChildren" />
@@ -20,6 +25,7 @@ import MenuItem from './MenuItem.vue'
 import Submenu from './Submenu.vue'
 import VToolTip from './VToolTip.vue'
 import { useInjectMeunsKey } from './hooks'
+import VMenusToolTip from './VMenusToolTip.vue'
 
 const props = defineProps({
   item: {

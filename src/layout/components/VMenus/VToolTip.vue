@@ -1,13 +1,13 @@
 <template>
   <slot />
-  <div class="v-tooltip" ref="tooltipRef" v-show="collapse && isEnter">
-    <span class="v-tooltip-label" v-if="!showMenu">{{ item.label }}</span>
+  <div class="v-tooltip" ref="tooltipRef" v-show="collapse && isSlotEnter">
+    <span class="v-tooltip-label" v-if="collapse && isSlotEnter">{{ item.label }}</span>
   </div>
 </template>
 
 <script setup>
 import { computePosition, offset } from '@floating-ui/dom'
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useInjectMeunsKey } from './hooks'
 
 const props = defineProps({
@@ -21,19 +21,18 @@ const props = defineProps({
 
 const tooltipRef = ref('')
 const slotRef = ref('')
-const isEnter = ref(false)
+const isSlotEnter = ref(false)
 const { collapse } = useInjectMeunsKey()
-const showMenu = computed(() => props.item.children && props.item.children.length > 0)
 
 onMounted(() => {
   slotRef.value = tooltipRef.value.previousElementSibling
-  slotRef.value.addEventListener('mouseenter', mouseenter)
-  slotRef.value.addEventListener('mouseleave', mouseleave)
+  slotRef.value.addEventListener('mouseenter', slotMouseEnter)
+  slotRef.value.addEventListener('mouseleave', slotMouseLeave)
 })
 
 onBeforeUnmount(() => {
-  slotRef.value.removeEventListener('mouseenter', mouseenter)
-  slotRef.value.removeEventListener('mouseleave', mouseleave)
+  slotRef.value.removeEventListener('mouseenter', slotMouseEnter)
+  slotRef.value.removeEventListener('mouseleave', slotMouseLeave)
 })
 
 function updatePosition() {
@@ -49,13 +48,13 @@ function updatePosition() {
   })
 }
 
-function mouseenter() {
-  isEnter.value = true
+function slotMouseEnter() {
+  isSlotEnter.value = true
   if (collapse.value) updatePosition()
 }
 
-function mouseleave() {
-  isEnter.value = -false
+function slotMouseLeave() {
+  isSlotEnter.value = false
 }
 </script>
 
