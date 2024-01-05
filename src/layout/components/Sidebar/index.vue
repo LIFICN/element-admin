@@ -26,7 +26,6 @@
 <script setup>
 import { computed } from 'vue'
 import Logo from './Logo.vue'
-import VMenus from '../VMenus/index.vue'
 import { useCovertRoutesToMenus } from '../../hooks'
 import { useRouter, useRoute } from 'vue-router'
 import { useRouteStore } from '@/store/route'

@@ -1,4 +1,5 @@
-import { ref, watch, inject } from 'vue'
+import { ref, watch, inject, nextTick } from 'vue'
+import { computePosition, offset } from '@floating-ui/dom'
 
 export function useProvideMenusKey() {
   return 'scopeMeunsObj'
@@ -40,4 +41,25 @@ export function useTreeToParentMap(treeList) {
   }
 
   return [treeParentMap]
+}
+
+export function useFloatingPosition(targetRef, floatingRef) {
+  function updatePosition() {
+    if (!targetRef || !floatingRef || !targetRef.value || !floatingRef.value) return
+
+    nextTick(() => {
+      computePosition(targetRef.value, floatingRef.value, {
+        placement: 'right',
+        strategy: 'absolute',
+        middleware: [offset({ mainAxis: 8 })],
+      }).then(({ x, y }) => {
+        Object.assign(floatingRef.value.style, {
+          left: `${x}px`,
+          top: `${y}px`,
+        })
+      })
+    })
+  }
+
+  return [updatePosition]
 }

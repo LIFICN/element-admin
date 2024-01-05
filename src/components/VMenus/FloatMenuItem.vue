@@ -2,22 +2,22 @@
   <!-- 不使用click.stop，使事件冒泡到父级执行关闭悬浮窗 -->
   <div
     :class="[
-      'float-menu-item',
-      { 'float-menu-item-active': isActiveMenuItem && !isSubmenuItem },
-      { 'float-submenu-item-active': isSubmenuItem && isActiveSubmenuItem },
+      'v-float-menu-item',
+      { 'v-float-menu-item-active': isActiveMenuItem && !isSubmenuItem },
+      { 'v-float-submenu-item-active': isSubmenuItem && isActiveSubmenuItem },
     ]"
     :style="{ 'padding-left': paddingLeftStyle }"
     @click="menuClick"
   >
-    <slots.icon :item="item" :active="mergeActive" class="float-menu-item-icon" v-if="slots.icon" />
-    <i :class="['float-menu-item-icon', item.icon]" v-else-if="item.icon" />
+    <slots.icon :item="item" :active="mergeActive" class="v-float-menu-item-icon" v-if="slots.icon" />
+    <i :class="['v-float-menu-item-icon', item.icon]" v-else-if="item.icon" />
 
-    <div class="float-menu-item-content">
+    <div class="v-float-menu-item-content">
       <slots.label :item="item" :active="mergeActive" v-if="slots.label" />
       <span v-else>{{ item.label }}</span>
     </div>
 
-    <i class="float-submenu-item-arrow" v-if="isSubmenuItem">
+    <i class="v-float-submenu-item-arrow" v-if="isSubmenuItem">
       <svg viewBox="0 0 1024 1024">
         <path
           d="M512 693.333333c-14.933333 0-29.866667-4.266667-40.533333-14.933333l-277.33333399-234.666667c-27.733333-23.466667-29.866667-64-8.53333301-89.6 23.466667-27.733333 64-29.866667 89.6-8.53333299L512 546.133333l236.8-200.53333299c27.733333-23.466667 68.266667-19.19999999 89.6 8.53333299 23.466667 27.733333 19.19999999 68.266667-8.53333301 89.6l-277.33333399 234.666667c-10.666667 10.666667-25.6 14.933333-40.533333 14.933333z"
@@ -68,7 +68,7 @@ function menuClick() {
 </script>
 
 <style lang="scss" scoped>
-.float-menu-item {
+.v-float-menu-item {
   display: flex;
   align-items: center;
   color: var(--menuText);
@@ -103,7 +103,7 @@ function menuClick() {
   }
 }
 
-.float-submenu-item-arrow {
+.v-float-submenu-item-arrow {
   width: 16px;
   height: 16px;
   display: inline-flex;
@@ -119,21 +119,21 @@ function menuClick() {
   }
 }
 
-.float-menu-item-active {
+.v-float-menu-item-active {
   background-color: var(--menuActiveBg) !important;
   color: var(--menuActiveText) !important;
 }
 
-// .float-submenu-item-expand {
-//   .float-submenu-item-arrow {
+// .v-float-submenu-item-expand {
+//   .v-float-submenu-item-arrow {
 //     transform: rotateZ(90deg);
 //   }
 // }
 
-.float-submenu-item-active {
+.v-float-submenu-item-active {
   color: var(--menuActiveText) !important;
 
-  .float-submenu-item-arrow {
+  .v-float-submenu-item-arrow {
     svg {
       path {
         fill: var(--menuActiveArrowColor);

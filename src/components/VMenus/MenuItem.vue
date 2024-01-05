@@ -1,23 +1,23 @@
 <template>
   <div
     :class="[
-      'menu-item',
-      { 'menu-item-active': isActiveMenuItem && !isSubmenuItem },
-      { 'submenu-item-expand': expand && isSubmenuItem },
-      { 'submenu-item-active': isSubmenuItem && isActiveSubmenuItem },
+      'v-menu-item',
+      { 'v-menu-item-active': isActiveMenuItem && !isSubmenuItem },
+      { 'v-submenu-item-expand': expand && isSubmenuItem },
+      { 'v-submenu-item-active': isSubmenuItem && isActiveSubmenuItem },
     ]"
     :style="{ 'padding-left': paddingLeftStyle, 'justify-content': collapse ? 'center' : '' }"
     @click.stop="menuClick"
   >
-    <slots.icon :item="item" :active="mergeActive" class="menu-item-icon" v-if="slots.icon" />
-    <i :class="['menu-item-icon', item.icon]" v-else-if="item.icon" />
+    <slots.icon :item="item" :active="mergeActive" class="v-menu-item-icon" v-if="slots.icon" />
+    <i :class="['v-menu-item-icon', item.icon]" v-else-if="item.icon" />
 
-    <div class="menu-item-content" v-show="!collapse">
+    <div class="v-menu-item-content" v-show="!collapse">
       <slots.label :item="item" :active="mergeActive" v-if="slots.label" />
       <span v-else>{{ item.label }}</span>
     </div>
 
-    <i class="submenu-item-arrow" v-if="!collapse && isSubmenuItem">
+    <i class="v-submenu-item-arrow" v-if="!collapse && isSubmenuItem">
       <svg viewBox="0 0 1024 1024">
         <path
           d="M512 693.333333c-14.933333 0-29.866667-4.266667-40.533333-14.933333l-277.33333399-234.666667c-27.733333-23.466667-29.866667-64-8.53333301-89.6 23.466667-27.733333 64-29.866667 89.6-8.53333299L512 546.133333l236.8-200.53333299c27.733333-23.466667 68.266667-19.19999999 89.6 8.53333299 23.466667 27.733333 19.19999999 68.266667-8.53333301 89.6l-277.33333399 234.666667c-10.666667 10.666667-25.6 14.933333-40.533333 14.933333z"
@@ -90,7 +90,7 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-.menu-item {
+.v-menu-item {
   display: flex;
   align-items: center;
   color: var(--menuText);
@@ -125,7 +125,7 @@ watch(
   }
 }
 
-.submenu-item-arrow {
+.v-submenu-item-arrow {
   width: 16px;
   height: 16px;
   display: inline-flex;
@@ -140,21 +140,21 @@ watch(
   }
 }
 
-.menu-item-active {
+.v-menu-item-active {
   background-color: var(--menuActiveBg) !important;
   color: var(--menuActiveText) !important;
 }
 
-.submenu-item-expand {
-  .submenu-item-arrow {
+.v-submenu-item-expand {
+  .v-submenu-item-arrow {
     transform: rotateX(180deg);
   }
 }
 
-.submenu-item-active {
+.v-submenu-item-active {
   color: var(--menuActiveText) !important;
 
-  .submenu-item-arrow {
+  .v-submenu-item-arrow {
     svg {
       path {
         fill: var(--menuActiveArrowColor);

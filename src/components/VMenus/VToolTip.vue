@@ -6,9 +6,8 @@
 </template>
 
 <script setup>
-import { computePosition, offset } from '@floating-ui/dom'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
-import { useInjectMeunsKey } from './hooks'
+import { useInjectMeunsKey, useFloatingPosition } from './hooks'
 
 const props = defineProps({
   item: {
@@ -23,6 +22,7 @@ const tooltipRef = ref('')
 const slotRef = ref('')
 const isSlotEnter = ref(false)
 const { collapse } = useInjectMeunsKey()
+const [updatePosition] = useFloatingPosition(slotRef, tooltipRef)
 
 onMounted(() => {
   slotRef.value = tooltipRef.value.previousElementSibling
@@ -34,19 +34,6 @@ onBeforeUnmount(() => {
   slotRef.value.removeEventListener('mouseenter', slotMouseEnter)
   slotRef.value.removeEventListener('mouseleave', slotMouseLeave)
 })
-
-function updatePosition() {
-  computePosition(slotRef.value, tooltipRef.value, {
-    placement: 'right',
-    strategy: 'absolute',
-    middleware: [offset({ mainAxis: 8 })],
-  }).then(({ x, y }) => {
-    Object.assign(tooltipRef.value.style, {
-      left: `${x}px`,
-      top: `${y}px`,
-    })
-  })
-}
 
 function slotMouseEnter() {
   isSlotEnter.value = true

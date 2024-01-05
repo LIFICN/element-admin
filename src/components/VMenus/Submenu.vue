@@ -1,5 +1,5 @@
 <template>
-  <div class="app-submenu">
+  <div class="v-submenu">
     <MenuItem :item="item" type="submenuItem" v-model:expand="expand" />
 
     <CollapseTransition>
@@ -29,7 +29,7 @@ const expand = ref(false)
 </script>
 
 <style lang="scss" scoped>
-.app-submenu {
+.v-submenu {
   // background-color: rgba(0, 0, 0, 0.02);
   position: relative;
 }
