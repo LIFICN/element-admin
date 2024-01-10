@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar-container" :style="{ width: width }">
     <Logo :collapse="collapse" />
-    <VMenus :collapse="collapse" :active-key="activeKey" :list="routes" @menu-item-click="menuItemClick">
+    <VMenus :collapse="collapse" :active-key="activeKey" :list="menusList" @menu-item-click="menuItemClick">
       <template #icon="{ item, active }">
         <el-icon :color="active ? '#1677ff' : 'inherit'" :size="16">
           <component :is="item.icon" />
@@ -43,10 +43,11 @@ defineProps({
 })
 
 const emits = defineEmits(['collapse-change'])
-const router = useRouter()
+
 const store = useRouteStore()
+const router = useRouter()
 const route = useRoute()
-const [routes] = useCovertRoutesToMenus(store.routesGetter)
+const [menusList] = useCovertRoutesToMenus(store.routesGetter)
 const activeKey = computed(() => route.path)
 
 // const menuList = reactive([

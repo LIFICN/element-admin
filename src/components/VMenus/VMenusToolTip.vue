@@ -5,12 +5,12 @@
     <div
       class="v-menu-tooltip"
       ref="tooltipRef"
-      v-show="collapse && showMenu && mergeEnter"
+      v-show="mergeShow"
       @mouseenter="tooltipMouseEnter"
       @mouseleave="tooltipMouseLeave"
       @click="closeClick"
     >
-      <div class="v-menu-tooltip-menus" v-if="collapse && showMenu && mergeEnter">
+      <div class="v-menu-tooltip-menus" v-if="isCreateContent">
         <VMenusToolTip v-for="it in item.children" :item="it" :key="it.key">
           <FloatMenuItem :item="it" />
         </VMenusToolTip>
@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from 'vue'
 import { useInjectMeunsKey, useFloatingPosition } from './hooks'
 import FloatMenuItem from './FloatMenuItem.vue'
 import FloatingTransition from './FloatingTransition.vue'
@@ -37,10 +37,11 @@ const props = defineProps({
 const tooltipRef = ref('')
 const slotRef = ref('')
 const isMouseInSlot = ref(false)
+const isCreateContent = ref(false)
 const { collapse } = useInjectMeunsKey()
 const [updatePosition] = useFloatingPosition(slotRef, tooltipRef)
 const showMenu = computed(() => props.item.children && props.item.children.length > 0)
-const mergeEnter = computed(() => isMouseInSlot.value)
+const mergeShow = computed(() => collapse.value && showMenu.value && isMouseInSlot.value)
 
 onMounted(() => {
   slotRef.value = tooltipRef.value.previousElementSibling
@@ -92,6 +93,21 @@ function startCloseTimeout() {
     clearTimer = null
   }
 }
+
+watch(
+  () => mergeShow.value,
+  (newVal) => {
+    if (newVal) {
+      isCreateContent.value = true
+      return
+    }
+
+    //控制关闭动画时机，因为父元素内容是子元素撑开的
+    nextTick(() => {
+      setTimeout(() => (isCreateContent.value = false), 300)
+    })
+  }
+)
 </script>
 
 <style lang="scss" scoped>

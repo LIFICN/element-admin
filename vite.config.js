@@ -1,10 +1,11 @@
 import { defineConfig } from 'vite'
-import Vue from '@vitejs/plugin-vue'
+import vue from '@vitejs/plugin-vue'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 import { fileURLToPath, URL } from 'node:url'
 
 // https://cn.vitejs.dev/
 export default defineConfig({
-  plugins: [Vue()],
+  plugins: [vue(), vueJsx()],
   server: {
     open: false, //是否打开浏览器
     port: 3000, //端口号
@@ -22,6 +23,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           'element-plus': ['element-plus', '@element-plus/icons-vue'],
+          'floating-ui': ['@floating-ui/dom'],
         },
       },
     },

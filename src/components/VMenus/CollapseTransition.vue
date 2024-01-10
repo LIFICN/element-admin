@@ -1,6 +1,6 @@
 <template>
   <Transition
-    name="collapse-transition"
+    name="v-collapse-transition"
     @before-enter="beforeEnter"
     @enter="enter"
     @after-enter="afterEnter"
@@ -76,13 +76,13 @@ function leave(el) {
 </script>
 
 <style lang="scss" scoped>
-.collapse-transition {
+.v-collapse-transition {
   will-change: max-height, padding-top, padding-bottom;
   transition: 0.26s max-height ease-in-out, 0.26s padding-top ease-in-out, 0.26s padding-bottom ease-in-out;
 }
 
-.collapse-transition-leave-active,
-.collapse-transition-enter-active {
+.v-collapse-transition-leave-active,
+.v-collapse-transition-enter-active {
   transition: 0.26s max-height ease-in-out, 0.26s padding-top ease-in-out, 0.26s padding-bottom ease-in-out;
 }
 </style>

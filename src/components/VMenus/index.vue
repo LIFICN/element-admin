@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import RenderMenuItem from './RenderMenuItem.vue'
+import RenderMenuItem from './RenderMenuItem.jsx'
 import { provide, computed, ref, readonly, watch, useSlots } from 'vue'
 import { useTreeToParentMap, useProvideMenusKey } from './hooks'
 
