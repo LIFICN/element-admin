@@ -8,10 +8,8 @@
     "lint:prettier": "npx prettier --write src/"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "^0.2.7",
     "@floating-ui/dom": "^1.5.3",
     "axios": "^0.24.0",
-    "element-plus": "^2.0.2",
     "js-cookie": "^3.0.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.13",

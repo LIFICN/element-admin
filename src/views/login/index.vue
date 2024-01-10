@@ -1,215 +1,137 @@
 <template>
   <div class="login-container">
-    <el-form
-      ref="loginFormRef"
-      :model="loginForm"
-      :rules="loginRules"
-      class="login-form"
-      auto-complete="on"
-      label-position="left"
-    >
-      <div class="title-container">
-        <h3 class="title">Login Form</h3>
+    <div class="login-wrap">
+      <h2>登录</h2>
+      <div class="error-text">{{ loginForm.loginErrorText }}</div>
+
+      <div class="login-form">
+        <input type="text" placeholder="用户名" required autocomplete="no" v-model="loginForm.username" />
+        <input type="password" placeholder="密码" required autocomplete="no" v-model="loginForm.password" />
+        <button @click="handleLogin">{{ loginForm.loginBtnText }}</button>
       </div>
-
-      <el-form-item prop="username">
-        <el-icon class="login-icon">
-          <UserIcon />
-        </el-icon>
-
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          type="text"
-          tabindex="1"
-          autocomplete="on"
-        />
-      </el-form-item>
-
-      <el-form-item prop="password">
-        <el-icon class="login-icon">
-          <LockIcon />
-        </el-icon>
-
-        <el-input
-          ref="password"
-          v-model="loginForm.password"
-          type="password"
-          placeholder="Password"
-          tabindex="2"
-          autocomplete="on"
-          @keyup.enter="handleLogin"
-          :show-password="true"
-        />
-      </el-form-item>
-
-      <el-button
-        :loading="loading"
-        type="primary"
-        style="width: 100%; margin-bottom: 30px"
-        @click="handleLogin"
-        size="large"
-      >
-        Login
-      </el-button>
 
       <div class="tips">
         <span style="margin-right: 20px">username: admin</span>
         <span> password: 123</span>
       </div>
-    </el-form>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/user'
 
 const store = useUserStore()
 const router = useRouter()
 
-const validateUsername = (rule, value, callback) => {
-  if (!value) callback(new Error('请输入用户名'))
-  else callback()
-}
-
-const validatePassword = (rule, value, callback) => {
-  if (!value) callback(new Error('请输入密码'))
-  else callback()
-}
-
-const loginFormRef = ref('')
-const loading = ref(false)
-
 const loginForm = reactive({
   username: 'admin',
   password: '123',
-})
-
-const loginRules = reactive({
-  username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-  password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+  loginBtnText: '登录',
+  loginErrorText: '',
 })
 
 const handleLogin = function () {
-  loginFormRef.value.validate((valid) => {
-    if (valid) {
-      loading.value = true
+  if (!loginForm.username || !loginForm.password) {
+    loginForm.loginErrorText = '请检查用户名或密码是否填写正确'
+    return
+  }
 
-      store
-        .login(loginForm)
-        .then((res) => {
-          router.replace({ path: '/' })
-          loading.value = false
-        })
-        .catch((err) => {
-          loading.value = false
-          alert(err)
-        })
+  loginForm.loginErrorText = ''
 
-      return
-    }
+  if (loginForm.loginBtnText != '登录') return
+  loginForm.loginBtnText = '登录中...'
 
-    console.log('error submit!!')
-    return false
-  })
+  store
+    .login(loginForm)
+    .then((res) => {
+      router.replace({ path: '/' })
+    })
+    .catch((err) => {
+      alert(err.message || error)
+    })
+    .finally(() => {
+      loginForm.loginBtnText = '登录'
+      loginForm.loginErrorText = ''
+    })
 }
 </script>
 
 <style lang="scss" scoped>
-$bg: #283443;
-$cursor: #fff;
-$dark_gray: #889aa4;
-$light_gray: #eee;
-
-@supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-  .login-container .el-input input {
-    color: $cursor;
-  }
-}
+$bg: #f4f4f4;
+$loginColor: #007bff;
 
 .login-container {
   min-height: 100%;
   width: 100%;
   background-color: $bg;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  .login-form {
-    position: relative;
-    width: 520px;
-    max-width: 100%;
-    padding: 160px 35px 0;
-    margin: 0 auto;
+  * {
+    box-sizing: border-box;
+  }
+
+  .error-text {
+    font-size: 12px;
+    color: #f56c6c;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .login-wrap {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 370px;
+    box-sizing: border-box;
     overflow: hidden;
-  }
 
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-
-    span {
-      &:first-of-type {
-        margin-right: 16px;
-      }
-    }
-  }
-
-  .login-icon {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
-    font-size: 18px;
-  }
-
-  .title-container {
-    position: relative;
-
-    .title {
-      font-size: 26px;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
+    h2 {
       text-align: center;
-      font-weight: bold;
+      margin-bottom: 20px;
     }
-  }
 
-  :deep() {
-    .el-input {
-      height: 47px;
-      width: 85%;
-      overflow: hidden;
+    .login-form {
+      position: relative;
 
-      .el-input__wrapper {
-        box-shadow: none;
-        background-color: transparent;
+      input[type='text'],
+      input[type='password'] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        outline: none;
+      }
 
-        input {
-          border: 0px;
-          -webkit-appearance: none;
-          border-radius: 0px;
-          padding: 12px 5px 12px 15px;
-          color: $light_gray;
-          height: 47px;
-          caret-color: $cursor;
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: $loginColor;
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        outline: none;
+      }
 
-          &:-webkit-autofill {
-            box-shadow: 0 0 0px 1000px $bg inset !important;
-            -webkit-text-fill-color: $cursor !important;
-          }
-        }
+      button:hover {
+        background-color: rgba($color: $loginColor, $alpha: 0.8);
       }
     }
 
-    .el-form-item {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      color: #454545;
+    .tips {
+      text-decoration: none;
+      color: $loginColor;
+      float: right;
+      font-size: 12px;
+      margin-top: 10px;
     }
   }
 }

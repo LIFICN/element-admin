@@ -1,10 +1,8 @@
 <template>
   <div class="error-screen">
-    <el-empty description="404 page not found">
-      <div class="back-btn">
-        <a href="/">Back to Home</a>
-      </div>
-    </el-empty>
+    <div class="back-btn">
+      <a href="/">Page not found, Back to Home</a>
+    </div>
   </div>
 </template>
 
