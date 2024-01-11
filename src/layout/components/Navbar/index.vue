@@ -91,8 +91,8 @@ $appHeaderBg: #ffffff;
         cursor: pointer;
 
         &:hover {
-          color: #409eff;
-          background-color: rgba($color: #409eff, $alpha: 0.083);
+          color: #1677ff;
+          background-color: rgba($color: #1677ff, $alpha: 0.083);
         }
       }
     }

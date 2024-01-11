@@ -61,7 +61,7 @@ const handleLogin = function () {
 
 <style lang="scss" scoped>
 $bg: #f4f4f4;
-$loginColor: #007bff;
+$loginColor: #1677ff;
 
 .login-container {
   min-height: 100%;

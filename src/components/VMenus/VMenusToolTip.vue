@@ -10,10 +10,22 @@
       @mouseleave="tooltipMouseLeave"
       @click="closeClick"
     >
-      <div class="v-menu-tooltip-menus" v-if="isCreateContent">
-        <VMenusToolTip v-for="it in item.children" :item="it" :key="it.key">
-          <FloatMenuItem :item="it" />
-        </VMenusToolTip>
+      <div
+        :class="[{ 'v-menu-tooltip-menus': showMenu }, { 'v-menu-tooltip-label': showLabel }]"
+        v-if="isCreateContent"
+      >
+        <template v-if="showMenu">
+          <VMenusToolTip
+            v-for="it in item.children"
+            :item="it"
+            :key="it.key"
+            :showMenu="it.children && it.children.length > 0"
+          >
+            <FloatMenuItem :item="it" />
+          </VMenusToolTip>
+        </template>
+
+        <span class="v-tooltip-label" v-else-if="showLabel">{{ item.label }}</span>
       </div>
     </div>
   </FloatingTransition>
@@ -32,6 +44,14 @@ const props = defineProps({
       return {}
     },
   },
+  showLabel: {
+    type: Boolean,
+    default: false,
+  },
+  showMenu: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const tooltipRef = ref('')
@@ -40,8 +60,7 @@ const isMouseInSlot = ref(false)
 const isCreateContent = ref(false)
 const { collapse } = useInjectMeunsKey()
 const [updatePosition] = useFloatingPosition(slotRef, tooltipRef)
-const showMenu = computed(() => props.item.children && props.item.children.length > 0)
-const mergeShow = computed(() => collapse.value && showMenu.value && isMouseInSlot.value)
+const mergeShow = computed(() => collapse.value && (props.showLabel || props.showMenu) && isMouseInSlot.value)
 
 onMounted(() => {
   slotRef.value = tooltipRef.value.previousElementSibling
@@ -58,8 +77,8 @@ onBeforeUnmount(() => {
 let clearTimer = null
 
 function slotMouseEnter() {
-  isMouseInSlot.value = true
   clearTimer?.()
+  isMouseInSlot.value = true
   if (collapse.value) updatePosition()
 }
 
@@ -114,6 +133,15 @@ watch(
 .v-menu-tooltip {
   position: absolute;
   z-index: 999;
+
+  &-label {
+    width: max-content;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 4px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
 
   &-menus {
     background-color: white;

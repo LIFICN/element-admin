@@ -156,17 +156,17 @@ watch(() => ({ ...currentRoute.value }), watchCurrentRoute, { deep: true, immedi
   }
 
   .active {
-    color: #1890ff;
+    color: #1677ff;
     background: #e8f4ff;
-    border: 1px solid #1890ff;
+    border: 1px solid #1677ff;
 
     .close-icon {
-      color: #1890ff;
+      color: #1677ff;
     }
 
     svg {
       path {
-        fill: #1890ff;
+        fill: #1677ff;
       }
     }
   }
