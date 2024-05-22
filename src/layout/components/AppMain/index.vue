@@ -1,9 +1,9 @@
 <template>
   <div class="app-main">
     <router-view v-slot="{ Component }">
-      <transition name="app-fade-transform" mode="out-in">
+      <Transition name="app-fade-transform" mode="out-in">
         <component :is="Component" :key="$route.fullPath" />
-      </transition>
+      </Transition>
     </router-view>
   </div>
 </template>
@@ -41,13 +41,10 @@
   }
 
   /* fade-transform */
-  .app-fade-transform {
-    will-change: transform, opacity;
-  }
-
   .app-fade-transform-leave-active,
   .app-fade-transform-enter-active {
-    transition: all 0.3s;
+    will-change: transform, opacity;
+    transition: transform 0.2s, opacity 0.2s;
   }
 
   .app-fade-transform-enter-from {

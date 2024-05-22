@@ -1,7 +1,7 @@
 <template>
   <slot />
 
-  <FloatingTransition>
+  <VMenusTransition type="floating">
     <div
       class="v-menu-tooltip"
       ref="tooltipRef"
@@ -28,14 +28,14 @@
         <span class="v-tooltip-label" v-else-if="showLabel">{{ item.label }}</span>
       </div>
     </div>
-  </FloatingTransition>
+  </VMenusTransition>
 </template>
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from 'vue'
-import { useInjectMeunsKey, useFloatingPosition } from './hooks'
+import { useInjectMeuns, useFloatingPosition } from './hooks'
 import FloatMenuItem from './FloatMenuItem.vue'
-import FloatingTransition from './FloatingTransition.vue'
+import VMenusTransition from './VMenusTransition.vue'
 
 const props = defineProps({
   item: {
@@ -58,7 +58,7 @@ const tooltipRef = ref('')
 const slotRef = ref('')
 const isMouseInSlot = ref(false)
 const isCreateContent = ref(false)
-const { collapse } = useInjectMeunsKey()
+const { collapse } = useInjectMeuns()
 const [updatePosition] = useFloatingPosition(slotRef, tooltipRef)
 const mergeShow = computed(() => collapse.value && (props.showLabel || props.showMenu) && isMouseInSlot.value)
 

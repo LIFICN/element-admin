@@ -108,8 +108,10 @@ const menuItemClick = (menuItem) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.07), 0 1px 4px -1px rgba(25, 15, 15, 0.09), 0 0 1px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.23);
   cursor: pointer;
+  will-change: transform;
+  transition: transform 0.3s;
 
   svg {
     width: 10px;

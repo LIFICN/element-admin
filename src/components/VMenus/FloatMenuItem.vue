@@ -30,7 +30,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import { useInjectMeunsKey } from './hooks'
+import { useInjectMeuns } from './hooks'
 
 const props = defineProps({
   item: {
@@ -44,7 +44,7 @@ const props = defineProps({
   },
 })
 
-const { activeKey, menuItemClick, treeParentMap, slots } = useInjectMeunsKey()
+const { activeKey, menuItemClick, treeParentMap, slots } = useInjectMeuns()
 
 const isSubmenuItem = computed(() => props.item.children && props.item.children.length > 0)
 const paddingLeftStyle = computed(() => 1 * 16 + 'px')
@@ -123,12 +123,6 @@ function menuClick() {
   background-color: var(--menuActiveBg) !important;
   color: var(--menuActiveText) !important;
 }
-
-// .v-float-submenu-item-expand {
-//   .v-float-submenu-item-arrow {
-//     transform: rotateZ(90deg);
-//   }
-// }
 
 .v-float-submenu-item-active {
   color: var(--menuActiveText) !important;

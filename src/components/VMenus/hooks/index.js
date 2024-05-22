@@ -5,7 +5,7 @@ export function useProvideMenusKey() {
   return 'scopeMeunsObj'
 }
 
-export function useInjectMeunsKey() {
+export function useInjectMeuns() {
   return inject(useProvideMenusKey())
 }
 

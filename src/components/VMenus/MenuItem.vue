@@ -30,7 +30,7 @@
 
 <script setup>
 import { computed, watch } from 'vue'
-import { useInjectMeunsKey } from './hooks'
+import { useInjectMeuns } from './hooks'
 
 const emits = defineEmits(['update:expand'])
 
@@ -50,7 +50,7 @@ const props = defineProps({
   },
 })
 
-const { collapse, activeKey, menuItemClick, treeParentMap, slots } = useInjectMeunsKey()
+const { collapse, activeKey, menuItemClick, treeParentMap, slots } = useInjectMeuns()
 
 const isSubmenuItem = computed(() => props.type == 'submenuItem')
 const paddingLeftStyle = computed(() => {
@@ -82,10 +82,25 @@ function expandMenu() {
 }
 
 watch(
-  () => [isActiveSubmenuItem.value, collapse.value],
+  () => [collapse.value, isActiveSubmenuItem.value],
   () => {
-    if (!isActiveSubmenuItem.value && collapse.value) emits('update:expand', false)
-  }
+    if (!isSubmenuItem.value) return
+    //如果是选中二级菜单，主菜单未被折叠，则展开二级菜单
+    if (isActiveSubmenuItem.value && !collapse.value) {
+      emits('update:expand', true)
+      return
+    }
+
+    //如果是未选中二级菜单，主菜单未被折叠，则折叠二级菜单
+    // if (!isActiveSubmenuItem.value && !collapse.value) {
+    //   emits('update:expand', false)
+    //   return
+    // }
+
+    //如果主菜单折叠则关闭已展开二级菜单
+    if (collapse.value && props.expand) emits('update:expand', false)
+  },
+  { immediate: true }
 )
 </script>
 
@@ -132,6 +147,8 @@ watch(
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  will-change: transform;
+  transition: transform 0.3s ease-in-out;
 
   svg {
     path {

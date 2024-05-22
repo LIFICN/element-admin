@@ -1,7 +1,7 @@
 import { defineComponent, computed } from 'vue'
 import MenuItem from './MenuItem.vue'
 import Submenu from './Submenu.vue'
-import { useInjectMeunsKey } from './hooks'
+import { useInjectMeuns } from './hooks'
 import VMenusToolTip from './VMenusToolTip.vue'
 
 const RenderMenuItem = defineComponent({
@@ -15,7 +15,7 @@ const RenderMenuItem = defineComponent({
   },
   setup(props) {
     const menuItemData = props.item
-    const { treeParentMap } = useInjectMeunsKey()
+    const { treeParentMap } = useInjectMeuns()
     const hasChildren = computed(() => menuItemData.children && menuItemData.children.length > 0)
     const isFirstLevel = computed(() => (treeParentMap.value[menuItemData.key] ? false : true))
 

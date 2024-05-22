@@ -141,6 +141,7 @@ watch(() => ({ ...currentRoute.value }), watchCurrentRoute, { deep: true, immedi
     align-items: center;
     padding: 0 7px;
     justify-content: space-between;
+    user-select: none;
 
     .title {
       font-size: 14px;
