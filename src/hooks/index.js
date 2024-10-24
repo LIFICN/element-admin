@@ -68,6 +68,7 @@ export function useVirtualList(
   let realHeight = 0 //总高度
   let bufferStartIndex = -1 //起始缓存索引
   let resizeObserver = null
+  let isResizeHeight = false //是否需要重新计算总高度
 
   watch(
     () => config.dataSource?.value?.slice(),
@@ -85,12 +86,17 @@ export function useVirtualList(
       }
 
       sourceList.value = newVal || []
+      isResizeHeight = true
       if (!sourceList.value?.length) {
         renderedItemsCache = {}
         startIndex = 0
         bufferStartIndex = -1
         realHeight = 0
-        nextTick(() => (phantomDivEl.style.height = 0))
+        nextTick(() => {
+          if (!phantomDivEl || !contentContainerEl) return
+          phantomDivEl.style.height = 0
+          contentContainerEl.style.transform = `translateY(0px)`
+        })
       }
 
       updateData()
@@ -115,8 +121,9 @@ export function useVirtualList(
     resizeObserver = new ResizeObserver(
       debounce(function (e) {
         const { children } = e[0].target
+        isResizeHeight = true
         updateScrollHeight(children)
-      }, 100)
+      }, 120)
     )
 
     resizeObserver.observe(contentContainerEl)
@@ -128,8 +135,13 @@ export function useVirtualList(
   })
 
   async function updateScrollHeight(children) {
+    //如果以更新到最后一项item数据，不再遍历，但是数据，高度变化，重新计算
+    const endItem = sourceList.value[sourceList.value.length - 1] || {}
+    if (!isResizeHeight && renderedItemsCache[endItem[keyField]] > 0) return
+    isResizeHeight = false
+
     await nextTick()
-    const els = Array.from(children || document.querySelector(contentContainer)?.children)
+    const els = Array.from(children || contentContainerEl?.children)
 
     //动态缓存列表项最新高度
     for (let index = 0; index < els.length; index++) {
@@ -148,12 +160,11 @@ export function useVirtualList(
 
   function updateData() {
     //计算起始索引
-    let start = (bufferStartIndex =
-      startIndex < bufferSize ? 0 : startIndex - bufferSize >= 0 ? startIndex - bufferSize : startIndex)
+    bufferStartIndex = startIndex < bufferSize ? 0 : startIndex - bufferSize >= 0 ? startIndex - bufferSize : startIndex
     //计算结束索引
     let endSum = startIndex + size + bufferSize
     let end = endSum >= sourceList.value.length ? sourceList.value.length : endSum
-    sliceData.value = sourceList.value.slice(start, end)
+    sliceData.value = sourceList.value.slice(bufferStartIndex, end)
   }
 
   const handleScroll = debounceRAF(async function (e) {
@@ -186,15 +197,15 @@ export function useVirtualList(
         break
       }
     }
-  })
+  }, true)
 
-  function debounceRAF(func) {
-    let flag = null
+  function debounceRAF(func, isAsync) {
+    let flag = false
     return function () {
       if (flag) return
       flag = true
-      requestAnimationFrame(() => {
-        func?.apply(this, arguments)
+      requestAnimationFrame(async () => {
+        isAsync ? await func?.apply(this, arguments) : func?.apply(this, arguments)
         flag = false
       })
     }
