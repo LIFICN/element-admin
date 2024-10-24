@@ -50,5 +50,5 @@ export function useCovertRoutesToMenus(routeStoreData = []) {
     return ''
   }
 
-  return [readonly(routeArr)]
+  return readonly(routeArr)
 }

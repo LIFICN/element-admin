@@ -9,8 +9,9 @@
     :style="{ 'padding-left': paddingLeftStyle, 'justify-content': collapse ? 'center' : '' }"
     @click.stop="menuClick"
   >
-    <slots.icon :item="item" :active="mergeActive" class="v-menu-item-icon" v-if="slots.icon" />
-    <i :class="['v-menu-item-icon', item.icon]" v-else-if="item.icon" />
+    <span class="v-menu-item-icon-wrap" v-if="slots.icon">
+      <slots.icon :item="item" :active="mergeActive" />
+    </span>
 
     <div class="v-menu-item-content" v-show="!collapse">
       <slots.label :item="item" :active="mergeActive" v-if="slots.label" />
@@ -123,10 +124,7 @@ watch(
     color: var(--menuHoverText);
   }
 
-  &-icon {
-    font-size: 12px;
-    width: 16px;
-    height: 16px;
+  &-icon-wrap {
     display: inline-flex;
     align-items: center;
     justify-content: center;
