@@ -17,8 +17,8 @@
   box-sizing: border-box;
 
   &::-webkit-scrollbar {
-    width: 10px; /* 宽度 */
-    height: 10px; /* 高度 */
+    width: 8px; /* 宽度 */
+    height: 8px; /* 高度 */
   }
 
   &::-webkit-scrollbar-track {
@@ -29,7 +29,6 @@
   &::-webkit-scrollbar-thumb {
     background-color: #ddd; /* 淡色滑块 */
     border-radius: 5px; /* 圆角 */
-    border: 2px solid #fcfcfc; /* 边框 */
   }
 
   &::-webkit-scrollbar-thumb:hover {

@@ -1,34 +1,37 @@
 <template>
+  <i ref="slotRef" style="display: none"></i>
   <slot />
 
-  <VMenusTransition type="floating">
-    <div
-      class="v-menu-tooltip"
-      ref="tooltipRef"
-      v-show="mergeShow"
-      @mouseenter="tooltipMouseEnter"
-      @mouseleave="tooltipMouseLeave"
-      @click="closeClick"
-    >
+  <Teleport to="body" :disabled="!toBody">
+    <VMenusTransition type="floating">
       <div
-        :class="[{ 'v-menu-tooltip-menus': showMenu }, { 'v-menu-tooltip-label': showLabel }]"
-        v-if="isCreateContent"
+        class="v-menu-tooltip"
+        ref="tooltipRef"
+        v-show="mergeShow"
+        @mouseenter="tooltipMouseEnter"
+        @mouseleave="tooltipMouseLeave"
+        @click="closeClick"
       >
-        <template v-if="showMenu">
-          <VMenusToolTip
-            v-for="it in item.children"
-            :item="it"
-            :key="it.key"
-            :showMenu="it.children && it.children.length > 0"
-          >
-            <FloatMenuItem :item="it" />
-          </VMenusToolTip>
-        </template>
+        <div
+          :class="[{ 'v-menu-tooltip-menus': showMenu }, { 'v-menu-tooltip-label': showLabel }]"
+          v-if="isCreateContent"
+        >
+          <template v-if="showMenu">
+            <VMenusToolTip
+              v-for="it in item.children"
+              :item="it"
+              :key="it.key"
+              :showMenu="it.children && it.children.length > 0"
+            >
+              <FloatMenuItem :item="it" />
+            </VMenusToolTip>
+          </template>
 
-        <span class="v-tooltip-label" v-else-if="showLabel">{{ item.label }}</span>
+          <span class="v-tooltip-label" v-else-if="showLabel">{{ item.label }}</span>
+        </div>
       </div>
-    </div>
-  </VMenusTransition>
+    </VMenusTransition>
+  </Teleport>
 </template>
 
 <script setup>
@@ -52,6 +55,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  toBody: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const tooltipRef = ref('')
@@ -63,54 +70,54 @@ const [updatePosition] = useFloatingPosition(slotRef, tooltipRef)
 const mergeShow = computed(() => collapse.value && (props.showLabel || props.showMenu) && isMouseInSlot.value)
 
 onMounted(() => {
-  slotRef.value = tooltipRef.value.previousElementSibling
-  slotRef.value.addEventListener('mouseenter', slotMouseEnter)
-  slotRef.value.addEventListener('mouseleave', slotMouseLeave)
+  slotRef.value = slotRef.value?.nextElementSibling
+  slotRef.value?.addEventListener('mouseenter', slotMouseEnter)
+  slotRef.value?.addEventListener('mouseleave', slotMouseLeave)
 })
 
 onBeforeUnmount(() => {
-  slotRef.value.removeEventListener('mouseenter', slotMouseEnter)
-  slotRef.value.removeEventListener('mouseleave', slotMouseLeave)
+  slotRef.value?.removeEventListener('mouseenter', slotMouseEnter)
+  slotRef.value?.removeEventListener('mouseleave', slotMouseLeave)
 })
 
 //清除掉mouse leave事件逻辑
-let clearTimer = null
+let timer = null
 
 function slotMouseEnter() {
-  clearTimer?.()
+  resetTimer()
   isMouseInSlot.value = true
   if (collapse.value) updatePosition()
 }
 
 function slotMouseLeave() {
-  clearTimer = startCloseTimeout()
+  startCloseTimeout()
 }
 
 function tooltipMouseEnter() {
   isMouseInSlot.value = true
-  clearTimer?.()
+  resetTimer()
 }
 
 function tooltipMouseLeave() {
-  clearTimer = startCloseTimeout()
+  startCloseTimeout()
 }
 
 function closeClick() {
   isMouseInSlot.value = false
-  clearTimer = null
+  timer = null
 }
 
 //解决两个元素切换触发mouse leave关闭弹窗的问题
 function startCloseTimeout() {
-  let timer = setTimeout(() => {
+  timer = setTimeout(() => {
     isMouseInSlot.value = false
     timer = null
   }, 300)
+}
 
-  return () => {
-    clearTimeout(timer)
-    clearTimer = null
-  }
+function resetTimer() {
+  timer && clearTimeout(timer)
+  timer = null
 }
 
 watch(

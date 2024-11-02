@@ -20,14 +20,14 @@ export const constantRoutes = [
       {
         path: '',
         component: Dashboard,
-        meta: { title: 'dashboard', icon: 'Apple', affix: true }, //affix为是否固定选项卡
+        meta: { title: 'dashboard', icon: 'Polygon', affix: true }, //affix为是否固定选项卡
       },
     ],
   },
   {
     path: '/menus',
     component: Layout,
-    meta: { title: 'menus', icon: 'Apple' },
+    meta: { title: 'menus', icon: 'Polygon' },
     children: [
       {
         path: 'menu1',
@@ -60,7 +60,7 @@ export const constantRoutes = [
       {
         path: '',
         component: Table,
-        meta: { title: 'tabel', icon: 'Apple' },
+        meta: { title: 'tabel', icon: 'Polygon' },
       },
     ],
   },

@@ -30,7 +30,7 @@ const RenderMenuItem = defineComponent({
 
     if (isFirstLevel.value) {
       return () => (
-        <VMenusToolTip item={menuItemData} showMenu={hasChildren.value} showLabel={!hasChildren.value}>
+        <VMenusToolTip item={menuItemData} showMenu={hasChildren.value} showLabel={!hasChildren.value} toBody={true}>
           {{ default: () => (!hasChildren.value ? meunItemFuc() : submenuItemFuc()) }}
         </VMenusToolTip>
       )

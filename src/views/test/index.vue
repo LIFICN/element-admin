@@ -23,7 +23,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useVirtualList } from '@/hooks/index.js'
+import { useVirtualList } from '@/hooks/useVirtualList.js'
 
 const dataSource = ref(
   Array(100)

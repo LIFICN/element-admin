@@ -2,6 +2,7 @@
   <!-- 不使用click.stop，使事件冒泡到父级执行关闭悬浮窗 -->
   <div
     :class="[
+      'v-menus-color',
       'v-float-menu-item',
       { 'v-float-menu-item-active': isActiveMenuItem && !isSubmenuItem },
       { 'v-float-submenu-item-active': isSubmenuItem && isActiveSubmenuItem },
@@ -9,8 +10,9 @@
     :style="{ 'padding-left': paddingLeftStyle }"
     @click="menuClick"
   >
-    <slots.icon :item="item" :active="mergeActive" class="v-float-menu-item-icon" v-if="slots.icon" />
-    <i :class="['v-float-menu-item-icon', item.icon]" v-else-if="item.icon" />
+    <span class="v-float-menu-item-icon-wrap" v-if="slots.icon">
+      <slots.icon :item="item" :active="mergeActive" />
+    </span>
 
     <div class="v-float-menu-item-content">
       <slots.label :item="item" :active="mergeActive" v-if="slots.label" />
@@ -86,10 +88,7 @@ function menuClick() {
     color: var(--menuHoverText);
   }
 
-  &-icon {
-    font-size: 12px;
-    width: 16px;
-    height: 16px;
+  &-icon-wrap {
     display: inline-flex;
     align-items: center;
     justify-content: center;

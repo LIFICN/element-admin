@@ -1,5 +1,5 @@
 <template>
-  <div class="v-menus">
+  <div class="v-menus-color v-menus">
     <!-- 递归菜单 -->
     <RenderMenuItem v-for="(item, index) in list" :key="'rendermenuitem' + index" :item="item" />
   </div>
@@ -57,8 +57,8 @@ watch(
 )
 </script>
 
-<style lang="scss" scoped>
-.v-menus {
+<style>
+.v-menus-color {
   --menuBg: #fff;
   --menuText: #333;
   --menuHoverBg: rgba(0, 0, 0, 0.06);
@@ -67,7 +67,11 @@ watch(
   --menuActiveArrowColor: #1677ff;
   --menuActiveBg: #e6f4ff;
   --menuActiveText: #1677ff;
+}
+</style>
 
+<style lang="scss" scoped>
+.v-menus {
   background-color: var(--menuBg);
   width: 100%;
   overflow-x: hidden;
