@@ -106,7 +106,7 @@ const menuItemClick = (menuItem) => {
       border-radius: 50%;
       position: absolute;
       top: 14px;
-      right: -16px;
+      right: -12px;
       z-index: 99;
       background-color: #ffffff;
       box-sizing: border-box;

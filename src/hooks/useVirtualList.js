@@ -1,17 +1,56 @@
 import { nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
-export function useVirtualList(
+function debounceRAF(func, isAsync) {
+  let flag = false
+  return function () {
+    if (flag) return
+    flag = true
+    requestAnimationFrame(async () => {
+      isAsync ? await func?.apply(this, arguments) : func?.apply(this, arguments)
+      flag = false
+    })
+  }
+}
+
+function debounce(func, wait = 100) {
+  let timer = null
+  return function () {
+    timer && clearTimeout(timer)
+    timer = setTimeout(() => {
+      func?.apply(this, arguments)
+      timer = null
+    }, wait)
+  }
+}
+
+function findDifferentKeys(array1, array2) {
+  if (!array1?.length || !array2?.length) return []
+  const set1 = new Set(array1)
+  const set2 = new Set(array2)
+  // 找出在 array1 中但不在 array2 中的元素
+  const uniqueToArray1 = [...set1].filter((x) => !set2.has(x))
+  // 找出在 array2 中但不在 array1 中的元素
+  const uniqueToArray2 = [...set2].filter((x) => !set1.has(x))
+  // 合并结果
+  return [...uniqueToArray1, ...uniqueToArray2]
+}
+
+export default function useVirtualList(
   config = {
     scrollContainer: '',
     contentContainer: '',
+    itemContainer: '',
     dataSource: [],
     size: 10,
     bufferSize: 10,
     keyField: '',
   }
 ) {
-  if (typeof config != 'object') throw new Error('config is object')
-  const { scrollContainer, contentContainer, size = 10, bufferSize = 10, keyField = '' } = config
+  const { scrollContainer, contentContainer, itemContainer, size = 10, bufferSize = 10, keyField = '' } = config || {}
+
+  if (!scrollContainer || !contentContainer || !itemContainer || !keyField)
+    throw new Error('The parameters `scrollContainer`,`contentContainer`,`itemContainer`,`keyField` cannot be null')
+
   const sourceList = ref([])
   const sliceData = ref([])
   let scrollContainerEl = null
@@ -73,10 +112,9 @@ export function useVirtualList(
 
     //容器尺寸变化重新计算高度
     resizeObserver = new ResizeObserver(
-      debounce(function (e) {
-        const { children } = e[0].target
+      debounce(function () {
         isResizeHeight = true
-        updateScrollHeight(children)
+        updateScrollHeight()
       }, 120)
     )
 
@@ -88,14 +126,17 @@ export function useVirtualList(
     scrollContainerEl?.remove('scroll', handleScroll)
   })
 
-  async function updateScrollHeight(children) {
+  //获取当前已渲染的item dom
+  const getCurrentRenderedItem = () => Array.from(contentContainerEl?.querySelectorAll(itemContainer) || [])
+
+  async function updateScrollHeight() {
     //如果以更新到最后一项item数据，不再遍历，但是数据，高度变化，重新计算
     const endItem = sourceList.value[sourceList.value.length - 1] || {}
     if (!isResizeHeight && renderedItemsCache[endItem[keyField]] > 0) return
     isResizeHeight = false
 
     await nextTick()
-    const els = Array.from(children || contentContainerEl?.children)
+    const els = getCurrentRenderedItem()
 
     //动态缓存列表项最新高度
     for (let index = 0; index < els.length; index++) {
@@ -152,41 +193,6 @@ export function useVirtualList(
       }
     }
   }, true)
-
-  function debounceRAF(func, isAsync) {
-    let flag = false
-    return function () {
-      if (flag) return
-      flag = true
-      requestAnimationFrame(async () => {
-        isAsync ? await func?.apply(this, arguments) : func?.apply(this, arguments)
-        flag = false
-      })
-    }
-  }
-
-  function debounce(func, wait = 100) {
-    let timer = null
-    return function () {
-      timer && clearTimeout(timer)
-      timer = setTimeout(() => {
-        func?.apply(this, arguments)
-        timer = null
-      }, wait)
-    }
-  }
-
-  function findDifferentKeys(array1, array2) {
-    if (!array1?.length || !array2?.length) return []
-    const set1 = new Set(array1)
-    const set2 = new Set(array2)
-    // 找出在 array1 中但不在 array2 中的元素
-    const uniqueToArray1 = [...set1].filter((x) => !set2.has(x))
-    // 找出在 array2 中但不在 array1 中的元素
-    const uniqueToArray2 = [...set2].filter((x) => !set1.has(x))
-    // 合并结果
-    return [...uniqueToArray1, ...uniqueToArray2]
-  }
 
   return { sliceData }
 }

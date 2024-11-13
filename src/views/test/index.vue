@@ -8,13 +8,12 @@
 
     <div class="test-scroll">
       <div class="test-content">
-        <div v-for="(item, index) in sliceData" :key="index">
-          {{ item?.el }}
-          <p>{{ item?.text }}</p>
+        <div v-for="(item, index) in sliceData" :key="index" class="test-content-item">
           <img
             src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-            style="max-height: 100px"
+            style="width: 47px; height: 47px; border-radius: 50%"
           />
+          <p>{{ item?.el + '-----' + item?.text }}</p>
         </div>
       </div>
     </div>
@@ -23,7 +22,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useVirtualList } from '@/hooks/useVirtualList.js'
+import useVirtualList from '@/hooks/useVirtualList.js'
 
 const dataSource = ref(
   Array(100)
@@ -38,6 +37,7 @@ const dataSource = ref(
 const { sliceData } = useVirtualList({
   scrollContainer: '.test-scroll',
   contentContainer: '.test-content',
+  itemContainer: '.test-content-item',
   dataSource,
   bufferSize: 10,
   keyField: 'key',
@@ -85,13 +85,22 @@ function edit(type) {
     width: 100%;
     will-change: transform;
 
-    > div {
+    .test-content-item {
       background-color: #fff;
       width: 100%;
       white-space: normal;
       box-sizing: border-box;
       overflow: hidden;
       word-break: break-all;
+      display: flex;
+      color: #666;
+      padding: 5px;
+      font-size: 12px;
+      align-items: center;
+
+      > :nth-child(2) {
+        margin: 0 0 0 10px;
+      }
     }
   }
 }
