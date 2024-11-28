@@ -4,6 +4,7 @@
       <button @click="edit(1)">添加</button>
       <button @click="edit(2)">删除</button>
       <button @click="edit(3)">重置</button>
+      <button @click="scrollTo(9000)">滚动到指定位置</button>
     </p>
 
     <div class="test-scroll">
@@ -25,7 +26,7 @@ import { ref } from 'vue'
 import useVirtualList from '@/hooks/useVirtualList.js'
 
 const dataSource = ref(
-  Array(100)
+  Array(10000)
     .fill(1)
     .map((_, index) => ({
       el: index + 1,
@@ -34,20 +35,20 @@ const dataSource = ref(
     }))
 )
 
-const { sliceData } = useVirtualList({
+const { sliceData, scrollTo } = useVirtualList({
   scrollContainer: '.test-scroll',
   contentContainer: '.test-content',
   itemContainer: '.test-content-item',
   dataSource,
-  bufferSize: 10,
+  bufferSize: 4,
   keyField: 'key',
+  itemHeight: 40,
 })
 
 function generateRandomText() {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   const length = Math.floor(Math.random() * 141) + 60 // 随机生成60到200之间的长度
   let result = ''
-
   for (let i = 0; i < length; i++) {
     const randomIndex = Math.floor(Math.random() * characters.length)
     result += characters[randomIndex]
