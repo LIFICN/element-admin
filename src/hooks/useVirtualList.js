@@ -257,7 +257,7 @@ export default function useVirtualList(
 
   function scrollTo(index) {
     const itemKey = sourceList.value[index] && sourceList.value[index][keyField]
-    if (!itemKey || itemTopObj[itemKey] <= 0 || !scrollContainerEl) return
+    if (!itemKey || itemTopObj[itemKey] < 0 || !scrollContainerEl) return
     scrollContainerEl.scrollTop = itemTopObj[index]
   }
 
